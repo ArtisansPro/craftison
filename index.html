@@ -130,7 +130,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .si{font-size:56px;margin-bottom:12px;}
 .st2{font-size:18px;font-weight:900;color:#C62828;margin-bottom:8px;}
 .ss2{font-size:13px;color:#888;line-height:1.6;}
-/* شارة الزائر في الدردشة */
 .guest-badge{background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:7px 12px;margin:8px 10px;font-size:11px;color:#795548;text-align:center;}
 .home-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .home-action{background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.5);color:#fff;border-radius:20px;padding:7px 10px;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;}
@@ -140,9 +139,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .image-viewer-close{position:absolute;top:12px;right:14px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:30px;line-height:1;cursor:pointer;}
 .zoomable-image{cursor:zoom-in;}
 
-/* ═══════════════════════════════════════
-   STYLING FOR WELCOME & TERMS MODAL (CRAFTOO PACT)
-   ═══════════════════════════════════════ */
 .terms-overlay{position:fixed;inset:0;background:rgba(10,25,50,0.85);backdrop-filter:blur(6px);z-index:9999;display:none;align-items:center;justify-content:center;padding:16px;}
 .terms-overlay.show{display:flex;}
 .terms-card{background:#fff;border-radius:22px;width:100%;max-width:440px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 20px 40px rgba(0,0,0,0.3);overflow:hidden;animation:popIn 0.3s cubic-bezier(0.175,0.885,0.32,1.275);}
@@ -294,7 +290,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 </div>
 
-<!-- Modal -->
 <div class="mo" id="modal">
   <div class="md">
     <div class="mt4" id="m-t"></div>
@@ -306,9 +301,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════
-     WELCOME & COMMUNITY PACT OVERLAY
-     ═══════════════════════════════════════ -->
 <div class="terms-overlay" id="termsOverlay" role="dialog" aria-modal="true">
   <div class="terms-card">
     <div class="terms-header">
@@ -358,9 +350,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="toast" id="toast"></div>
 
 <script>
-// ═══════════════════════════════════════
-// FIREBASE CONFIG
-// ═══════════════════════════════════════
 var firebaseConfig = {
   apiKey: "AIzaSyCdDLq6GMRCLhYegXdb6d89SA6utQZWsMw",
   authDomain: "crafoo-e5722.firebaseapp.com",
@@ -373,9 +362,6 @@ firebase.initializeApp(firebaseConfig);
 var DB = firebase.firestore();
 var AUTH = firebase.auth();
 
-// ═══════════════════════════════════════
-// TRANSLATIONS
-// ═══════════════════════════════════════
 var T={
 fr:{sub:"Trouvez le meilleur artisan",sh:"Rechercher un metier...",sc:"Metiers",sw:"Artisans",sy:"Mondial",sa:"Tous les Metiers",art:"artisans",av:"disponibles",bk:"Retour",sw2:"Nom ou ville...",rb:"+ S inscrire comme artisan",nw:"Aucun artisan inscrit",ns:"Soyez le premier!",wt:"Fiche Artisan",ph:"Telephone",co:"Commune",ci:"Ville",cy:"Pays",ca:"Appeler",cb:"Message",cg:"Galerie Photos",rt:"Inscription",tr2:"S inscrire",tl:"Se connecter",ln:"Nom complet *",lp:"Mot de passe *",lc:"Confirmer *",lt:"Telephone *",lpa:"Pays *",lv:"Ville",lco:"Commune",lm:"Votre metier *",lg:"Photos travaux",cp:"Choisir un metier",cpay:"Choisir un pays",br2:"S inscrire",bl:"Se connecter",ef:"Remplir tous les champs",ep:"Mots de passe differents",ee:"Email deja utilise",en2:"Email introuvable",ex:"Remplir les champs",ah:"Appuyez pour ajouter photo",rat:"Evaluer",rep:"Signaler",sup:"Soutenir",rep_chat:"Signaler ce artisan",rpt:"Signalement",rpb:"Confirmer le signalement?",rok:"Confirmer",rnk:"Annuler",st:"Artisan suspendu",sm:"Suspendu 5 jours.",cph:"Votre message...",ok:"Enregistre!",send:"Envoi...",dir:"ltr",guest:"Visiteur anonyme",
 tm_sub:"Bienvenue sur notre plateforme",tm_welcome:"Pour garantir la confiance et la sécurité, veuillez accepter notre Pacte Communautaire :",tm_p1_t:"Respect & Transparence",tm_p1_d:"Engagement mutuel sur des prix justes, un accueil respectueux et une communication claire.",tm_p2_t:"Rendez-vous Fiables",tm_p2_d:"Respect strict des engagements, des délais convenus et du travail de qualité.",tm_p3_t:"Protection & Sécurité",tm_p3_d:"Craftoo est un annuaire de mise en relation. Les accords engagent directement le client et l'artisan.",tm_note:"En cliquant sur 'J'accepte', vous confirmez votre accord avec nos conditions.",tm_acc:"J'accepte & Je commence",tm_dec:"Refuser"},
@@ -515,9 +501,6 @@ var lang="fr",craft=null,worker=null,currentUser=null,avFile=null,galFiles=[],ch
 var screenHistory=["home"];
 var AC=["#1565C0","#C62828","#2E7D32","#F57C00","#6A1B9A","#00695C","#4E342E","#AD1457","#283593","#558B2F"];
 
-// ═══════════════════════════════════════
-// WELCOME & TERMS MODAL FUNCTIONS
-// ═══════════════════════════════════════
 function checkFirstLaunchTerms(){
   var accepted = localStorage.getItem("craftoo_terms_accepted");
   if(!accepted){
@@ -537,9 +520,6 @@ function declineTerms(){
   showToast(lang==="ar" ? "تنبيه: يجب قبول الميثاق والشروط لاستخدام تطبيق كرافتو" : "Notice: Terms acceptance is required to use Craftoo");
 }
 
-// ═══════════════════════════════════════
-// معرّف الزائر المجهول — يُحفظ في localStorage
-// ═══════════════════════════════════════
 function getGuestId(){
   var id = localStorage.getItem("craftoo_guest_id");
   if(!id){
@@ -617,7 +597,6 @@ function applyT(){
   var hlbt=$("home-login-t");if(hlbt)hlbt.textContent=t("tl");
   var hsbt=$("home-signup-t");if(hsbt)hsbt.textContent=t("tr2");
 
-  // Apply Terms Translations
   set("tm-sub",t("tm_sub"));set("tm-welcome",t("tm_welcome"));
   set("tm-p1-t",t("tm_p1_t"));set("tm-p1-d",t("tm_p1_d"));
   set("tm-p2-t",t("tm_p2_t"));set("tm-p2-d",t("tm_p2_d"));
@@ -779,7 +758,6 @@ function renderDet(w){
   b1.onclick=(function(ph){return function(){window.open("tel:"+ph);};})(w.phone||"");
 
   var b2=document.createElement("button");b2.className="btn-b";b2.textContent="💬 "+t("cb");
-  // الزبون يدردش مباشرة بدون تسجيل
   b2.onclick=(function(id,nm){return function(){openChat(id,nm);};})(w.id,w.name||"");
 
   var b3=document.createElement("button");b3.className="btn-s";
@@ -875,41 +853,24 @@ function doRep(wid){
 var chatWorkerId=null;
 function chatReport(){if(chatWorkerId)confRep(chatWorkerId);}
 
-// ═══════════════════════════════════════
-// فتح الدردشة — الزبون زائر مجهول بدون تسجيل
-// ═══════════════════════════════════════
 function openChat(wid, wname){
   chatWorkerId = wid;
-
-  // ═══════════════════════════════════════════
-  // الزبون (غير مسجل) → يدردش مباشرة كزائر
-  // الحرفي (مسجل)    → ينتظر Firebase يتأكد
-  // ═══════════════════════════════════════════
-
   if(currentUser){
-    // المستخدم مسجل بالفعل → افتح مباشرة
     startChat(wid, wname, currentUser.uid, false);
     return;
   }
-
-  // انتظر Firebase قليلاً (موبايل بطيء)
   var resolved = false;
-
   var unsub = AUTH.onAuthStateChanged(function(user){
     if(resolved) return;
     resolved = true;
     unsub();
     if(user){
-      // حرفي مسجل
       currentUser = user;
       startChat(wid, wname, user.uid, false);
     } else {
-      // زبون مجهول → يدردش مباشرة بدون تسجيل
       startChat(wid, wname, GUEST_ID, true);
     }
   });
-
-  // بعد 3 ثوان إذا لم يرد Firebase → زبون مجهول
   setTimeout(function(){
     if(!resolved){
       resolved = true;
@@ -920,19 +881,13 @@ function openChat(wid, wname){
 
 function startChat(wid, wname, senderId, isGuest){
   if(chatUnsub) chatUnsub();
-
   chatId = [senderId, wid].sort().join("_");
-
   set("chat-t", "💬 " + wname);
   ph("chat-in", t("cph"));
-
-  // شارة الزائر
   var bar = $("guest-info-bar");
   bar.innerHTML = isGuest ? '<div class="guest-badge">👤 ' + t("guest") + '</div>' : "";
-
   $("chat-m").innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
   go("chat");
-
   chatUnsub = DB.collection("chats").doc(chatId).collection("messages")
     .orderBy("createdAt").onSnapshot(function(snap){
       var msgs = [];
@@ -952,7 +907,6 @@ function renderMsgs(msgs, senderId){
     var time=m.createdAt?(new Date(m.createdAt.toMillis?m.createdAt.toMillis():m.createdAt)).toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"}):"";
     var d=document.createElement("div");
     d.className="msg "+(me?"mme":"mth");
-    // إذا المرسل زائر مجهول نعرض "Visiteur" بدل الاسم
     var senderLabel = m.senderName || t("guest");
     if(!me){
       d.innerHTML='<div class="msender">'+senderLabel+'</div>'+m.text+'<div class="mt3">'+time+"</div>";
@@ -969,11 +923,8 @@ function sendMsg(){
   var text=inp.value.trim();
   if(!text||!chatId)return;
   inp.value="";
-
-  // استخدم نفس المعرّف الذي فُتحت به الدردشة
   var senderId = currentUser ? currentUser.uid : GUEST_ID;
   var senderName = currentUser ? (currentUser.displayName||currentUser.email||"Artisan") : t("guest");
-
   DB.collection("chats").doc(chatId).collection("messages").add({
     text: text,
     senderId: senderId,
