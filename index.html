@@ -133,11 +133,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .guest-badge{background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:7px 12px;margin:8px 10px;font-size:11px;color:#795548;text-align:center;}
 .home-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;}
 .home-action{background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.5);color:#fff;border-radius:20px;padding:7px 10px;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;}
+
+/* Image Viewer with Navigation & Swipe */
 .image-viewer{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:3000;display:none;align-items:center;justify-content:center;padding:24px;}
 .image-viewer.show{display:flex;}
-.image-viewer img{display:block;max-width:100%;max-height:calc(100vh - 48px);object-fit:contain;border-radius:8px;}
-.image-viewer-close{position:absolute;top:12px;right:14px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:30px;line-height:1;cursor:pointer;}
-.zoomable-image{cursor:zoom-in;}
+.image-viewer img{display:block;max-width:100%;max-height:calc(100vh - 48px);object-fit:contain;border-radius:8px;user-select:none;-webkit-user-drag:none;}
+.image-viewer-close{position:absolute;top:12px;right:14px;width:42px;height:42px;border:0;border-radius:50%;background:rgba(255,255,255,.18);color:#fff;font-size:30px;line-height:1;cursor:pointer;z-index:3002;}
+.image-nav-btn {position: absolute;top: 50%;transform: translateY(-50%);background: rgba(255,255,255,0.25);color: #fff;border: none;border-radius: 50%;width: 44px;height: 44px;font-size: 22px;cursor: pointer;z-index: 3001;display: flex;align-items: center;justify-content: center;backdrop-filter: blur(4px);user-select: none;}
+.image-nav-btn:active { background: rgba(255,255,255,0.5); }
+.prev-btn { left: 12px; }
+.next-btn { right: 12px; }
+.zoomable-image{cursor:pointer;}
 
 .terms-overlay{position:fixed;inset:0;background:rgba(10,25,50,0.85);backdrop-filter:blur(6px);z-index:9999;display:none;align-items:center;justify-content:center;padding:16px;}
 .terms-overlay.show{display:flex;}
@@ -343,10 +349,14 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
+<!-- Image Viewer With Navigation Buttons and Swipe -->
 <div class="image-viewer" id="image-viewer" role="dialog" aria-modal="true" aria-hidden="true" onclick="if(event.target===this)closeImageViewer()">
   <button class="image-viewer-close" type="button" aria-label="Fermer" onclick="closeImageViewer()">×</button>
+  <button class="image-nav-btn prev-btn" id="img-prev-btn" onclick="prevViewerImage(event)">❮</button>
   <img id="image-viewer-img" alt="Image agrandie" onclick="event.stopPropagation()">
+  <button class="image-nav-btn next-btn" id="img-next-btn" onclick="nextViewerImage(event)">❯</button>
 </div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -500,6 +510,12 @@ var LANG_FLAG_SVG={
 var lang="fr",craft=null,worker=null,currentUser=null,avFile=null,galFiles=[],chatId=null,chatUnsub=null,allCraftWorkers=[];
 var screenHistory=["home"];
 var AC=["#1565C0","#C62828","#2E7D32","#F57C00","#6A1B9A","#00695C","#4E342E","#AD1457","#283593","#558B2F"];
+
+// Gallery & Swipe Variables
+var currentGalleryImages = [];
+var currentGalleryIndex = 0;
+var touchStartX = 0;
+var touchEndX = 0;
 
 function checkFirstLaunchTerms(){
   var accepted = localStorage.getItem("craftoo_terms_accepted");
@@ -751,8 +767,9 @@ function renderDet(w){
     '<div class="ir"><div class="iri">🏙️</div><div><div class="irl">'+t("ci")+'</div><div class="irv">'+(w.city||"")+"</div></div></div>"+
     '<div class="ir"><div class="iri">🌍</div><div><div class="irl">'+t("cy")+'</div><div class="irv">'+(w.country||"")+"</div></div></div>"+
     '<div class="ir"><div class="iri">✉️</div><div><div class="irl">Email</div><div class="irv">'+(w.email||"")+"</div></div></div>";
+  
   var profileImage=dc.querySelector(".dav img");
-  if(profileImage)bindZoomImage(profileImage);
+  if(profileImage) bindZoomImage(profileImage, [w.photoURL], 0);
 
   var b1=document.createElement("button");b1.className="btn-g";b1.textContent="📞 "+t("ca");
   b1.onclick=(function(ph){return function(){window.open("tel:"+ph);};})(w.phone||"");
@@ -779,31 +796,83 @@ function renderDet(w){
 
   var gc=document.createElement("div");gc.className="gc";
   gc.innerHTML='<div class="gt">🖼️ '+t("cg")+'</div><div class="gg">'+galH+"</div>";
-  gc.querySelectorAll(".gi img").forEach(function(img){bindZoomImage(img);});
+  
+  // Dynamic bind of gallery images with indexing for swipe navigation
+  var galList = w.gallery && w.gallery.length ? w.gallery : [];
+  gc.querySelectorAll(".gi img").forEach(function(img, idx){
+    bindZoomImage(img, galList, idx);
+  });
   el.appendChild(gc);
 }
 
-function bindZoomImage(img){
+// ═══════════════════════════════════════
+// Image Viewer with Navigation & Swipe Functionality
+// ═══════════════════════════════════════
+function bindZoomImage(img, imagesArray, index){
   img.classList.add("zoomable-image");
-  img.addEventListener("click",function(e){
+  img.addEventListener("click", function(e){
     e.stopPropagation();
-    openImageViewer(img.src);
+    openImageViewer(imagesArray || [img.src], index || 0);
   });
 }
 
-function openImageViewer(src){
-  if(!src)return;
-  $("image-viewer-img").src=src;
-  $("image-viewer").classList.add("show");
-  $("image-viewer").setAttribute("aria-hidden","false");
+function openImageViewer(images, index){
+  if(!images || !images.length) return;
+  currentGalleryImages = images;
+  currentGalleryIndex = index || 0;
+  updateViewerImage();
+  
+  var viewer = $("image-viewer");
+  viewer.classList.add("show");
+  viewer.setAttribute("aria-hidden", "false");
+}
+
+function updateViewerImage(){
+  var imgEl = $("image-viewer-img");
+  if(imgEl && currentGalleryImages[currentGalleryIndex]){
+    imgEl.src = currentGalleryImages[currentGalleryIndex];
+  }
+  var prevBtn = $("img-prev-btn");
+  var nextBtn = $("img-next-btn");
+  if(prevBtn) prevBtn.style.display = currentGalleryImages.length > 1 ? "flex" : "none";
+  if(nextBtn) nextBtn.style.display = currentGalleryImages.length > 1 ? "flex" : "none";
+}
+
+function prevViewerImage(e){
+  if(e) e.stopPropagation();
+  if(currentGalleryImages.length <= 1) return;
+  currentGalleryIndex = (currentGalleryIndex - 1 + currentGalleryImages.length) % currentGalleryImages.length;
+  updateViewerImage();
+}
+
+function nextViewerImage(e){
+  if(e) e.stopPropagation();
+  if(currentGalleryImages.length <= 1) return;
+  currentGalleryIndex = (currentGalleryIndex + 1) % currentGalleryImages.length;
+  updateViewerImage();
 }
 
 function closeImageViewer(){
-  var viewer=$("image-viewer");
-  if(!viewer)return;
+  var viewer = $("image-viewer");
+  if(!viewer) return;
   viewer.classList.remove("show");
-  viewer.setAttribute("aria-hidden","true");
-  $("image-viewer-img").src="";
+  viewer.setAttribute("aria-hidden", "true");
+  $("image-viewer-img").src = "";
+  currentGalleryImages = [];
+  currentGalleryIndex = 0;
+}
+
+function handleSwipe(){
+  var swipeThreshold = 35; 
+  var diffX = touchEndX - touchStartX;
+
+  if(Math.abs(diffX) > swipeThreshold){
+    if(diffX < 0){
+      nextViewerImage();
+    } else {
+      prevViewerImage();
+    }
+  }
 }
 
 function doSupport(wid){
@@ -1106,7 +1175,12 @@ function doLog(){
 AUTH.onAuthStateChanged(function(user){currentUser=user;});
 
 document.addEventListener("DOMContentLoaded",function(){
-  document.addEventListener("keydown",function(e){if(e.key==="Escape")closeImageViewer();});
+  document.addEventListener("keydown",function(e){
+    if(e.key==="Escape") closeImageViewer();
+    if(e.key==="ArrowLeft") prevViewerImage();
+    if(e.key==="ArrowRight") nextViewerImage();
+  });
+
   $("bk1").onclick=function(){goBack();};
   $("bk2").onclick=function(){goBack();};
   $("bk3").onclick=function(){goBack();};
@@ -1125,6 +1199,20 @@ document.addEventListener("DOMContentLoaded",function(){
   $("apr").onclick=function(){$("av-file").click();};
   $("av-file").onchange=function(){prevAv(this);};
   $("gal-file").onchange=function(){prevGal(this);};
+
+  // Touch Swipe Event Listeners for Image Viewer
+  var viewerImg = $("image-viewer-img");
+  if(viewerImg){
+    viewerImg.addEventListener("touchstart", function(e){
+      touchStartX = e.changedTouches[0].screenX;
+    }, false);
+
+    viewerImg.addEventListener("touchend", function(e){
+      touchEndX = e.changedTouches[0].screenX;
+      handleSwipe();
+    }, false);
+  }
+
   buildLB();applyT();renderCrafts(CRAFTS);
   checkFirstLaunchTerms();
 });
