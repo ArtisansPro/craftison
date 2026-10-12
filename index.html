@@ -86,7 +86,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sb2{font-size:26px;cursor:pointer;background:none;border:none;padding:0;}
 .gc{background:#fff;border-radius:13px;margin:0 10px 10px;padding:13px;box-shadow:0 2px 10px rgba(0,0,0,0.07);}
 .gt{font-weight:800;font-size:13px;margin-bottom:10px;}
-.gg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+.gg{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:6px;}
 .gi{aspect-ratio:1;border-radius:9px;background:#F5F5F5;display:flex;align-items:center;justify-content:center;font-size:20px;color:#CCC;overflow:hidden;}
 .gi img{width:100%;height:100%;object-fit:cover;}
 .gia{border:2px dashed #CCC;background:#FAFAFA;font-size:22px;cursor:pointer;}
@@ -293,6 +293,33 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
+<!-- شاشة تعديل ملف الحرفي وصوره -->
+<div id="s-edit" class="screen">
+  <div class="lb-bar" id="lb5"></div>
+  <div class="hdr">
+    <button class="back" id="bk5"></button>
+    <div class="hdr-t" id="edit-t">Modifier profil</div>
+  </div>
+  <div class="fsc" style="padding-top:12px;">
+    <div id="e-edit"></div>
+    <div class="aup">
+      <div class="apr" id="ed-apr">&#128247;</div>
+      <div class="ah2">Changer photo profil</div>
+      <input type="file" id="ed-av-file" accept="image/*" style="display:none">
+    </div>
+    <div class="fg"><label class="fl">Nom complet</label><input class="fi" id="ed-name"></div>
+    <div class="fg"><label class="fl">Telephone</label><input class="fi" id="ed-tel"></div>
+    <div class="fg"><label class="fl">Pays</label><select class="fsel" id="ed-pay"></select></div>
+    <div class="fg"><label class="fl">Ville</label><input class="fi" id="ed-vil"></div>
+    <div class="fg"><label class="fl">Commune</label><input class="fi" id="ed-com"></div>
+    <div class="fg"><label class="fl">Metier</label><select class="fsel" id="ed-met"></select></div>
+    <div class="fg"><label class="fl">Galerie Photos (Max 12)</label><div class="gg" id="ed-gal-up"></div><input type="file" id="ed-gal-file" accept="image/*" multiple style="display:none"></div>
+    <div class="sbtn-wrap">
+      <button class="sbtn" id="btn-save-edit" onclick="saveProfileChanges()">Enregistrer les modifications</button>
+    </div>
+  </div>
+</div>
+
 </div>
 
 <div class="mo" id="modal">
@@ -405,7 +432,7 @@ var T={
     lv: "Ville",
     lco: "Commune",
     lm: "Votre metier *",
-    lg: "Photos travaux",
+    lg: "Photos travaux (Max 12)",
     cp: "Choisir un metier",
     cpay: "Choisir un pays",
     br2: "S inscrire",
@@ -476,7 +503,7 @@ var T={
     lv: "المدينة",
     lco: "الحي",
     lm: "حرفتك *",
-    lg: "صور الاعمال",
+    lg: "صور الاعمال (كحد أقصى 12)",
     cp: "اختر الحرفة",
     cpay: "اختر البلد",
     br2: "تسجيل",
@@ -547,7 +574,7 @@ var T={
     lv: "City",
     lco: "District",
     lm: "Your Craft *",
-    lg: "Work Photos",
+    lg: "Work Photos (Max 12)",
     cp: "Select a craft",
     cpay: "Select a country",
     br2: "Register",
@@ -618,7 +645,7 @@ var T={
     lv: "Ciudad",
     lco: "Barrio",
     lm: "Tu oficio *",
-    lg: "Fotos",
+    lg: "Fotos (Max 12)",
     cp: "Seleccionar oficio",
     cpay: "Seleccionar pais",
     br2: "Registrarse",
@@ -689,7 +716,7 @@ var T={
     lv: "Citta",
     lco: "Quartiere",
     lm: "Mestiere *",
-    lg: "Foto lavori",
+    lg: "Foto (Max 12)",
     cp: "Seleziona mestiere",
     cpay: "Seleziona paese",
     br2: "Registrati",
@@ -760,7 +787,7 @@ var T={
     lv: "Sehir",
     lco: "Mahalle",
     lm: "Meslegin *",
-    lg: "Is fotograflari",
+    lg: "Foto (Max 12)",
     cp: "Meslek sec",
     cpay: "Ulke sec",
     br2: "Kaydol",
@@ -831,7 +858,7 @@ var T={
     lv: "Stad",
     lco: "Wijk",
     lm: "Jouw vak *",
-    lg: "Werkfotos",
+    lg: "Foto's (Max 12)",
     cp: "Kies een vak",
     cpay: "Kies een land",
     br2: "Registreren",
@@ -902,7 +929,7 @@ var T={
     lv: "城市",
     lco: "街区",
     lm: "职业 *",
-    lg: "工作照片",
+    lg: "工作照片 (最多12)",
     cp: "选择职业",
     cpay: "选择国家",
     br2: "注册",
@@ -973,7 +1000,7 @@ var T={
     lv: "शहर",
     lco: "मोहल्ला",
     lm: "पेशा *",
-    lg: "काम की तस्वीरें",
+    lg: "तस्वीरें (अधिकतम 12)",
     cp: "पेशा चुनें",
     cpay: "देश चुनें",
     br2: "पंजीकरण",
@@ -1044,7 +1071,7 @@ var T={
     lv: "Stadt",
     lco: "Bezirk",
     lm: "Ihr Beruf *",
-    lg: "Arbeitsfotos",
+    lg: "Bilder (Max 12)",
     cp: "Beruf wahlen",
     cpay: "Land wahlen",
     br2: "Registrieren",
@@ -1115,7 +1142,7 @@ var T={
     lv: "Cidade",
     lco: "Bairro",
     lm: "Sua profissao *",
-    lg: "Fotos de trabalho",
+    lg: "Fotos (Max 12)",
     cp: "Escolher profissao",
     cpay: "Escolher pais",
     br2: "Registrar",
@@ -1155,7 +1182,7 @@ var T={
   }
 };
 
-var COUNTRIES=["Afghanistan","Afrique du Sud","Albanie","Algerie","Allemagne","Andorre","Angola","Arabie Saoudite","Argentine","Armenie","Australie","Autriche","Azerbaidjan","Bahamas","Bahrein","Bangladesh","Belgique","Benin","Bielorussie","Birmanie","Bolivie","Bosnie","Botswana","Bresil","Brunei","Bulgarie","Burkina Faso","Burundi","Cambodge","Cameroun","Canada","Cap-Vert","Centrafrique","Chili","Chine","Chypre","Colombie","Comores","Congo","Coree du Nord","Coree du Sud","Costa Rica","Cote d Ivoire","Croatie","Cuba","Danemark","Djibouti","Egypte","Emirats arabes unis","Equateur","Espagne","Estonie","Etats-Unis","Ethiopie","Fidji","Finlande","France","Gabon","Gambie","Georgie","Ghana","Grece","Guatemala","Guinee","Guyana","Haiti","Honduras","Hongrie","Inde","Indonesie","Irak","Iran","Irlande","Islande","Israel","Italie","Jamaique","Japon","Jordanie","Kazakhstan","Kenya","Koweit","Laos","Lettonie","Liban","Liberia","Libye","Lituanie","Luxembourg","Madagascar","Malaisie","Malawi","Mali","Malte","Maroc","Maurice","Mauritanie","Mexique","Moldavie","Monaco","Mongolie","Montenegre","Mozambique","Namibie","Nepal","Nicaragua","Niger","Nigeria","Norvege","Nouvelle-Zelande","Oman","Ouganda","Ouzbekistan","Pakistan","Palestine","Panama","Paraguay","Pays-Bas","Perou","Philippines","Pologne","Portugal","Qatar","Roumanie","Royaume-Uni","Russie","Rwanda","Salvador","Senegal","Serbie","Sierra Leone","Singapour","Slovaquie","Slovenie","Somalie","Soudan","Sri Lanka","Suede","Suisse","Syrie","Tanzanie","Tchad","Tcheque","Thailande","Togo","Tunisie","Turquie","Ukraine","Uruguay","Venezuela","Vietnam","Yemen","Zambie","Zimbabwe"];
+var COUNTRIES=["Afghanistan","Afrique du Sud","Albanie","Algerie","Allemagne","Andorre","Angola","Arabie Saoudite","Argentine","Armenie","Australie","Autriche","Azerbaidjan","Bahamas","Bahrein","Bangladesh","Belgique","Benin","Bielorussie","Birmanie","Bolivie","Bosnie","Botswana","Bresil","Brunei","Bulgarie","Burkina Faso","Burundi","Cambodge","Cameroun","Canada","Cap-Vert","Centrafrique","Chili","Chine","Chypre","Colombie","Comores","Congo","Coree du Nord","Coree du Sud","Costa Rica","Cote d Ivoire","Croatie","Cuba","Danemark","Djibouti","Egypte","Emirats arabes unis","Equateur","Espagne","Estonie","Etats-Unis","Ethiopie","Fidji","Finlande","France","Gabon","Gambie","Georgie","Ghana","Grece","Guatemala","Guinee","Guyana","Haiti","Honduras","Hongrie","Inde","Indonesie","Irak","Iran","Irlande","Islanda","Israel","Italie","Jamaique","Japon","Jordanie","Kazakhstan","Kenya","Koweit","Laos","Lettonie","Liban","Liberia","Libye","Lituanie","Luxembourg","Madagascar","Malaisie","Malawi","Mali","Malte","Maroc","Maurice","Mauritanie","Mexique","Moldavie","Monaco","Mongolie","Montenegre","Mozambique","Namibie","Nepal","Nicaragua","Niger","Nigeria","Norvege","Nouvelle-Zelande","Oman","Ouganda","Ouzbekistan","Pakistan","Palestine","Panama","Paraguay","Pays-Bas","Perou","Philippines","Pologne","Portugal","Qatar","Roumanie","Royaume-Uni","Russie","Rwanda","Salvador","Senegal","Serbie","Sierra Leone","Singapour","Slovaquie","Slovenie","Somalie","Soudan","Sri Lanka","Suede","Suisse","Syrie","Tanzanie","Tchad","Tcheque","Thailande","Togo","Tunisie","Turquie","Ukraine","Uruguay","Venezuela","Vietnam","Yemen","Zambie","Zimbabwe"];
 
 var CRAFTS=[
 {id:1,fr:"Plomberie",ar:"سباكة",en:"Plumbing",es:"Fontaneria",it:"Idraulica",tr:"Tesisat",nl:"Loodgieterij",zh:"水管工",hi:"प्लंबिंग",de:"Klempner",pt:"Encanamento",icon:"🔧",c:"#1565C0",bg:"#E3F2FD"},
@@ -1273,6 +1300,10 @@ var currentGalleryImages = [];
 var currentGalleryIndex = 0;
 var touchStartX = 0;
 var touchEndX = 0;
+
+var editAvFile = null;
+var editGalFiles = []; 
+var editExistingGallery = [];
 
 function checkFirstLaunchTerms(){
   var accepted = localStorage.getItem("craftoo_terms_accepted");
@@ -1557,6 +1588,16 @@ function renderDet(w){
   b3.onclick=(function(id){return function(){doSupport(id);};})(w.id);
 
   dc.appendChild(b1);dc.appendChild(b2);dc.appendChild(b3);
+
+  if(currentUser && currentUser.uid === w.id){
+    var bEdit=document.createElement("button");
+    bEdit.className="btn-b";
+    bEdit.style.background="linear-gradient(135deg, #FF6F00, #E65100)";
+    bEdit.textContent="✏️ "+(lang==="ar"?"تعديل ملفي وصوري":"Modifier profil & photos");
+    bEdit.onclick=function(){openEditProfile(w);};
+    dc.appendChild(bEdit);
+  }
+
   el.appendChild(dc);
 
   var rs=document.createElement("div");rs.className="rs";
@@ -1781,6 +1822,12 @@ function buildCountries(){
   var sel=$("r-pay");
   sel.innerHTML='<option value="">'+t("cpay")+"</option>"+
     COUNTRIES.map(function(c){return'<option value="'+c+'">'+c+"</option>";}).join("");
+  
+  var edSel=$("ed-pay");
+  if(edSel){
+    edSel.innerHTML='<option value="">'+t("cpay")+"</option>"+
+      COUNTRIES.map(function(c){return'<option value="'+c+'">'+c+"</option>";}).join("");
+  }
 }
 
 function goLoginHome(){
@@ -1821,7 +1868,7 @@ function prevAv(inp){
 
 function buildGalUp(){
   var g=$("gal-up");if(!g)return;g.innerHTML="";
-  for(var i=0;i<6;i++){
+  for(var i=0;i<12;i++){
     var d=document.createElement("div");
     if(galFiles[i]){
       d.className="gi";d.style.position="relative";d.style.cursor="default";
@@ -1844,8 +1891,138 @@ function buildGalUp(){
 function delGal(i){galFiles.splice(i,1);buildGalUp();}
 
 function prevGal(inp){
-  Array.from(inp.files).forEach(function(f){if(galFiles.length<6)galFiles.push(f);});
+  Array.from(inp.files).forEach(function(f){if(galFiles.length<12)galFiles.push(f);});
   inp.value="";buildGalUp();
+}
+
+function openEditProfile(w){
+  var metSel=$("ed-met");
+  if(metSel){
+    metSel.innerHTML='<option value="">'+t("cp")+"</option>"+CRAFTS.map(function(cr){return'<option value="'+cr.id+'"'+(cr.id===w.craftId?" selected":"")+'>'+cr.icon+" "+cn(cr)+"</option>";}).join("");
+  }
+  buildCountries();
+  $("ed-name").value = w.name || "";
+  $("ed-tel").value = w.phone || "";
+  if(w.country) $("ed-pay").value = w.country;
+  $("ed-vil").value = w.city || "";
+  $("ed-com").value = w.commune || "";
+  
+  if(w.photoURL){
+    $("ed-apr").innerHTML='<img src="'+w.photoURL+'">';
+  } else {
+    $("ed-apr").innerHTML='&#128247;';
+  }
+  
+  editAvFile = null;
+  editGalFiles = [];
+  editExistingGallery = w.gallery ? [...w.gallery] : [];
+  buildEditGalUp();
+  $("e-edit").innerHTML="";
+  go("edit");
+}
+
+function buildEditGalUp(){
+  var g=$("ed-gal-up");if(!g)return;g.innerHTML="";
+  var totalCount = editExistingGallery.length + editGalFiles.length;
+  
+  for(var i=0; i<12; i++){
+    var d=document.createElement("div");
+    if(i < editExistingGallery.length){
+      var imgUrl = editExistingGallery[i];
+      d.className="gi";d.style.position="relative";d.style.cursor="default";
+      var delBtn=document.createElement("button");
+      delBtn.textContent="×";
+      delBtn.style.cssText="position:absolute;top:3px;right:3px;background:#C62828;color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:14px;cursor:pointer;z-index:10;font-weight:900;line-height:1;";
+      delBtn.onclick=(function(idx){return function(e){e.stopPropagation();editExistingGallery.splice(idx,1);buildEditGalUp();};})(i);
+      var imgEl=document.createElement("img");
+      imgEl.style.cssText="width:100%;height:100%;object-fit:cover;border-radius:9px;";
+      imgEl.src = imgUrl;
+      d.appendChild(imgEl);d.appendChild(delBtn);
+    } else if(i < totalCount){
+      var newIdx = i - editExistingGallery.length;
+      d.className="gi";d.style.position="relative";d.style.cursor="default";
+      var delBtn=document.createElement("button");
+      delBtn.textContent="×";
+      delBtn.style.cssText="position:absolute;top:3px;right:3px;background:#C62828;color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:14px;cursor:pointer;z-index:10;font-weight:900;line-height:1;";
+      delBtn.onclick=(function(idx){return function(e){e.stopPropagation();editGalFiles.splice(idx,1);buildEditGalUp();};})(newIdx);
+      var imgEl=document.createElement("img");
+      imgEl.style.cssText="width:100%;height:100%;object-fit:cover;border-radius:9px;";
+      (function(el,f){var r=new FileReader();r.onload=function(ev){el.src=ev.target.result;};r.readAsDataURL(f);})(imgEl,editGalFiles[newIdx]);
+      d.appendChild(imgEl);d.appendChild(delBtn);
+    } else {
+      d.className="gi gia";d.textContent="➕";
+      d.onclick=function(){$("ed-gal-file").click();};
+    }
+    g.appendChild(d);
+  }
+}
+
+function prevEditGal(inp){
+  Array.from(inp.files).forEach(function(f){
+    if((editExistingGallery.length + editGalFiles.length) < 12){
+      editGalFiles.push(f);
+    }
+  });
+  inp.value="";
+  buildEditGalUp();
+}
+
+function prevEditAv(inp){
+  if(!inp.files[0])return;
+  editAvFile = inp.files[0];
+  var r=new FileReader();
+  r.onload=function(e){$("ed-apr").innerHTML='<img src="'+e.target.result+'">';};
+  r.readAsDataURL(editAvFile);
+}
+
+function saveProfileChanges(){
+  if(!currentUser)return;
+  var name=$("ed-name").value.trim();
+  var phone=$("ed-tel").value.trim();
+  var country=$("ed-pay").value;
+  var city=$("ed-vil").value.trim();
+  var commune=$("ed-com").value.trim();
+  var craftId=parseInt($("ed-met").value)||0;
+  
+  if(!name||!phone||!country||!craftId){
+    showErr("e-edit",t("ef"));
+    return;
+  }
+  
+  $("btn-save-edit").textContent=t("send");
+  
+  Promise.all([
+    editAvFile ? fileToBase64(editAvFile,400,0.5) : Promise.resolve(worker.photoURL || ""),
+    Promise.all(editGalFiles.map(function(f){return fileToBase64(f,600,0.5);}))
+  ]).then(function(results){
+    var newPhotoURL = results[0];
+    var newUploadedGal = results[1];
+    var finalGallery = editExistingGallery.concat(newUploadedGal);
+    
+    return DB.collection("workers").doc(currentUser.uid).update({
+      name: name,
+      phone: phone,
+      country: country,
+      city: city,
+      commune: commune,
+      craftId: craftId,
+      photoURL: newPhotoURL,
+      gallery: finalGallery
+    });
+  }).then(function(){
+    showToast(t("ok"));
+    return DB.collection("workers").doc(currentUser.uid).get();
+  }).then(function(snap){
+    if(snap.exists){
+      worker = Object.assign({id:snap.id}, snap.data());
+      renderDet(worker);
+      goBack();
+    }
+  }).catch(function(e){
+    showErr("e-edit", "Erreur: "+e.message);
+  }).finally(function(){
+    $("btn-save-edit").textContent="Enregistrer les modifications";
+  });
 }
 
 function togglePass(inputId,btnId){
@@ -1961,6 +2138,8 @@ document.addEventListener("DOMContentLoaded",function(){
   $("bk2").onclick=function(){goBack();};
   $("bk3").onclick=function(){goBack();};
   $("bk4").onclick=function(){goBack();};
+  var bk5=$("bk5"); if(bk5) bk5.onclick=function(){goBack();};
+
   $("reg-btn").onclick=function(){goReg();};
   $("t-reg").onclick=function(){swTab("reg");};
   $("t-log").onclick=function(){swTab("log");};
@@ -1975,6 +2154,10 @@ document.addEventListener("DOMContentLoaded",function(){
   $("apr").onclick=function(){$("av-file").click();};
   $("av-file").onchange=function(){prevAv(this);};
   $("gal-file").onchange=function(){prevGal(this);};
+
+  var edApr=$("ed-apr"); if(edApr) edApr.onclick=function(){$("ed-av-file").click();};
+  var edAvFile=$("ed-av-file"); if(edAvFile) edAvFile.onchange=function(){prevEditAv(this);};
+  var edGalFile=$("ed-gal-file"); if(edGalFile) edGalFile.onchange=function(){prevEditGal(this);};
 
   var viewerImg = $("image-viewer-img");
   if(viewerImg){
