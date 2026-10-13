@@ -76,6 +76,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .iri{width:34px;height:34px;border-radius:9px;background:#EEF2FF;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
 .irl{font-size:10px;color:#888;}
 .irv{font-size:13px;font-weight:700;margin-top:1px;}
+.bio-box{background:#F8FAFC;border:1.5px solid #E2E8F0;border-radius:12px;padding:12px;margin:12px 0 6px;font-size:13px;line-height:1.5;color:#334155;white-space:pre-line;}
+.bio-title{font-size:11px;font-weight:800;color:#1565C0;margin-bottom:4px;display:flex;align-items:center;gap:5px;}
 .btn-g{background:linear-gradient(135deg,#2E7D32,#1B5E20);color:#fff;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;width:100%;margin-top:12px;}
 .btn-b{background:linear-gradient(135deg,#1565C0,#0D47A1);color:#fff;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:800;cursor:pointer;width:100%;margin-top:8px;}
 .btn-r{background:#FFEBEE;color:#C62828;border:none;border-radius:12px;padding:10px;font-size:13px;font-weight:700;cursor:pointer;width:100%;margin-top:8px;}
@@ -273,6 +275,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="fg"><label class="fl" id="l-vil"></label><input class="fi" id="r-vil"></div>
     <div class="fg"><label class="fl" id="l-com"></label><input class="fi" id="r-com"></div>
     <div class="fg"><label class="fl" id="l-met"></label><select class="fsel" id="r-met"></select></div>
+    <div class="fg"><label class="fl" id="l-bio">A propos & Horaires (2-3 lignes)</label><textarea class="fi" id="r-bio" rows="3" style="resize:none;" placeholder="Ex: Disponible 24/7, 10 ans d'expérience, déplacement rapide..."></textarea></div>
     <div class="fg"><label class="fl" id="l-gal"></label><div class="gg" id="gal-up"></div><input type="file" id="gal-file" accept="image/*" multiple style="display:none"></div>
     <div class="sbtn-wrap">
       <button class="sbtn" id="btn-reg"></button>
@@ -313,6 +316,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="fg"><label class="fl">Ville</label><input class="fi" id="ed-vil"></div>
     <div class="fg"><label class="fl">Commune</label><input class="fi" id="ed-com"></div>
     <div class="fg"><label class="fl">Metier</label><select class="fsel" id="ed-met"></select></div>
+    <div class="fg"><label class="fl">A propos & Horaires (2-3 lignes)</label><textarea class="fi" id="ed-bio" rows="3" style="resize:none;" placeholder="Ex: Disponible 24/7, 10 ans d'expérience..."></textarea></div>
     <div class="fg"><label class="fl">Galerie Photos (Max 12)</label><div class="gg" id="ed-gal-up"></div><input type="file" id="ed-gal-file" accept="image/*" multiple style="display:none"></div>
     <div class="sbtn-wrap">
       <button class="sbtn" id="btn-save-edit" onclick="saveProfileChanges()">Enregistrer les modifications</button>
@@ -398,6 +402,9 @@ firebase.initializeApp(firebaseConfig);
 var DB = firebase.firestore();
 var AUTH = firebase.auth();
 
+// تحديد بريدك كأدمن إداري للتطبيق
+var ADMIN_EMAIL = "nabis51413155@gmail.com";
+
 var T={
   fr: {
     sub: "Trouvez le meilleur artisan",
@@ -458,6 +465,7 @@ var T={
     send: "Envoi...",
     dir: "ltr",
     guest: "Visiteur anonyme",
+    bio_lbl: "A propos & Horaires de travail",
     tm_sub: "Bienvenue sur notre plateforme",
     tm_welcome: "Pour garantir la confiance et la sécurité, veuillez accepter notre Pacte Communautaire :",
     tm_p1_t: "Respect & Transparence",
@@ -529,6 +537,7 @@ var T={
     send: "جار الارسال...",
     dir: "rtl",
     guest: "زائر مجهول",
+    bio_lbl: "نبذة عن العمل وأوقات الدوام",
     tm_sub: "مرحباً بك في منصتنا",
     tm_welcome: "لضمان الثقة والأمان لجميع المستخدمين، يرجى قبول الميثاق المجتمعي:",
     tm_p1_t: "الاحترام والشفافية",
@@ -600,6 +609,7 @@ var T={
     send: "Sending...",
     dir: "ltr",
     guest: "Anonymous visitor",
+    bio_lbl: "About & Working Hours",
     tm_sub: "Welcome to our platform",
     tm_welcome: "To ensure trust and safety for everyone, please accept our Community Pact:",
     tm_p1_t: "Respect & Fair Pricing",
@@ -671,6 +681,7 @@ var T={
     send: "Enviando...",
     dir: "ltr",
     guest: "Visitante anonimo",
+    bio_lbl: "Sobre mi y Horarios",
     tm_sub: "Bienvenido a nuestra plataforma",
     tm_welcome: "Para garantizar la confianza, acepte nuestro Pacto Comunitario:",
     tm_p1_t: "Respeto y Transparencia",
@@ -742,6 +753,7 @@ var T={
     send: "Invio...",
     dir: "ltr",
     guest: "Visitatore anonimo",
+    bio_lbl: "Info e Orari di lavoro",
     tm_sub: "Benvenuto sulla nostra piattaforma",
     tm_welcome: "Per garantire fiducia e sicurezza, accetta il nostro Patto Comunitario:",
     tm_p1_t: "Rispetto e Trasparenza",
@@ -813,6 +825,7 @@ var T={
     send: "Gonderiliyor...",
     dir: "ltr",
     guest: "Anonim ziyaretci",
+    bio_lbl: "Hakkinda ve Calisma Saatleri",
     tm_sub: "Platformumuza hos geldiniz",
     tm_welcome: "Guvenlik ve adalet icin Topluluk Sozlesmemizi kabul edin:",
     tm_p1_t: "Saygi ve Seffaflik",
@@ -866,7 +879,7 @@ var T={
     ef: "Vul alle velden in",
     ep: "Wachtwoorden komen niet overeen",
     ee: "Email al in gebruik",
-    en2: "Email niet gevonden",
+    en2: "Email niet gefunden",
     ex: "Vul de velden in",
     ah: "Tik om foto toe te voegen",
     rat: "Beoordeel",
@@ -884,6 +897,7 @@ var T={
     send: "Verzenden...",
     dir: "ltr",
     guest: "Anonieme bezoeker",
+    bio_lbl: "Over & Werktijden",
     tm_sub: "Welkom op ons platform",
     tm_welcome: "Accepteer ons Communitypact voor een veilige ervaring:",
     tm_p1_t: "Respect & Transparantie",
@@ -955,6 +969,7 @@ var T={
     send: "发送中...",
     dir: "ltr",
     guest: "匿名访客",
+    bio_lbl: "关于与工作时间",
     tm_sub: "欢迎来到我们的平台",
     tm_welcome: "为确保信任与安全，请接受我们的社区公约：",
     tm_p1_t: "尊重与透明",
@@ -1026,6 +1041,7 @@ var T={
     send: "भेज रहे हैं...",
     dir: "ltr",
     guest: "अज्ञात आगंतुक",
+    bio_lbl: "के बारे में और कार्य समय",
     tm_sub: "हमारे प्लेटफॉर्म में आपका स्वागत है",
     tm_welcome: "सुरक्षा और विश्वास के लिए सामुदायिक समझौते को स्वीकार करें:",
     tm_p1_t: "सम्मान और पारदर्शिता",
@@ -1097,6 +1113,7 @@ var T={
     send: "Senden...",
     dir: "ltr",
     guest: "Anonymer Besucher",
+    bio_lbl: "Uber mich & Arbeitszeiten",
     tm_sub: "Willkommen auf unserer Plattform",
     tm_welcome: "Bitte akzeptieren Sie unseren Gemeinschaftspakt:",
     tm_p1_t: "Respekt & Transparenz",
@@ -1168,6 +1185,7 @@ var T={
     send: "Enviando...",
     dir: "ltr",
     guest: "Visitante anonimo",
+    bio_lbl: "Sobre & Horario de Trabalho",
     tm_sub: "Bem-vindo a nossa plataforma",
     tm_welcome: "Para garantir confianca e seguranca, aceite nosso Pacto Comunitario:",
     tm_p1_t: "Respeito e Transparencia",
@@ -1259,7 +1277,7 @@ var CRAFTS=[
 {id:72,fr:"Pavage Dallage",ar:"رصف طرق",en:"Paving",es:"Pavimentacion",it:"Pavimentazione",tr:"Kaldirim",nl:"Bestrating",zh:"铺路",hi:"पथरी",de:"Pflasterarbeiten",pt:"Pavimentacao",icon:"🛣️",c:"#37474F",bg:"#ECEFF1"},
 {id:73,fr:"Peinture Industrielle",ar:"دهان صناعي",en:"Industrial Painting",es:"Pintura Industrial",it:"Verniciatura",tr:"Endustriyel Boya",nl:"Industrieel Schilderen",zh:"工业涂料",hi:"औद्योगिक पेंटिंग",de:"Industrielackierung",pt:"Pintura Industrial",icon:"🖌️",c:"#0277BD",bg:"#E1F5FE"},
 {id:74,fr:"Broderie",ar:"تطريز",en:"Embroidery",es:"Bordado",it:"Ricamo",tr:"Nakis",nl:"Borduurwerk",zh:"刺绣",hi:"कढ़ाई",de:"Stickerei",pt:"Bordado",icon:"🪡",c:"#AD1457",bg:"#FCE4EC"},
-{id:75,fr:"Cordonnerie",ar:"اصلاح احذية",en:"Shoe Repair",es:"Zapateria",it:"Calzolaio",tr:"Ayakkabi",nl:"Schoenen",zh:"鞋匠",hi:"जूता",de:"Schuhmaker",pt:"Sapateiro",icon:"👟",c:"#5D4037",bg:"#EFEBE9"},
+{id:75,fr:"Cordonnerie",ar:"اصلاح احذية",en:"Shoe Repair",es:"Zapateria",it:"Calzolaio",tr:"Ayakkabi",nl:"Schoenen",zh:"鞋匠",hi:"जूتا",de:"Schuhmaker",pt:"Sapateiro",icon:"👟",c:"#5D4037",bg:"#EFEBE9"},
 {id:76,fr:"Boulangerie",ar:"مخبزة",en:"Bakery",es:"Panaderia",it:"Panetteria",tr:"Firincilik",nl:"Bakkerij",zh:"面包店",hi:"बेकरी",de:"Backerei",pt:"Padaria",icon:"🥐",c:"#E65100",bg:"#FBE9E7"},
 {id:77,fr:"Chauffeur Prive",ar:"سائق خاص",en:"Private Driver",es:"Conductor",it:"Autista",tr:"Ozel Sofor",nl:"Chauffeur",zh:"司机",hi:"चालक",de:"Privatfahrer",pt:"Motorista Particular",icon:"🚗",c:"#37474F",bg:"#ECEFF1"},
 {id:78,fr:"Auto Ecole",ar:"تعليم سواقة",en:"Driving School",es:"Autoescuela",it:"Autoscuola",tr:"Surucu Kursu",nl:"Rijschool",zh:"驾校",hi:"ड्राइविंग स्कूल",de:"Fahrschule",pt:"Autoescola",icon:"🏎️",c:"#1B5E20",bg:"#E8F5E9"},
@@ -1272,7 +1290,7 @@ var CRAFTS=[
 {id:85,fr:"Notaire Juridique",ar:"كاتب عدل",en:"Notary Legal",es:"Notaria",it:"Notaio",tr:"Noter",nl:"Notaris",zh:"公证",hi:"नोटरी",de:"Notar",pt:"Notario",icon:"📜",c:"#4A148C",bg:"#EDE7F6"},
 {id:86,fr:"Couture Hommes",ar:"خياطةرجال",en:"Men Tailoring",es:"Sastreria",it:"Sartoria Uomo",tr:"Erkek Terzisi",nl:"Herenklermaker",zh:"男士裁缝",hi:"पुरुष दर्जी",de:"Herrenschneider",pt:"Alfaiate",icon:"👔",c:"#283593",bg:"#E8EAF6"},
 {id:87,fr:"Taxi",ar:"تاكسي",en:"Taxi",es:"Taxi",it:"Taxi",tr:"Taksi",nl:"Taxi",zh:"出租车",hi:"टैक्सी",de:"Taxi",pt:"Taxi",icon:"🚕",c:"#F9A825",bg:"#FFFDE7"},
-{id:88,fr:"Livreur",ar:"عامل توصيل",en:"Delivery Man",es:"Repartidor",it:"Fattorino",tr:"Kurye",nl:"Bezorger",zh:"快递员",hi:"डिलीवरी मैन",de:"Lieferant",pt:"Entregador",icon:"🛵",c:"#E65100",bg:"#FBE9E7"},
+{id:88,fr:"Livreur",ar:"عامل توصيل",en:"Delivery Man",es:"Repartidor",it:"Fattorino",tr:"Kurye",nl:"Bezorger",zh:"快递员",hi:"डिليवरी मैन",de:"Lieferant",pt:"Entregador",icon:"🛵",c:"#E65100",bg:"#FBE9E7"},
 {id:89,fr:"Medecin Generaliste",ar:"طبيب عام",en:"General Practitioner",es:"Medico General",it:"Medico di Base",tr:"Pratisyen Hekim",nl:"Huisarts",zh:"全科医生",hi:"सामान्य चिकित्सक",de:"Hausarzt",pt:"Medico Geral",icon:"🩺",c:"#1565C0",bg:"#E3F2FD"},
 {id:90,fr:"Livraison Express",ar:"توصيل سريع",en:"Express Delivery",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिليवरी",de:"Expresslieferung",pt:"Entrega Expressa",icon:"📦",c:"#C62828",bg:"#FFEBEE"}
 ];
@@ -1304,6 +1322,7 @@ var touchEndX = 0;
 var editAvFile = null;
 var editGalFiles = []; 
 var editExistingGallery = [];
+var targetEditingWorkerId = null;
 
 function checkFirstLaunchTerms(){
   var accepted = localStorage.getItem("craftoo_terms_accepted");
@@ -1563,16 +1582,20 @@ function renderDet(w){
 
   var el=$("wdet");el.innerHTML="";
   var dc=document.createElement("div");dc.className="dc";
+  
+  var bioHtml = w.bio ? '<div class="bio-box"><div class="bio-title">📝 '+(t("bio_lbl")||"A propos & Horaires")+'</div>'+w.bio+'</div>' : '';
+
   dc.innerHTML=
     '<div class="dav" style="background:'+ac(w.id)+'">'+(w.photoURL?'<img src="'+w.photoURL+'">':"")+(w.photoURL?"":ini(w.name||""))+"</div>"+
     '<div class="dn">'+(w.name||"")+"</div>"+
     '<div class="dbw"><span class="dbg" style="background:'+c.bg+";color:"+c.c+'">'+c.icon+" "+cn(c)+"</span></div>"+
     '<div class="ar"><span class="an">'+avg+'</span><span class="as2">'+sh+'</span><span class="ac2">('+( w.ratingCount||0)+")</span></div>"+
-    '<div class="ir"><div class="iri">📞</div><div><div class="irl">'+t("ph")+'</div><div class="irv">'+(w.phone||"")+"</div></div></div>"+
     '<div class="ir"><div class="iri">📍</div><div><div class="irl">'+t("co")+'</div><div class="irv">'+(w.commune||"")+"</div></div></div>"+
     '<div class="ir"><div class="iri">🏙️</div><div><div class="irl">'+t("ci")+'</div><div class="irv">'+(w.city||"")+"</div></div></div>"+
     '<div class="ir"><div class="iri">🌍</div><div><div class="irl">'+t("cy")+'</div><div class="irv">'+(w.country||"")+"</div></div></div>"+
-    '<div class="ir"><div class="iri">✉️</div><div><div class="irl">Email</div><div class="irv">'+(w.email||"")+"</div></div></div>";
+    '<div class="ir"><div class="iri">✉️</div><div><div class="irl">Email</div><div class="irv">'+(w.email||"")+"</div></div></div>"+
+    '<div class="ir"><div class="iri">📞</div><div><div class="irl">'+t("ph")+'</div><div class="irv">'+(w.phone||"")+"</div></div></div>"+
+    bioHtml;
   
   var profileImage=dc.querySelector(".dav img");
   if(profileImage) bindZoomImage(profileImage, [w.photoURL], 0);
@@ -1589,11 +1612,15 @@ function renderDet(w){
 
   dc.appendChild(b1);dc.appendChild(b2);dc.appendChild(b3);
 
-  if(currentUser && currentUser.uid === w.id){
+  // تحقق مما إذا كان المستخدم هو صاحب الحساب نفسه أو الأدمن الرئيسي
+  var isOwner = currentUser && currentUser.uid === w.id;
+  var isAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+
+  if(isOwner || isAdmin){
     var bEdit=document.createElement("button");
     bEdit.className="btn-b";
     bEdit.style.background="linear-gradient(135deg, #FF6F00, #E65100)";
-    bEdit.textContent="✏️ "+(lang==="ar"?"تعديل ملفي وصوري":"Modifier profil & photos");
+    bEdit.textContent = isAdmin ? "👑 " + (lang==="ar"?"تعديل الحرفي (Admin)":"Modifier l'artisan (Admin)") : "✏️ " + (lang==="ar"?"تعديل ملفي وصوري":"Modifier profil & photos");
     bEdit.onclick=function(){openEditProfile(w);};
     dc.appendChild(bEdit);
   }
@@ -1896,6 +1923,7 @@ function prevGal(inp){
 }
 
 function openEditProfile(w){
+  targetEditingWorkerId = w.id;
   var metSel=$("ed-met");
   if(metSel){
     metSel.innerHTML='<option value="">'+t("cp")+"</option>"+CRAFTS.map(function(cr){return'<option value="'+cr.id+'"'+(cr.id===w.craftId?" selected":"")+'>'+cr.icon+" "+cn(cr)+"</option>";}).join("");
@@ -1906,6 +1934,7 @@ function openEditProfile(w){
   if(w.country) $("ed-pay").value = w.country;
   $("ed-vil").value = w.city || "";
   $("ed-com").value = w.commune || "";
+  $("ed-bio").value = w.bio || "";
   
   if(w.photoURL){
     $("ed-apr").innerHTML='<img src="'+w.photoURL+'">';
@@ -1976,13 +2005,16 @@ function prevEditAv(inp){
 }
 
 function saveProfileChanges(){
-  if(!currentUser)return;
+  var targetId = targetEditingWorkerId || (currentUser ? currentUser.uid : null);
+  if(!targetId)return;
+  
   var name=$("ed-name").value.trim();
   var phone=$("ed-tel").value.trim();
   var country=$("ed-pay").value;
   var city=$("ed-vil").value.trim();
   var commune=$("ed-com").value.trim();
   var craftId=parseInt($("ed-met").value)||0;
+  var bio=$("ed-bio").value.trim();
   
   if(!name||!phone||!country||!craftId){
     showErr("e-edit",t("ef"));
@@ -1999,19 +2031,20 @@ function saveProfileChanges(){
     var newUploadedGal = results[1];
     var finalGallery = editExistingGallery.concat(newUploadedGal);
     
-    return DB.collection("workers").doc(currentUser.uid).update({
+    return DB.collection("workers").doc(targetId).update({
       name: name,
       phone: phone,
       country: country,
       city: city,
       commune: commune,
       craftId: craftId,
+      bio: bio,
       photoURL: newPhotoURL,
       gallery: finalGallery
     });
   }).then(function(){
     showToast(t("ok"));
-    return DB.collection("workers").doc(currentUser.uid).get();
+    return DB.collection("workers").doc(targetId).get();
   }).then(function(snap){
     if(snap.exists){
       worker = Object.assign({id:snap.id}, snap.data());
@@ -2056,6 +2089,7 @@ function doReg(){
   var phone=$("r-tel").value.trim(),country=$("r-pay").value;
   var city=$("r-vil").value.trim(),commune=$("r-com").value.trim();
   var craftId=parseInt($("r-met").value)||0;
+  var bio=$("r-bio").value.trim();
   var missing=[];
   if(!name)missing.push("Nom");if(!email)missing.push("Email");
   if(!pass)missing.push("Mot de passe");if(!phone)missing.push("Telephone");
@@ -2071,7 +2105,7 @@ function doReg(){
     return AUTH.createUserWithEmailAndPassword(email,pass).then(function(cred){
       return DB.collection("workers").doc(cred.user.uid).set({
         name:name,email:email,phone:phone,country:country,city:city,commune:commune,
-        craftId:craftId,photoURL:photoURL,gallery:gallery,
+        craftId:craftId,bio:bio,photoURL:photoURL,gallery:gallery,
         reports:0,ratingAvg:0,ratingCount:0,
         trialStart:firebase.firestore.FieldValue.serverTimestamp()
       }).then(function(){return cred;});
@@ -2081,7 +2115,7 @@ function doReg(){
     craft=CRAFTS.find(function(c){return c.id===craftId;});
     showToast(t("ok"));
     $("r-name").value="";$("r-email").value="";$("r-pass").value="";$("r-conf").value="";
-    $("r-tel").value="";$("r-vil").value="";$("r-com").value="";$("r-pay").value="";$("r-met").value="";
+    $("r-tel").value="";$("r-vil").value="";$("r-com").value="";$("r-pay").value="";$("r-met").value="";$("r-bio").value="";
     $("apr").innerHTML="&#128247;";avFile=null;galFiles=[];buildGalUp();
     loadWorkers(craftId);go("craft");
   }).catch(function(e){
