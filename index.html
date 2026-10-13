@@ -29,9 +29,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .hero-sh{background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.3);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;}
 .hero-sh input{border:none;outline:none;background:transparent;color:#fff;font-size:14px;flex:1;width:100%;}
 .hero-sh input::placeholder{color:rgba(255,255,255,0.6);}
-.stats{display:flex;gap:8px;padding:10px 10px 0;flex-shrink:0;}
-.stat{flex:1;background:#fff;border-radius:12px;padding:10px 6px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.07);}
-.sn{font-size:20px;font-weight:900;color:#1565C0;}
+.stats{display:flex;gap:6px;padding:10px 8px 0;flex-shrink:0;}
+.stat{flex:1;background:#fff;border-radius:12px;padding:9px 4px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.07);}
+.sn{font-size:18px;font-weight:900;color:#1565C0;}
 .sl{font-size:10px;color:#888;margin-top:2px;}
 .sec{padding:10px 10px 6px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
 .sec-t{font-weight:800;font-size:13px;}
@@ -188,6 +188,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="stats">
     <div class="stat"><div class="sn">90</div><div class="sl" id="sl-crafts"></div></div>
     <div class="stat"><div class="sn" id="sl-wnum">0</div><div class="sl" id="sl-workers"></div></div>
+    <div class="stat"><div class="sn" id="sl-cnum">0</div><div class="sl" id="sl-clients"></div></div>
     <div class="stat"><div class="sn">🌍</div><div class="sl" id="sl-country"></div></div>
   </div>
   <div class="sec"><span class="sec-t" id="sl-all"></span><span class="sec-c" id="sl-cnt"></span></div>
@@ -296,7 +297,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- شاشة تعديل ملف الحرفي وصوره -->
 <div id="s-edit" class="screen">
   <div class="lb-bar" id="lb5"></div>
   <div class="hdr">
@@ -379,7 +379,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- Image Viewer With Navigation Buttons and Swipe -->
 <div class="image-viewer" id="image-viewer" role="dialog" aria-modal="true" aria-hidden="true" onclick="if(event.target===this)closeImageViewer()">
   <button class="image-viewer-close" type="button" aria-label="Fermer" onclick="closeImageViewer()">×</button>
   <button class="image-nav-btn prev-btn" id="img-prev-btn" onclick="prevViewerImage(event)">❮</button>
@@ -402,7 +401,6 @@ firebase.initializeApp(firebaseConfig);
 var DB = firebase.firestore();
 var AUTH = firebase.auth();
 
-// تحديد بريدك كأدمن إداري للتطبيق
 var ADMIN_EMAIL = "nabis51413155@gmail.com";
 
 var T={
@@ -411,6 +409,7 @@ var T={
     sh: "Rechercher un metier...",
     sc: "Metiers",
     sw: "Artisans",
+    scli: "Clients",
     sy: "Mondial",
     sa: "Tous les Metiers",
     art: "artisans",
@@ -466,6 +465,7 @@ var T={
     dir: "ltr",
     guest: "Visiteur anonyme",
     bio_lbl: "A propos & Horaires de travail",
+    bio_empty: "Contactez l'artisan directement pour les horaires.",
     tm_sub: "Bienvenue sur notre plateforme",
     tm_welcome: "Pour garantir la confiance et la sécurité, veuillez accepter notre Pacte Communautaire :",
     tm_p1_t: "Respect & Transparence",
@@ -483,6 +483,7 @@ var T={
     sh: "ابحث عن حرفة...",
     sc: "حرفة",
     sw: "حرفي",
+    scli: "الزبائن",
     sy: "عالمي",
     sa: "جميع الحرف",
     art: "حرفي",
@@ -538,6 +539,7 @@ var T={
     dir: "rtl",
     guest: "زائر مجهول",
     bio_lbl: "نبذة عن العمل وأوقات الدوام",
+    bio_empty: "يرجى الاتصال بالحرفي مباشرة للاستفسار عن أوقات الدوام.",
     tm_sub: "مرحباً بك في منصتنا",
     tm_welcome: "لضمان الثقة والأمان لجميع المستخدمين، يرجى قبول الميثاق المجتمعي:",
     tm_p1_t: "الاحترام والشفافية",
@@ -555,6 +557,7 @@ var T={
     sh: "Search for a craft...",
     sc: "Crafts",
     sw: "Craftsmen",
+    scli: "Clients",
     sy: "Worldwide",
     sa: "All Crafts",
     art: "craftsmen",
@@ -610,6 +613,7 @@ var T={
     dir: "ltr",
     guest: "Anonymous visitor",
     bio_lbl: "About & Working Hours",
+    bio_empty: "Contact the craftsman directly for working hours.",
     tm_sub: "Welcome to our platform",
     tm_welcome: "To ensure trust and safety for everyone, please accept our Community Pact:",
     tm_p1_t: "Respect & Fair Pricing",
@@ -627,6 +631,7 @@ var T={
     sh: "Buscar un oficio...",
     sc: "Oficios",
     sw: "Artesanos",
+    scli: "Clientes",
     sy: "Mundial",
     sa: "Todos los Oficios",
     art: "artesanos",
@@ -682,6 +687,7 @@ var T={
     dir: "ltr",
     guest: "Visitante anonimo",
     bio_lbl: "Sobre mi y Horarios",
+    bio_empty: "Contacte directamente al artesano.",
     tm_sub: "Bienvenido a nuestra plataforma",
     tm_welcome: "Para garantizar la confianza, acepte nuestro Pacto Comunitario:",
     tm_p1_t: "Respeto y Transparencia",
@@ -699,6 +705,7 @@ var T={
     sh: "Cerca un mestiere...",
     sc: "Mestieri",
     sw: "Artigiani",
+    scli: "Clienti",
     sy: "Mondiale",
     sa: "Tutti i Mestieri",
     art: "artigiani",
@@ -754,6 +761,7 @@ var T={
     dir: "ltr",
     guest: "Visitatore anonimo",
     bio_lbl: "Info e Orari di lavoro",
+    bio_empty: "Contatta direttamente l'artigiano.",
     tm_sub: "Benvenuto sulla nostra piattaforma",
     tm_welcome: "Per garantire fiducia e sicurezza, accetta il nostro Patto Comunitario:",
     tm_p1_t: "Rispetto e Trasparenza",
@@ -771,6 +779,7 @@ var T={
     sh: "Meslek ara...",
     sc: "Meslekler",
     sw: "Ustalar",
+    scli: "Musteriler",
     sy: "Dunya",
     sa: "Tum Meslekler",
     art: "usta",
@@ -826,6 +835,7 @@ var T={
     dir: "ltr",
     guest: "Anonim ziyaretci",
     bio_lbl: "Hakkinda ve Calisma Saatleri",
+    bio_empty: "Calisma saatleri icin usta ile iletisime gecin.",
     tm_sub: "Platformumuza hos geldiniz",
     tm_welcome: "Guvenlik ve adalet icin Topluluk Sozlesmemizi kabul edin:",
     tm_p1_t: "Saygi ve Seffaflik",
@@ -843,6 +853,7 @@ var T={
     sh: "Zoek een vak...",
     sc: "Vakken",
     sw: "Vaklieden",
+    scli: "Klanten",
     sy: "Wereldwijd",
     sa: "Alle Vakken",
     art: "vaklieden",
@@ -898,6 +909,7 @@ var T={
     dir: "ltr",
     guest: "Anonieme bezoeker",
     bio_lbl: "Over & Werktijden",
+    bio_empty: "Neem rechtstreeks contact op met de vakman.",
     tm_sub: "Welkom op ons platform",
     tm_welcome: "Accepteer ons Communitypact voor een veilige ervaring:",
     tm_p1_t: "Respect & Transparantie",
@@ -915,6 +927,7 @@ var T={
     sh: "搜索职业...",
     sc: "职业",
     sw: "工匠",
+    scli: "客户",
     sy: "全球",
     sa: "所有职业",
     art: "工匠",
@@ -970,6 +983,7 @@ var T={
     dir: "ltr",
     guest: "匿名访客",
     bio_lbl: "关于与工作时间",
+    bio_empty: "请直接联系工匠了解工作时间。",
     tm_sub: "欢迎来到我们的平台",
     tm_welcome: "为确保信任与安全，请接受我们的社区公约：",
     tm_p1_t: "尊重与透明",
@@ -987,6 +1001,7 @@ var T={
     sh: "पेशा खोजें...",
     sc: "पेशे",
     sw: "कारीगर",
+    scli: "ग्राहक",
     sy: "विश्वव्यापी",
     sa: "सभी पेशे",
     art: "कारीगर",
@@ -1042,6 +1057,7 @@ var T={
     dir: "ltr",
     guest: "अज्ञात आगंतुक",
     bio_lbl: "के बारे में और कार्य समय",
+    bio_empty: "कार्य समय के लिए सीधे संपर्क करें।",
     tm_sub: "हमारे प्लेटफॉर्म में आपका स्वागत है",
     tm_welcome: "सुरक्षा और विश्वास के लिए सामुदायिक समझौते को स्वीकार करें:",
     tm_p1_t: "सम्मान और पारदर्शिता",
@@ -1059,6 +1075,7 @@ var T={
     sh: "Beruf suchen...",
     sc: "Berufe",
     sw: "Handwerker",
+    scli: "Kunden",
     sy: "Weltweit",
     sa: "Alle Berufe",
     art: "Handwerker",
@@ -1114,6 +1131,7 @@ var T={
     dir: "ltr",
     guest: "Anonymer Besucher",
     bio_lbl: "Uber mich & Arbeitszeiten",
+    bio_empty: "Kontaktieren Sie den Handwerker direkt.",
     tm_sub: "Willkommen auf unserer Plattform",
     tm_welcome: "Bitte akzeptieren Sie unseren Gemeinschaftspakt:",
     tm_p1_t: "Respekt & Transparenz",
@@ -1131,6 +1149,7 @@ var T={
     sh: "Pesquisar uma profissao...",
     sc: "Profissoes",
     sw: "Artesaos",
+    scli: "Clientes",
     sy: "Mundial",
     sa: "Todas as Profissoes",
     art: "artesaos",
@@ -1186,6 +1205,7 @@ var T={
     dir: "ltr",
     guest: "Visitante anonimo",
     bio_lbl: "Sobre & Horario de Trabalho",
+    bio_empty: "Entre em contato diretamente com o artesao.",
     tm_sub: "Bem-vindo a nossa plataforma",
     tm_welcome: "Para garantir confianca e seguranca, aceite nosso Pacto Comunitario:",
     tm_p1_t: "Respeito e Transparencia",
@@ -1264,7 +1284,7 @@ var CRAFTS=[
 {id:59,fr:"Amenagement Surface",ar:"تهيئة مساحات",en:"Space Planning",es:"Diseno Espacios",it:"Sistemazione",tr:"Alan Duzenleme",nl:"Ruimteplanning",zh:"空间规划",hi:"स्थान योजना",de:"Raumplanung",pt:"Planejamento de Espacos",icon:"📐",c:"#4527A0",bg:"#EDE7F6"},
 {id:60,fr:"Platrerie Decoration",ar:"جبس وديكور",en:"Plastering",es:"Yeso",it:"Intonaco",tr:"Alci",nl:"Pleisterwerk",zh:"抹灰",hi:"प्लास्टरिंग",de:"Verputzen",pt:"Reboco",icon:"🏛️",c:"#6D4C41",bg:"#EFEBE9"},
 {id:61,fr:"Revetements Sol",ar:"ارضيات",en:"Flooring",es:"Suelos",it:"Pavimenti",tr:"Zemin",nl:"Vloer",zh:"地板",hi:"फर्श",de:"Bodenbelag",pt:"Revestimento",icon:"🟫",c:"#8D6E63",bg:"#EFEBE9"},
-{id:62,fr:"Toiture Isolation",ar:"تسقيف وعزل",en:"Roofing",es:"Tejados",it:"Tetto",tr:"Cati",nl:"Dakwerk",zh:"屋顶",hi:"छत",de:"Dacharbeiten",pt:"Telhado",icon:"⛺",c:"#558B2F",bg:"#F1F8E9"},
+{id:62,fr:"Toiture Isolation",ar:"تسقيف وعزل",en:"Roofing",es:"Tejados",it:"Tetto",tr:"Cati",nl:"Dakwerk",zh:"屋顶",hi:"छت",de:"Dacharbeiten",pt:"Telhado",icon:"⛺",c:"#558B2F",bg:"#F1F8E9"},
 {id:63,fr:"Cuisine Equipee",ar:"مطابخ",en:"Fitted Kitchen",es:"Cocina",it:"Cucina",tr:"Mutfak",nl:"Keuken",zh:"厨房",hi:"रसोई",de:"Kuche",pt:"Cozinha Equipada",icon:"🍳",c:"#E65100",bg:"#FBE9E7"},
 {id:64,fr:"Salle de Bain",ar:"حمامات",en:"Bathroom",es:"Bano",it:"Bagno",tr:"Banyo",nl:"Badkamer",zh:"浴室",hi:"बाथरूम",de:"Badezimmer",pt:"Banheiro",icon:"🚿",c:"#0097A7",bg:"#E0F7FA"},
 {id:65,fr:"Decoration Interieure",ar:"ديكور داخلي",en:"Interior Design",es:"Decoracion",it:"Arredamento",tr:"Dekorasyon",nl:"Interieur",zh:"室内设计",hi:"इंटीरियर",de:"Inneneinrichtung",pt:"Decoracao de Interiores",icon:"🛋️",c:"#880E4F",bg:"#FCE4EC"},
@@ -1277,7 +1297,7 @@ var CRAFTS=[
 {id:72,fr:"Pavage Dallage",ar:"رصف طرق",en:"Paving",es:"Pavimentacion",it:"Pavimentazione",tr:"Kaldirim",nl:"Bestrating",zh:"铺路",hi:"पथरी",de:"Pflasterarbeiten",pt:"Pavimentacao",icon:"🛣️",c:"#37474F",bg:"#ECEFF1"},
 {id:73,fr:"Peinture Industrielle",ar:"دهان صناعي",en:"Industrial Painting",es:"Pintura Industrial",it:"Verniciatura",tr:"Endustriyel Boya",nl:"Industrieel Schilderen",zh:"工业涂料",hi:"औद्योगिक पेंटिंग",de:"Industrielackierung",pt:"Pintura Industrial",icon:"🖌️",c:"#0277BD",bg:"#E1F5FE"},
 {id:74,fr:"Broderie",ar:"تطريز",en:"Embroidery",es:"Bordado",it:"Ricamo",tr:"Nakis",nl:"Borduurwerk",zh:"刺绣",hi:"कढ़ाई",de:"Stickerei",pt:"Bordado",icon:"🪡",c:"#AD1457",bg:"#FCE4EC"},
-{id:75,fr:"Cordonnerie",ar:"اصلاح احذية",en:"Shoe Repair",es:"Zapateria",it:"Calzolaio",tr:"Ayakkabi",nl:"Schoenen",zh:"鞋匠",hi:"जूتا",de:"Schuhmaker",pt:"Sapateiro",icon:"👟",c:"#5D4037",bg:"#EFEBE9"},
+{id:75,fr:"Cordonnerie",ar:"اصلاح احذية",en:"Shoe Repair",es:"Zapateria",it:"Calzolaio",tr:"Ayakkabi",nl:"Schoenen",zh:"鞋匠",hi:"जूता",de:"Schuhmaker",pt:"Sapateiro",icon:"👟",c:"#5D4037",bg:"#EFEBE9"},
 {id:76,fr:"Boulangerie",ar:"مخبزة",en:"Bakery",es:"Panaderia",it:"Panetteria",tr:"Firincilik",nl:"Bakkerij",zh:"面包店",hi:"बेकरी",de:"Backerei",pt:"Padaria",icon:"🥐",c:"#E65100",bg:"#FBE9E7"},
 {id:77,fr:"Chauffeur Prive",ar:"سائق خاص",en:"Private Driver",es:"Conductor",it:"Autista",tr:"Ozel Sofor",nl:"Chauffeur",zh:"司机",hi:"चालक",de:"Privatfahrer",pt:"Motorista Particular",icon:"🚗",c:"#37474F",bg:"#ECEFF1"},
 {id:78,fr:"Auto Ecole",ar:"تعليم سواقة",en:"Driving School",es:"Autoescuela",it:"Autoscuola",tr:"Surucu Kursu",nl:"Rijschool",zh:"驾校",hi:"ड्राइविंग स्कूल",de:"Fahrschule",pt:"Autoescola",icon:"🏎️",c:"#1B5E20",bg:"#E8F5E9"},
@@ -1290,7 +1310,7 @@ var CRAFTS=[
 {id:85,fr:"Notaire Juridique",ar:"كاتب عدل",en:"Notary Legal",es:"Notaria",it:"Notaio",tr:"Noter",nl:"Notaris",zh:"公证",hi:"नोटरी",de:"Notar",pt:"Notario",icon:"📜",c:"#4A148C",bg:"#EDE7F6"},
 {id:86,fr:"Couture Hommes",ar:"خياطةرجال",en:"Men Tailoring",es:"Sastreria",it:"Sartoria Uomo",tr:"Erkek Terzisi",nl:"Herenklermaker",zh:"男士裁缝",hi:"पुरुष दर्जी",de:"Herrenschneider",pt:"Alfaiate",icon:"👔",c:"#283593",bg:"#E8EAF6"},
 {id:87,fr:"Taxi",ar:"تاكسي",en:"Taxi",es:"Taxi",it:"Taxi",tr:"Taksi",nl:"Taxi",zh:"出租车",hi:"टैक्सी",de:"Taxi",pt:"Taxi",icon:"🚕",c:"#F9A825",bg:"#FFFDE7"},
-{id:88,fr:"Livreur",ar:"عامل توصيل",en:"Delivery Man",es:"Repartidor",it:"Fattorino",tr:"Kurye",nl:"Bezorger",zh:"快递员",hi:"डिليवरी मैन",de:"Lieferant",pt:"Entregador",icon:"🛵",c:"#E65100",bg:"#FBE9E7"},
+{id:88,fr:"Livreur",ar:"عامل توصيل",en:"Delivery Man",es:"Repartidor",it:"Fattorino",tr:"Kurye",nl:"Bezorger",zh:"快递员",hi:"डिलीवरी मैन",de:"Lieferant",pt:"Entregador",icon:"🛵",c:"#E65100",bg:"#FBE9E7"},
 {id:89,fr:"Medecin Generaliste",ar:"طبيب عام",en:"General Practitioner",es:"Medico General",it:"Medico di Base",tr:"Pratisyen Hekim",nl:"Huisarts",zh:"全科医生",hi:"सामान्य चिकित्सक",de:"Hausarzt",pt:"Medico Geral",icon:"🩺",c:"#1565C0",bg:"#E3F2FD"},
 {id:90,fr:"Livraison Express",ar:"توصيل سريع",en:"Express Delivery",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिليवरी",de:"Expresslieferung",pt:"Entrega Expressa",icon:"📦",c:"#C62828",bg:"#FFEBEE"}
 ];
@@ -1343,11 +1363,16 @@ function declineTerms(){
   showToast(lang==="ar" ? "تنبيه: يجب قبول الميثاق والشروط لاستخدام تطبيق كرافتو" : "Notice: Terms acceptance is required to use Craftoo");
 }
 
+// دالة التسجيل التلقائي للزبائن والزوار في Firebase
 function getGuestId(){
   var id = localStorage.getItem("craftoo_guest_id");
   if(!id){
     id = "guest_" + Math.random().toString(36).substr(2,9) + "_" + Date.now();
     localStorage.setItem("craftoo_guest_id", id);
+    // حفظ الزائر الجديد في Firestore
+    DB.collection("guests").doc(id).set({
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    }).catch(function(){});
   }
   return id;
 }
@@ -1424,7 +1449,7 @@ function setLang(l){
 
 function applyT(){
   set("h-sub",t("sub"));ph("inp-home",t("sh"));
-  set("sl-crafts",t("sc"));set("sl-workers",t("sw"));set("sl-country",t("sy"));set("sl-all",t("sa"));
+  set("sl-crafts",t("sc"));set("sl-workers",t("sw"));set("sl-clients",t("scli"));set("sl-country",t("sy"));set("sl-all",t("sa"));
   set("bk1",t("bk"));ph("inp-craft",t("sw2"));set("reg-btn",t("rb"));
   set("bk2",t("bk"));set("wdet-t",t("wt"));
   set("bk3",t("bk"));ph("chat-in",t("cph"));
@@ -1448,11 +1473,20 @@ function applyT(){
     e.style.direction=T[lang].dir;
     e.style.textAlign=T[lang].dir==="rtl"?"right":"left";
   });
-  loadTotalWorkers();
+  loadTotalStats();
 }
 
-function loadTotalWorkers(){
-  DB.collection("workers").get().then(function(snap){set("sl-wnum",snap.size);}).catch(function(){});
+// دالة تحكم بالعدادات من Firebase
+function loadTotalStats(){
+  // 1. حساب عدد الحرفيين
+  DB.collection("workers").get().then(function(snap){
+    set("sl-wnum", snap.size);
+  }).catch(function(){});
+
+  // 2. حساب عدد الزبائن المباشر من مجموعة guests
+  DB.collection("guests").get().then(function(snap){
+    set("sl-cnum", snap.size);
+  }).catch(function(){});
 }
 
 function renderCrafts(list){
@@ -1583,13 +1617,14 @@ function renderDet(w){
   var el=$("wdet");el.innerHTML="";
   var dc=document.createElement("div");dc.className="dc";
   
-  var bioHtml = w.bio ? '<div class="bio-box"><div class="bio-title">📝 '+(t("bio_lbl")||"A propos & Horaires")+'</div>'+w.bio+'</div>' : '';
+  var bioText = w.bio ? w.bio : (t("bio_empty") || "Contactez l'artisan directement pour les horaires.");
+  var bioHtml = '<div class="bio-box"><div class="bio-title">📝 '+(t("bio_lbl")||"A propos & Horaires")+'</div>'+bioText+'</div>';
 
   dc.innerHTML=
     '<div class="dav" style="background:'+ac(w.id)+'">'+(w.photoURL?'<img src="'+w.photoURL+'">':"")+(w.photoURL?"":ini(w.name||""))+"</div>"+
     '<div class="dn">'+(w.name||"")+"</div>"+
     '<div class="dbw"><span class="dbg" style="background:'+c.bg+";color:"+c.c+'">'+c.icon+" "+cn(c)+"</span></div>"+
-    '<div class="ar"><span class="an">'+avg+'</span><span class="as2">'+sh+'</span><span class="ac2">('+( w.ratingCount||0)+")</span></div>"+
+    '<div class="ar"><span class="an">'+avg+'</span><span class="as2">'+sh+'</span><span class="ac2">('+(w.ratingCount||0)+")</span></div>"+
     '<div class="ir"><div class="iri">📍</div><div><div class="irl">'+t("co")+'</div><div class="irv">'+(w.commune||"")+"</div></div></div>"+
     '<div class="ir"><div class="iri">🏙️</div><div><div class="irl">'+t("ci")+'</div><div class="irv">'+(w.city||"")+"</div></div></div>"+
     '<div class="ir"><div class="iri">🌍</div><div><div class="irl">'+t("cy")+'</div><div class="irv">'+(w.country||"")+"</div></div></div>"+
@@ -1612,7 +1647,6 @@ function renderDet(w){
 
   dc.appendChild(b1);dc.appendChild(b2);dc.appendChild(b3);
 
-  // تحقق مما إذا كان المستخدم هو صاحب الحساب نفسه أو الأدمن الرئيسي
   var isOwner = currentUser && currentUser.uid === w.id;
   var isAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
