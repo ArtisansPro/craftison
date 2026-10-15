@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.artisanspro.twa",
+        "sha256_cert_fingerprints": ["5D:F6:11:BE:3A:23:B1:74:0A:6B:79:70:11:AA:3C:B0:51:9C:B3:2D:7A:D7:AC:D3:E5:BD:A8:2C:AD:6E:55:67"]
+      }
+    }]
