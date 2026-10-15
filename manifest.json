@@ -8,6 +8,8 @@
   "theme_color": "#1565C0",
   "orientation": "portrait",
   "description": "Trouvez le meilleur artisan",
+  "categories": ["lifestyle", "business", "utilities"],
+  "iarc_rating_id": "urn:fb:iarc:15+",
   "icons": [
     {
       "src": "./icon-192.png",
