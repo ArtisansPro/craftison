@@ -199,7 +199,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="hero-sh"><span>🔍</span><input id="inp-home" oninput="filterCrafts()"></div>
   </div>
   <div class="stats">
-    <div class="stat"><div class="sn">90</div><div class="sl" id="sl-crafts"></div></div>
+    <div class="stat"><div class="sn">100</div><div class="sl" id="sl-crafts"></div></div>
     <div class="stat"><div class="sn" id="sl-wnum">0</div><div class="sl" id="sl-workers"></div></div>
     <div class="stat"><div class="sn" id="sl-cnum">0</div><div class="sl" id="sl-clients"></div></div>
     <div class="stat"><div class="sn">🌍</div><div class="sl" id="sl-country"></div></div>
@@ -383,7 +383,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         </div>
       </div>
 
-      <p style="font-size:11px;color:#94A3B8;text-align:center;" id="tm-note">En cliquant sur 'J'accepte', vous confirmez votre accord avec nos conditions d'utilisation.</p>
+      <p style="font-size:11px;color:#94A3B8;text-align:center;" id="tm-note">En cliquant sur 'J\'accepte', vous confirmez votre accord avec nos conditions d'utilisation.</p>
     </div>
     <div class="terms-footer">
       <button class="btn-accept" id="tm-btn-acc" onclick="acceptTerms()">J'accepte & Je commence</button>
@@ -1236,10 +1236,25 @@ var T={
 var COUNTRIES=["Afghanistan","Afrique du Sud","Albanie","Algerie","Allemagne","Andorre","Angola","Arabie Saoudite","Argentine","Armenie","Australie","Autriche","Azerbaidjan","Bahamas","Bahrein","Bangladesh","Belgique","Benin","Bielorussie","Birmanie","Bolivie","Bosnie","Botswana","Bresil","Brunei","Bulgarie","Burkina Faso","Burundi","Cambodge","Cameroun","Canada","Cap-Vert","Centrafrique","Chili","Chine","Chypre","Colombie","Comores","Congo","Coree du Nord","Coree du Sud","Costa Rica","Cote d Ivoire","Croatie","Cuba","Danemark","Djibouti","Egypte","Emirats arabes unis","Equateur","Espagne","Estonie","Etats-Unis","Ethiopie","Fidji","Finlande","France","Gabon","Gambie","Georgie","Ghana","Grece","Guatemala","Guinee","Guyana","Haiti","Honduras","Hongrie","Inde","Indonesie","Irak","Iran","Irlande","Islanda","Israel","Italie","Jamaique","Japon","Jordanie","Kazakhstan","Kenya","Koweit","Laos","Lettonie","Liban","Liberia","Libye","Lituanie","Luxembourg","Madagascar","Malaisie","Malawi","Mali","Malte","Maroc","Maurice","Mauritanie","Mexique","Moldavie","Monaco","Mongolie","Montenegre","Mozambique","Namibie","Nepal","Nicaragua","Niger","Nigeria","Norvege","Nouvelle-Zelande","Oman","Ouganda","Ouzbekistan","Pakistan","Palestine","Panama","Paraguay","Pays-Bas","Perou","Philippines","Pologne","Portugal","Qatar","Roumanie","Royaume-Uni","Russie","Rwanda","Salvador","Senegal","Serbie","Sierra Leone","Singapour","Slovaquie","Slovenie","Somalie","Soudan","Sri Lanka","Suede","Suisse","Syrie","Tanzanie","Tchad","Tcheque","Thailande","Togo","Tunisie","Turquie","Ukraine","Uruguay","Venezuela","Vietnam","Yemen","Zambie","Zimbabwe"];
 
 var CRAFTS=[
+// --- الحرف الأساسية الأربعة في المقدمة تماماً ---
 {id:1,fr:"Plomberie",ar:"سباكة",en:"Plumbing",es:"Fontaneria",it:"Idraulica",tr:"Tesisat",nl:"Loodgieterij",zh:"水管工",hi:"प्लंबिंग",de:"Klempner",pt:"Encanamento",icon:"🔧",c:"#1565C0",bg:"#E3F2FD"},
 {id:2,fr:"Electricite Batiment",ar:"كهرباء منازل",en:"Electrician",es:"Electricidad",it:"Elettricita",tr:"Elektrik",nl:"Elektriciteit",zh:"电工",hi:"इलेक्ट्रीशियन",de:"Elektriker",pt:"Eletricista",icon:"⚡",c:"#F57C00",bg:"#FFF3E0"},
 {id:3,fr:"Peinture",ar:"دهان",en:"Painting",es:"Pintura",it:"Pittura",tr:"Boyacilik",nl:"Schilder",zh:"油漆",hi:"पेंटिंग",de:"Maler",pt:"Pintura",icon:"🎨",c:"#6A1B9A",bg:"#F3E5F5"},
 {id:4,fr:"Maconnerie",ar:"بناء",en:"Masonry",es:"Albanileria",it:"Muratura",tr:"Duvarcilik",nl:"Metselwerk",zh:"砌砖",hi:"राजमिस्त्री",de:"Maurer",pt:"Alvenaria",icon:"🧱",c:"#455A64",bg:"#ECEFF1"},
+
+// --- الحرف الجديدة والمطلوبة ---
+{id:91,fr:"Livraison Express (Moto/Voiture)",ar:"التوصيل السريع (دراجة أو سيارة)",en:"Express Delivery (Moto/Car)",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिलीवरी",de:"Expresslieferung",pt:"Entrega Expressa",icon:"🛵",c:"#C62828",bg:"#FFEBEE"},
+{id:92,fr:"Pizza & Fast Food",ar:"بيتزا وأكل سريع",en:"Pizza & Fast Food",es:"Pizza y Comida Rapida",it:"Pizza & Fast Food",tr:"Pizza ve Fast Food",nl:"Pizza & Fastfood",zh:"比萨与快餐",hi:"पिज़्ज़ा और फ़ास्ट फ़ूड",de:"Pizza & Fast Food",pt:"Pizza & Fast Food",icon:"🍕",c:"#E65100",bg:"#FBE9E7"},
+{id:93,fr:"Depannage & Remorquage Auto",ar:"إسعاف وسحب السيارات (دباناج)",en:"Car Towing & Recovery",es:"Grua de Coches",it:"Soccorso Stradale",tr:"Arac Cekici",nl:"Autosleepdienst",zh:"汽车拖车",hi:"कार टोइंग",de:"Pannenhilfe & Abschleppdienst",pt:"Guincho de Carros",icon:"🚙",c:"#BF360C",bg:"#FBE9E7"},
+{id:94,fr:"Remorquage Poids Lourd",ar:"سحب وإسعاف الشاحنات الثقيلة",en:"Heavy Truck Towing",es:"Grua Camiones",it:"Soccorso Camion",tr:"Agir Vasıta Cekici",nl:"Zware Vrachtwagen Sleepdienst",zh:"重型卡车拖车",hi:"भारी ट्रक टोइंग",de:"LKW Abschleppdienst",pt:"Guincho de Caminhao",icon:"🚛",c:"#1565C0",bg:"#E3F2FD"},
+{id:95,fr:"Mecanique Camions",ar:"ميكانيك الشاحنات",en:"Truck Mechanics",es:"Mecanica Camiones",it:"Meccanica Camion",tr:"Kamyon Tamiri",nl:"Vrachtwagen Monteur",zh:"卡车修理",hi:"ट्रक मैकेनिक्स",de:"LKW Mechaniker",pt:"Mecanica de Caminhoes",icon:"🔧",c:"#37474F",bg:"#ECEFF1"},
+{id:96,fr:"Electricite Camions",ar:"كهرباء الشاحنات",en:"Truck Electricity",es:"Electricidad Camiones",it:"Elettricita Camion",tr:"Kamyon Elektrik",nl:"Vrachtwagen Elektra",zh:"卡车电路",hi:"ट्रक बिजली",de:"LKW Elektrik",pt:"Eletricista de Caminhoes",icon:"⚡",c:"#F57C00",bg:"#FFF3E0"},
+{id:97,fr:"Montage Meubles",ar:"تركيب الأثاث والديكور",en:"Furniture Assembly",es:"Montaje Muebles",it:"Montaggio Mobili",tr:"Mobilya Montaj",nl:"Meubelmontage",zh:"家具组装",hi:"फर्नीचर असेंबली",de:"Mabelmontage",pt:"Montagem de Moveis",icon:"🪛",c:"#5D4037",bg:"#EFEBE9"},
+{id:98,fr:"Forage Puits & Pompes",ar:"حفر الأبار ومضخات المياه",en:"Well Drilling & Pumps",es:"Perforacion Pozos",it:"Trivellazione Pozzi",tr:"Kuyu Sondaj",nl:"Putboring",zh:"钻井与水泵",hi:"कुआं ड्रिलिंग",de:"Brunnenbau",pt:"Perfuracao de Pocos",icon:"🚰",c:"#0288D1",bg:"#E1F5FE"},
+{id:99,fr:"Detailing Auto",ar:"تلميع وتغليف السيارات",en:"Car Detailing",es:"Detailing Auto",it:"Detailing Auto",tr:"Oto Detay",nl:"Car Detailing",zh:"汽车美容",hi:"कार डिटेलिंग",de:"Fahrzeugaufbereitung",pt:"Detailing Automotivo",icon:"🏎️",c:"#D84315",bg:"#FBE9E7"},
+{id:100,fr:"Entretien Piscines",ar:"صيانة وتنظيف المسابح",en:"Pool Maintenance",es:"Mantenimiento Piscinas",it:"Manutenzione Piscine",tr:"Havuz Bakim",nl:"Zwembadonderhoud",zh:"泳池维护",hi:"पूल रखरखाव",de:"Poolwartung",pt:"Manutencao de Piscinas",icon:"🏊‍♂️",c:"#00838F",bg:"#E0F7FA"},
+
+// --- باقي الحرف القديمة (بدون حذف أي حرفة لضمان اكتمال 100 حرفة) ---
 {id:5,fr:"Menuiserie Bois",ar:"نجارة خشب",en:"Carpentry",es:"Carpinteria",it:"Falegnameria",tr:"Marangozluk",nl:"Timmerwerk",zh:"木工",hi:"बढ़ईगीरी",de:"Zimmerei",pt:"Carpintaria",icon:"🪵",c:"#4E342E",bg:"#EFEBE9"},
 {id:6,fr:"Menuiserie Aluminium",ar:"الومنيوم",en:"Aluminum",es:"Aluminio",it:"Alluminio",tr:"Aluminyum",nl:"Aluminium",zh:"铝制品",hi:"एल्युमीनियम",de:"Aluminium",pt:"Aluminio",icon:"🪟",c:"#546E7A",bg:"#F5F5F5"},
 {id:7,fr:"Ferronnerie",ar:"حدادة",en:"Blacksmithing",es:"Herreria",it:"Ferronneria",tr:"Demircilik",nl:"Smeedwerk",zh:"铁艺",hi:"लोहारी",de:"Schmiedekunst",pt:"Ferraria",icon:"⚙️",c:"#37474F",bg:"#ECEFF1"},
@@ -1311,7 +1326,7 @@ var CRAFTS=[
 {id:73,fr:"Peinture Industrielle",ar:"دهان صناعي",en:"Industrial Painting",es:"Pintura Industrial",it:"Verniciatura",tr:"Endustriyel Boya",nl:"Industrieel Schilderen",zh:"工业涂料",hi:"औद्योगिक पेंटिंग",de:"Industrielackierung",pt:"Pintura Industrial",icon:"🖌️",c:"#0277BD",bg:"#E1F5FE"},
 {id:74,fr:"Broderie",ar:"تطريز",en:"Embroidery",es:"Bordado",it:"Ricamo",tr:"Nakis",nl:"Borduurwerk",zh:"刺绣",hi:"कढ़ाई",de:"Stickerei",pt:"Bordado",icon:"🪡",c:"#AD1457",bg:"#FCE4EC"},
 {id:75,fr:"Cordonnerie",ar:"اصلاح احذية",en:"Shoe Repair",es:"Zapateria",it:"Calzolaio",tr:"Ayakkabi",nl:"Schoenen",zh:"鞋匠",hi:"जूता",de:"Schuhmaker",pt:"Sapateiro",icon:"👟",c:"#5D4037",bg:"#EFEBE9"},
-{id:76,fr:"Boulangerie",ar:"مخبزة",en:"Bakery",es:"Panaderia",it:"Panetteria",tr:"Firincilik",nl:"Bakkerij",zh:"面包店",hi:"बेकरी",de:"Backerei",pt:"Padaria",icon:"🥐",c:"#E65100",bg:"#FBE9E7"},
+{id:76,fr:"Boulangerie",ar:"مخبزة",en:"Bakery",es:"Panaderia",it:"Panetteria",tr:"Firincilik",nl:"Bakkerij",zh:"面包店",hi:"बेكري",de:"Backerei",pt:"Padaria",icon:"🥐",c:"#E65100",bg:"#FBE9E7"},
 {id:77,fr:"Chauffeur Prive",ar:"سائق خاص",en:"Private Driver",es:"Conductor",it:"Autista",tr:"Ozel Sofor",nl:"Chauffeur",zh:"司机",hi:"चालक",de:"Privatfahrer",pt:"Motorista Particular",icon:"🚗",c:"#37474F",bg:"#ECEFF1"},
 {id:78,fr:"Auto Ecole",ar:"تعليم سواقة",en:"Driving School",es:"Autoescuela",it:"Autoscuola",tr:"Surucu Kursu",nl:"Rijschool",zh:"驾校",hi:"ड्राइविंग स्कूल",de:"Fahrschule",pt:"Autoescola",icon:"🏎️",c:"#1B5E20",bg:"#E8F5E9"},
 {id:79,fr:"Imprimerie",ar:"طباعة",en:"Printing",es:"Imprenta",it:"Tipografia",tr:"Matbaa",nl:"Drukkerij",zh:"印刷",hi:"प्रिंटिंग",de:"Druckerei",pt:"Grafica",icon:"🖨️",c:"#00695C",bg:"#E0F2F1"},
@@ -1325,7 +1340,7 @@ var CRAFTS=[
 {id:87,fr:"Taxi",ar:"تاكسي",en:"Taxi",es:"Taxi",it:"Taxi",tr:"Taksi",nl:"Taxi",zh:"出租车",hi:"टैक्सी",de:"Taxi",pt:"Taxi",icon:"🚕",c:"#F9A825",bg:"#FFFDE7"},
 {id:88,fr:"Livreur",ar:"عامل توصيل",en:"Delivery Man",es:"Repartidor",it:"Fattorino",tr:"Kurye",nl:"Bezorger",zh:"快递员",hi:"डिलीवरी मैन",de:"Lieferant",pt:"Entregador",icon:"🛵",c:"#E65100",bg:"#FBE9E7"},
 {id:89,fr:"Medecin Generaliste",ar:"طبيب عام",en:"General Practitioner",es:"Medico General",it:"Medico di Base",tr:"Pratisyen Hekim",nl:"Huisarts",zh:"全科医生",hi:"सामान्य चिकित्सक",de:"Hausarzt",pt:"Medico Geral",icon:"🩺",c:"#1565C0",bg:"#E3F2FD"},
-{id:90,fr:"Livraison Express",ar:"توصيل سريع",en:"Express Delivery",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिليवरी",de:"Expresslieferung",pt:"Entrega Expressa",icon:"📦",c:"#C62828",bg:"#FFEBEE"}
+{id:90,fr:"Livraison Express",ar:"توصيل سريع",en:"Express Delivery",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिलीवरी",de:"Expresslieferung",pt:"Entrega Expressa",icon:"📦",c:"#C62828",bg:"#FFEBEE"}
 ];
 
 var LANGS=[{c:"fr",f:"🇫🇷",l:"FR"},{c:"ar",f:"🇩🇿",l:"ع"},{c:"en",f:"🇬🇧",l:"EN"},{c:"es",f:"🇪🇸",l:"ES"},{c:"it",f:"🇮🇹",l:"IT"},{c:"tr",f:"🇹🇷",l:"TR"},{c:"nl",f:"🇳🇱",l:"NL"},{c:"zh",f:"🇨🇳",l:"中"},{c:"hi",f:"🇮🇳",l:"हि"},{c:"de",f:"🇩🇪",l:"DE"},{c:"pt",f:"🇧🇷",l:"PT"}];
@@ -1667,7 +1682,7 @@ function renderDet(w){
     dc.appendChild(bEdit);
   }
 
-  // --- إضافة زر الحذف الخاص بك (Admin) ليظهر لك أنت فقط ---
+  // --- زر الحذف الأحمر الخاص بك كمدير (Admin) ---
   if(isAdmin){
     var bDel=document.createElement("button");
     bDel.className="btn-r";
@@ -1687,7 +1702,7 @@ function renderDet(w){
     };
     dc.appendChild(bDel);
   }
-  // -----------------------------------------------------
+  // ----------------------------------------------
 
   el.appendChild(dc);
 
