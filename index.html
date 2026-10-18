@@ -339,6 +339,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 </div>
 
+<!-- نافذة التبليغ المنبثقة الذكية (Modal مع خيارات الشكوى) -->
+<div class="mo" id="report-modal">
+  <div class="md">
+    <div class="mt4" id="rep-modal-title">🚨 إبلاغ عن الحرفي / Signaler</div>
+    <div class="mb4" style="margin-bottom:10px;font-size:12px;color:#666;" id="rep-modal-desc">اختر سبب الشكوى (سيتم إرسال إنذار تلقائي للحرفي):</div>
+    
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
+      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="Travail non qualifié / العمل غير متقن" checked> 🛠️ العمل غير متقن / Service non qualifié</label>
+      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="Absence ou retard / عدم الحضور أو التأخر"> ⏰ عدم الحضور أو التأخر عن الموعد</label>
+      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="Numéro injoignable / الرقم لا يجيب"> 📞 الرقم لا يجيب أو مغلق باستمرار</label>
+      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="Augmentation de prix / رفع السعر"> 💰 رفع السعر غير المبرر عن المتفق عليه</label>
+      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="Comportement inapproprié / سلوك غير لائق"> 🗣️ سلوك غير لائق أو كلام غير محترم</label>
+    </div>
+
+    <div class="mbs">
+      <button class="mbtn mnk" onclick="closeReportModal()">إلغاء / Annuler</button>
+      <button class="mbtn mok" onclick="submitReportAction()">تأكيد البلاغ / Confirmer</button>
+    </div>
+  </div>
+</div>
+
 <div class="mo" id="modal">
   <div class="md">
     <div class="mt4" id="m-t"></div>
@@ -487,7 +508,7 @@ var T={
     tm_p2_d: "Respect strict des engagements, des délais convenus et du travail de qualité.",
     tm_p3_t: "Protection & Sécurité",
     tm_p3_d: "Craftison est un annuaire de mise en relation. Les accords engagent directement le client et l'artisan.",
-    tm_note: "En cliquant sur 'J'accepte', vous confirmez votre accord avec nos conditions.",
+    tm_note: "En cliquant sur 'J\'accepte', vous confirmez votre accord avec nos conditions.",
     tm_acc: "J'accepte & Je commence",
     tm_dec: "Refuser"
   },
@@ -1236,13 +1257,10 @@ var T={
 var COUNTRIES=["Afghanistan","Afrique du Sud","Albanie","Algerie","Allemagne","Andorre","Angola","Arabie Saoudite","Argentine","Armenie","Australie","Autriche","Azerbaidjan","Bahamas","Bahrein","Bangladesh","Belgique","Benin","Bielorussie","Birmanie","Bolivie","Bosnie","Botswana","Bresil","Brunei","Bulgarie","Burkina Faso","Burundi","Cambodge","Cameroun","Canada","Cap-Vert","Centrafrique","Chili","Chine","Chypre","Colombie","Comores","Congo","Coree du Nord","Coree du Sud","Costa Rica","Cote d Ivoire","Croatie","Cuba","Danemark","Djibouti","Egypte","Emirats arabes unis","Equateur","Espagne","Estonie","Etats-Unis","Ethiopie","Fidji","Finlande","France","Gabon","Gambie","Georgie","Ghana","Grece","Guatemala","Guinee","Guyana","Haiti","Honduras","Hongrie","Inde","Indonesie","Irak","Iran","Irlande","Islanda","Israel","Italie","Jamaique","Japon","Jordanie","Kazakhstan","Kenya","Koweit","Laos","Lettonie","Liban","Liberia","Libye","Lituanie","Luxembourg","Madagascar","Malaisie","Malawi","Mali","Malte","Maroc","Maurice","Mauritanie","Mexique","Moldavie","Monaco","Mongolie","Montenegre","Mozambique","Namibie","Nepal","Nicaragua","Niger","Nigeria","Norvege","Nouvelle-Zelande","Oman","Ouganda","Ouzbekistan","Pakistan","Palestine","Panama","Paraguay","Pays-Bas","Perou","Philippines","Pologne","Portugal","Qatar","Roumanie","Royaume-Uni","Russie","Rwanda","Salvador","Senegal","Serbie","Sierra Leone","Singapour","Slovaquie","Slovenie","Somalie","Soudan","Sri Lanka","Suede","Suisse","Syrie","Tanzanie","Tchad","Tcheque","Thailande","Togo","Tunisie","Turquie","Ukraine","Uruguay","Venezuela","Vietnam","Yemen","Zambie","Zimbabwe"];
 
 var CRAFTS=[
-// --- الحرف الأساسية الأربعة في المقدمة تماماً ---
 {id:1,fr:"Plomberie",ar:"سباكة",en:"Plumbing",es:"Fontaneria",it:"Idraulica",tr:"Tesisat",nl:"Loodgieterij",zh:"水管工",hi:"प्लंबिंग",de:"Klempner",pt:"Encanamento",icon:"🔧",c:"#1565C0",bg:"#E3F2FD"},
 {id:2,fr:"Electricite Batiment",ar:"كهرباء منازل",en:"Electrician",es:"Electricidad",it:"Elettricita",tr:"Elektrik",nl:"Elektriciteit",zh:"电工",hi:"इलेक्ट्रीशियन",de:"Elektriker",pt:"Eletricista",icon:"⚡",c:"#F57C00",bg:"#FFF3E0"},
 {id:3,fr:"Peinture",ar:"دهان",en:"Painting",es:"Pintura",it:"Pittura",tr:"Boyacilik",nl:"Schilder",zh:"油漆",hi:"पेंटिंग",de:"Maler",pt:"Pintura",icon:"🎨",c:"#6A1B9A",bg:"#F3E5F5"},
 {id:4,fr:"Maconnerie",ar:"بناء",en:"Masonry",es:"Albanileria",it:"Muratura",tr:"Duvarcilik",nl:"Metselwerk",zh:"砌砖",hi:"राजमिस्त्री",de:"Maurer",pt:"Alvenaria",icon:"🧱",c:"#455A64",bg:"#ECEFF1"},
-
-// --- الحرف الجديدة والمطلوبة ---
 {id:91,fr:"Livraison Express (Moto/Voiture)",ar:"التوصيل السريع (دراجة أو سيارة)",en:"Express Delivery (Moto/Car)",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिलीवरी",de:"Expresslieferung",pt:"Entrega Expressa",icon:"🛵",c:"#C62828",bg:"#FFEBEE"},
 {id:92,fr:"Pizza & Fast Food",ar:"بيتزا وأكل سريع",en:"Pizza & Fast Food",es:"Pizza y Comida Rapida",it:"Pizza & Fast Food",tr:"Pizza ve Fast Food",nl:"Pizza & Fastfood",zh:"比萨与快餐",hi:"पिज़्ज़ा और फ़ास्ट फ़ूड",de:"Pizza & Fast Food",pt:"Pizza & Fast Food",icon:"🍕",c:"#E65100",bg:"#FBE9E7"},
 {id:93,fr:"Depannage & Remorquage Auto",ar:"إسعاف وسحب السيارات (دباناج)",en:"Car Towing & Recovery",es:"Grua de Coches",it:"Soccorso Stradale",tr:"Arac Cekici",nl:"Autosleepdienst",zh:"汽车拖车",hi:"कार टोइंग",de:"Pannenhilfe & Abschleppdienst",pt:"Guincho de Carros",icon:"🚙",c:"#BF360C",bg:"#FBE9E7"},
@@ -1253,8 +1271,6 @@ var CRAFTS=[
 {id:98,fr:"Forage Puits & Pompes",ar:"حفر الأبار ومضخات المياه",en:"Well Drilling & Pumps",es:"Perforacion Pozos",it:"Trivellazione Pozzi",tr:"Kuyu Sondaj",nl:"Putboring",zh:"钻井与水泵",hi:"कुआं ड्रिलिंग",de:"Brunnenbau",pt:"Perfuracao de Pocos",icon:"🚰",c:"#0288D1",bg:"#E1F5FE"},
 {id:99,fr:"Detailing Auto",ar:"تلميع وتغليف السيارات",en:"Car Detailing",es:"Detailing Auto",it:"Detailing Auto",tr:"Oto Detay",nl:"Car Detailing",zh:"汽车美容",hi:"कार डिटेलिंग",de:"Fahrzeugaufbereitung",pt:"Detailing Automotivo",icon:"🏎️",c:"#D84315",bg:"#FBE9E7"},
 {id:100,fr:"Entretien Piscines",ar:"صيانة وتنظيف المسابح",en:"Pool Maintenance",es:"Mantenimiento Piscinas",it:"Manutenzione Piscine",tr:"Havuz Bakim",nl:"Zwembadonderhoud",zh:"泳池维护",hi:"पूल रखरखाव",de:"Poolwartung",pt:"Manutencao de Piscinas",icon:"🏊‍♂️",c:"#00838F",bg:"#E0F7FA"},
-
-// --- باقي الحرف القديمة (بدون حذف أي حرفة لضمان اكتمال 100 حرفة) ---
 {id:5,fr:"Menuiserie Bois",ar:"نجارة خشب",en:"Carpentry",es:"Carpinteria",it:"Falegnameria",tr:"Marangozluk",nl:"Timmerwerk",zh:"木工",hi:"बढ़ईगीरी",de:"Zimmerei",pt:"Carpintaria",icon:"🪵",c:"#4E342E",bg:"#EFEBE9"},
 {id:6,fr:"Menuiserie Aluminium",ar:"الومنيوم",en:"Aluminum",es:"Aluminio",it:"Alluminio",tr:"Aluminyum",nl:"Aluminium",zh:"铝制品",hi:"एल्युमीनियम",de:"Aluminium",pt:"Aluminio",icon:"🪟",c:"#546E7A",bg:"#F5F5F5"},
 {id:7,fr:"Ferronnerie",ar:"حدادة",en:"Blacksmithing",es:"Herreria",it:"Ferronneria",tr:"Demircilik",nl:"Smeedwerk",zh:"铁艺",hi:"लोहारी",de:"Schmiedekunst",pt:"Ferraria",icon:"⚙️",c:"#37474F",bg:"#ECEFF1"},
@@ -1643,7 +1659,14 @@ function renderDet(w){
   var bioText = w.bio ? w.bio : (t("bio_empty") || "Contactez l'artisan directement pour les horaires.");
   var bioHtml = '<div class="bio-box"><div class="bio-title">📝 '+(t("bio_lbl")||"A propos & Horaires")+'</div>'+bioText+'</div>';
 
+  // تنبيه إنذار تلقائي يظهر للحرفي إذا تلقى إنذارات
+  var warningHtml = "";
+  if(currentUser && currentUser.uid === w.id && w.lastWarning){
+    warningHtml = '<div style="background:#FFF3E0;border:1px solid #FFE082;border-radius:10px;padding:10px;margin-bottom:10px;font-size:12px;color:#E65100;">⚠️ <b>تنبيه إداري تلقائي:</b> '+w.lastWarning+'</div>';
+  }
+
   dc.innerHTML=
+    warningHtml +
     '<div class="dav" style="background:'+ac(w.id)+'">'+(w.photoURL?'<img src="'+w.photoURL+'">':"")+(w.photoURL?"":ini(w.name||""))+"</div>"+
     '<div class="dn">'+(w.name||"")+"</div>"+
     '<div class="dbw"><span class="dbg" style="background:'+c.bg+";color:"+c.c+'">'+c.icon+" "+cn(c)+"</span></div>"+
@@ -1668,7 +1691,12 @@ function renderDet(w){
   b3.textContent="⬆️ "+t("sup")+" ("+(w.supports||0)+")";
   b3.onclick=(function(id){return function(){doSupport(id);};})(w.id);
 
-  dc.appendChild(b1);dc.appendChild(b2);dc.appendChild(b3);
+  // زر التبليغ الجديد مع القائمة المنبثقة
+  var bReport=document.createElement("button");bReport.className="btn-r";
+  bReport.textContent="🚨 " + t("rep");
+  bReport.onclick=function(){confRep(w.id);};
+
+  dc.appendChild(b1);dc.appendChild(b2);dc.appendChild(b3);dc.appendChild(bReport);
 
   var isOwner = currentUser && currentUser.uid === w.id;
   var isAdmin = currentUser && currentUser.email && currentUser.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
@@ -1682,7 +1710,6 @@ function renderDet(w){
     dc.appendChild(bEdit);
   }
 
-  // --- زر الحذف الأحمر الخاص بك كمدير (Admin) ---
   if(isAdmin){
     var bDel=document.createElement("button");
     bDel.className="btn-r";
@@ -1702,7 +1729,6 @@ function renderDet(w){
     };
     dc.appendChild(bDel);
   }
-  // ----------------------------------------------
 
   el.appendChild(dc);
 
@@ -1812,24 +1838,55 @@ function doRate(n,wid){
   }).then(function(){showToast("⭐ "+t("ok"));}).catch(function(){});
 }
 
+// نظام التبليغ التفاعلي الجديد
+var reportingWorkerId = null;
 function confRep(wid){
-  $("m-t").textContent=t("rpt");$("m-b").textContent=t("rpb");
-  $("m-nk").textContent=t("rnk");$("m-ok").textContent=t("rok");
-  $("m-ok").onclick=function(){doRep(wid);};
-  $("modal").classList.add("show");
+  reportingWorkerId = wid;
+  var modal = $("report-modal");
+  if(modal) modal.classList.add("show");
 }
-function closeMo(){$("modal").classList.remove("show");}
 
-function doRep(wid){
-  closeMo();
+function closeReportModal(){
+  var modal = $("report-modal");
+  if(modal) modal.classList.remove("show");
+  reportingWorkerId = null;
+}
+
+function submitReportAction(){
+  if(!reportingWorkerId) return;
+  var radios = document.getElementsByName("rep_reason");
+  var selectedReason = "Violation des règles";
+  for(var i=0; i<radios.length; i++){
+    if(radios[i].checked){
+      selectedReason = radios[i].value;
+      break;
+    }
+  }
+  var wid = reportingWorkerId;
+  closeReportModal();
+
   var ref=DB.collection("workers").doc(wid);
   ref.get().then(function(snap){
     if(!snap.exists)return;
-    var reports=(snap.data().reports||0)+1;
-    var update={reports:reports};
-    if(reports>=5){var dt=new Date();dt.setDate(dt.getDate()+30);update.suspUntil=dt;}
+    var data = snap.data();
+    var reports=(data.reports||0)+1;
+    var update={
+      reports:reports,
+      lastWarning: "تنبيه بسبب شكوى: " + selectedReason
+    };
+    // تجميد تلقائي إذا وصل عدد البلاغات إلى 3 أو أكثر لمدة 5 أيام
+    if(reports>=3){
+      var dt=new Date();
+      dt.setDate(dt.getDate()+5);
+      update.suspUntil=dt;
+    }
     return ref.update(update);
-  }).then(function(){showToast("🚨 "+t("ok"));openW(wid);}).catch(function(){});
+  }).then(function(){
+    showToast(lang==="ar" ? "🚨 تم إرسال البلاغ والإنذار بنجاح" : "🚨 Signalement envoyé avec succès");
+    openW(wid);
+  }).catch(function(err){
+    showToast("Erreur: " + err.message);
+  });
 }
 
 var chatWorkerId=null;
