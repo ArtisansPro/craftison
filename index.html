@@ -339,23 +339,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 </div>
 
-<!-- نافذة التبليغ المنبثقة الذكية (Modal مع خيارات الشكوى) -->
+<!-- نافذة التبليغ المنبثقة الذكية (مترجمة بالكامل تلقائياً حسب لغة التطبيق) -->
 <div class="mo" id="report-modal">
   <div class="md">
-    <div class="mt4" id="rep-modal-title">🚨 إبلاغ عن الحرفي / Signaler</div>
-    <div class="mb4" style="margin-bottom:10px;font-size:12px;color:#666;" id="rep-modal-desc">اختر سبب الشكوى (سيتم إرسال إنذار تلقائي للحرفي):</div>
+    <div class="mt4" id="rep-modal-title">🚨 إبلاغ عن الحرفي</div>
+    <div class="mb4" style="margin-bottom:10px;font-size:12px;color:#666;" id="rep-modal-desc">اختر سبب الشكوى:</div>
     
-    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;">
-      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="Travail non qualifié / العمل غير متقن" checked> 🛠️ العمل غير متقن / Service non qualifié</label>
-      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="Absence ou retard / عدم الحضور أو التأخر"> ⏰ عدم الحضور أو التأخر عن الموعد</label>
-      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="Numéro injoignable / الرقم لا يجيب"> 📞 الرقم لا يجيب أو مغلق باستمرار</label>
-      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="Augmentation de prix / رفع السعر"> 💰 رفع السعر غير المبرر عن المتفق عليه</label>
-      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="Comportement inapproprié / سلوك غير لائق"> 🗣️ سلوك غير لائق أو كلام غير محترم</label>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px;" id="rep-options-container">
+      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="q1" checked> <span id="lbl-rep-q1">العمل غير متقن</span></label>
+      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="q2"> <span id="lbl-rep-q2">عدم الحضور أو التأخر</span></label>
+      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="q3"> <span id="lbl-rep-q3">الرقم لا يجيب</span></label>
+      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="q4"> <span id="lbl-rep-q4">رفع السعر غير المبرر</span></label>
+      <label style="font-size:12px;display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="radio" name="rep_reason" value="q5"> <span id="lbl-rep-q5">سلوك غير لائق</span></label>
     </div>
 
     <div class="mbs">
-      <button class="mbtn mnk" onclick="closeReportModal()">إلغاء / Annuler</button>
-      <button class="mbtn mok" onclick="submitReportAction()">تأكيد البلاغ / Confirmer</button>
+      <button class="mbtn mnk" id="rep-btn-cancel" onclick="closeReportModal()">إلغاء</button>
+      <button class="mbtn mok" id="rep-btn-confirm" onclick="submitReportAction()">تأكيد البلاغ</button>
     </div>
   </div>
 </div>
@@ -489,7 +489,7 @@ var T={
     rep_chat: "Signaler ce artisan",
     rpt: "Signalement",
     rpb: "Confirmer le signalement?",
-    rok: "Confirmar",
+    rok: "Confirmer",
     rnk: "Annuler",
     st: "Artisan suspendu",
     sm: "Suspendu 5 jours.",
@@ -510,7 +510,16 @@ var T={
     tm_p3_d: "Craftison est un annuaire de mise en relation. Les accords engagent directement le client et l'artisan.",
     tm_note: "En cliquant sur 'J\'accepte', vous confirmez votre accord avec nos conditions.",
     tm_acc: "J'accepte & Je commence",
-    tm_dec: "Refuser"
+    tm_dec: "Refuser",
+    rep_modal_title: "🚨 Signaler l'artisan",
+    rep_modal_desc: "Choisissez le motif du signalement (un avertissement automatique sera envoyé) :",
+    rep_q1: "🛠️ Service non qualifié / Travail non soigné",
+    rep_q2: "⏰ Absence ou retard au rendez-vous",
+    rep_q3: "📞 Numéro injoignable ou fermé",
+    rep_q4: "💰 Augmentation injustifiée du prix convenu",
+    rep_q5: "🗣️ Comportement inapproprié ou impoli",
+    rep_btn_cancel: "Annuler",
+    rep_btn_confirm: "Confirmer"
   },
   ar: {
     sub: "ابحث عن أفضل الحرفيين",
@@ -584,7 +593,16 @@ var T={
     tm_p3_d: "كرافتيسون دليل للربط بين الأطراف. الاتفاقات النهائية تلزم الزبون والحرفي مباشرة.",
     tm_note: "بالضغط على 'أوافق'، فأنت تؤكد موافقتك على شروط الاستخدام.",
     tm_acc: "أوافق وألتزم",
-    tm_dec: "رفض"
+    tm_dec: "رفض",
+    rep_modal_title: "🚨 إبلاغ عن الحرفي",
+    rep_modal_desc: "اختر سبب الشكوى (سيتم إرسال إنذار تلقائي للحرفي):",
+    rep_q1: "🛠️ العمل غير متقن / الخدمة سيئة",
+    rep_q2: "⏰ عدم الحضور أو التأخر عن الموعد",
+    rep_q3: "📞 الرقم لا يجيب أو مغلق باستمرار",
+    rep_q4: "💰 رفع السعر غير المبرر عن المتفق عليه",
+    rep_q5: "🗣️ سلوك غير لائق أو كلام غير محترم",
+    rep_btn_cancel: "إلغاء",
+    rep_btn_confirm: "تأكيد البلاغ"
   },
   en: {
     sub: "Find the best craftsmen near you",
@@ -658,7 +676,16 @@ var T={
     tm_p3_d: "Craftison is a directory platform. Final service agreements directly bind customer and craftsman.",
     tm_note: "By clicking 'I Accept', you agree to our terms of service.",
     tm_acc: "I Accept & Agree",
-    tm_dec: "Decline"
+    tm_dec: "Decline",
+    rep_modal_title: "🚨 Report Craftsman",
+    rep_modal_desc: "Choose the reason for the complaint (an automatic warning will be sent):",
+    rep_q1: "🛠️ Unqualified service / Poor work",
+    rep_q2: "⏰ Absence or delay for appointment",
+    rep_q3: "📞 Number unreachable or switched off",
+    rep_q4: "💰 Unjustified price increase",
+    rep_q5: "🗣️ Inappropriate or rude behavior",
+    rep_btn_cancel: "Cancel",
+    rep_btn_confirm: "Confirm Report"
   },
   es: {
     sub: "Encuentra al mejor artesano",
@@ -732,7 +759,16 @@ var T={
     tm_p3_d: "Craftison conecta usuarios. Los acuerdos obligan a ambas partes.",
     tm_note: "Al hacer clic en 'Acepto', confirma su acuerdo.",
     tm_acc: "Acepto y Comienzo",
-    tm_dec: "Rechazar"
+    tm_dec: "Rechazar",
+    rep_modal_title: "🚨 Reportar Artesano",
+    rep_modal_desc: "Elija el motivo de la queja (se enviará una advertencia automática):",
+    rep_q1: "🛠️ Servicio no cualificado / Mal trabajo",
+    rep_q2: "⏰ Ausencia o retraso en la cita",
+    rep_q3: "📞 Número inalcanzable o apagado",
+    rep_q4: "💰 Aumento de precio injustificado",
+    rep_q5: "🗣️ Comportamiento inadecuado",
+    rep_btn_cancel: "Cancelar",
+    rep_btn_confirm: "Confirmar"
   },
   it: {
     sub: "Trova il miglior artigiano",
@@ -806,7 +842,16 @@ var T={
     tm_p3_d: "Craftison collega gli utenti. Gli accordi impegnano direttamente le parti.",
     tm_note: "Cliccando su 'Accetto', confermi il tuo accordo.",
     tm_acc: "Accetto e Inizio",
-    tm_dec: "Rifiuta"
+    tm_dec: "Rifiuta",
+    rep_modal_title: "🚨 Segnala Artigiano",
+    rep_modal_desc: "Scegli il motivo del reclamo (verrà inviato un avviso automatico):",
+    rep_q1: "🛠️ Servizio non qualificato / Lavoro scarso",
+    rep_q2: "⏰ Assenza o ritardo all'appuntamento",
+    rep_q3: "📞 Numero irrangiungibile o spento",
+    rep_q4: "💰 Aumento di prezzo ingiustificato",
+    rep_q5: "🗣️ Comportamento inappropriato",
+    rep_btn_cancel: "Annulla",
+    rep_btn_confirm: "Conferma"
   },
   tr: {
     sub: "Yakinindaki en iyi ustayi bul",
@@ -880,7 +925,16 @@ var T={
     tm_p3_d: "Craftison bir baglanti platformudur. Anlasmalar taraflari baglar.",
     tm_note: "Kabul ediyorum'a tiklayarak sartlari onaylamis olursunuz.",
     tm_acc: "Kabul Ediyorum",
-    tm_dec: "Reddet"
+    tm_dec: "Reddet",
+    rep_modal_title: "🚨 Ustayı Bildir",
+    rep_modal_desc: "Şikayet nedenini seçin (otomatik uyarı gönderilecektir):",
+    rep_q1: "🛠️ Niteliksiz hizmet / Kötü iş",
+    rep_q2: "⏰ Randevuya gelmeme veya gecikme",
+    rep_q3: "📞 Numara ulaşılmaz veya kapalı",
+    rep_q4: "💰 Haksız fiyat artışı",
+    rep_q5: "🗣️ Uygunsuz veya kaba davranış",
+    rep_btn_cancel: "İptal",
+    rep_btn_confirm: "Onayla"
   },
   nl: {
     sub: "Vind de beste vakman bij jou",
@@ -954,7 +1008,16 @@ var T={
     tm_p3_d: "Craftison verbindt partijen. Overeenkomsten binden direct.",
     tm_note: "Door op 'Ik accepteer' te klikken gaat u akkoord.",
     tm_acc: "Ik accepteer & Begin",
-    tm_dec: "Weigeren"
+    tm_dec: "Weigeren",
+    rep_modal_title: "🚨 Vakman Melden",
+    rep_modal_desc: "Kies de reden van de klacht (er wordt een automatische waarschuwing verzonden):",
+    rep_q1: "🛠️ Ongekwalificeerde service / Slecht werk",
+    rep_q2: "⏰ Afwezigheid of vertraging bij afspraak",
+    rep_q3: "📞 Nummer onbereikbaar of uit",
+    rep_q4: "💰 Onterechte prijsverhoging",
+    rep_q5: "🗣️ Ongepast of onbeleefd gedrag",
+    rep_btn_cancel: "Annuleren",
+    rep_btn_confirm: "Bevestigen"
   },
   zh: {
     sub: "在您附近找到最好的工匠",
@@ -1028,7 +1091,16 @@ var T={
     tm_p3_d: "Craftison 是撮合平台，最终协议约束双方。",
     tm_note: "点击“接受”即表示同意条款。",
     tm_acc: "接受并开始",
-    tm_dec: "拒绝"
+    tm_dec: "拒绝",
+    rep_modal_title: "🚨 举报工匠",
+    rep_modal_desc: "选择投诉原因（将发送自动警告）：",
+    rep_q1: "🛠️ 服务不合格 / 做工差",
+    rep_q2: "⏰ 预约缺席或迟到",
+    rep_q3: "📞 号码无法接通或关机",
+    rep_q4: "💰 无理加价",
+    rep_q5: "🗣️ 不当或无礼行为",
+    rep_btn_cancel: "取消",
+    rep_btn_confirm: "确认"
   },
   hi: {
     sub: "अपने पास का सबसे अच्छा कारीगर खोजें",
@@ -1102,7 +1174,16 @@ var T={
     tm_p3_d: "Craftison एक कनेक्टिंग प्लेटफॉर्म है। अंतिम समझौते सीधे बाध्यकारी हैं।",
     tm_note: "'स्वीकार करें' पर क्लिक करके आप सहमत होते हैं।",
     tm_acc: "स्वीकार करें और शुरू करें",
-    tm_dec: "अस्वीकार करें"
+    tm_dec: "अस्वीकार करें",
+    rep_modal_title: "🚨 कारीगर की रिपोर्ट करें",
+    rep_modal_desc: "शिकायत का कारण चुनें (स्वचालित चेतावनी भेजी जाएगी):",
+    rep_q1: "🛠️ अयोग्य सेवा / खराब काम",
+    rep_q2: "⏰ नियुक्ति में अनुपस्थिति या देरी",
+    rep_q3: "📞 नंबर उपलब्ध नहीं है",
+    rep_q4: "💰 अनुचित मूल्य वृद्धि",
+    rep_q5: "🗣️ अनुचित या अशिष्ट व्यवहार",
+    rep_btn_cancel: "रद्द करें",
+    rep_btn_confirm: "पुष्टि करें"
   },
   de: {
     sub: "Finden Sie den besten Handwerker in Ihrer Nahe",
@@ -1176,7 +1257,16 @@ var T={
     tm_p3_d: "Craftison verbindet. Vereinbarungen binden direkt.",
     tm_note: "Mit 'Akzeptieren' stimmen Sie zu.",
     tm_acc: "Akzeptieren & Starten",
-    tm_dec: "Ablehnen"
+    tm_dec: "Ablehnen",
+    rep_modal_title: "🚨 Handwerker melden",
+    rep_modal_desc: "Wählen Sie den Grund für die Beschwerde (eine automatische Warnung wird gesendet):",
+    rep_q1: "🛠️ Unqualifizierter Service / Schlechte Arbeit",
+    rep_q2: "⏰ Abwesenheit oder Verspätung",
+    rep_q3: "📞 Nummer nicht erreichbar oder ausgeschaltet",
+    rep_q4: "💰 Ungerechtfertigte Preiserhöhung",
+    rep_q5: "🗣️ Unangemessenes Verhalten",
+    rep_btn_cancel: "Abbrechen",
+    rep_btn_confirm: "Bestätigen"
   },
   pt: {
     sub: "Encontre o melhor artesao perto de voce",
@@ -1250,7 +1340,16 @@ var T={
     tm_p3_d: "Craftison e uma plataforma de conexao. Acordos vinculam as partes.",
     tm_note: "Ao clicar em 'Aceitar', voce concorda com os termos.",
     tm_acc: "Aceitar e Comecar",
-    tm_dec: "Recusar"
+    tm_dec: "Recusar",
+    rep_modal_title: "🚨 Denunciar Artesão",
+    rep_modal_desc: "Escolha o motivo da reclamação (um aviso automático será enviado):",
+    rep_q1: "🛠️ Serviço não qualificado / Trabalho ruim",
+    rep_q2: "⏰ Ausência ou atraso no compromisso",
+    rep_q3: "📞 Número inalcançável ou desligado",
+    rep_q4: "💰 Aumento de preço injustificado",
+    rep_q5: "🗣️ Comportamento inadequado",
+    rep_btn_cancel: "Cancelar",
+    rep_btn_confirm: "Confirmar"
   }
 };
 
@@ -1319,7 +1418,7 @@ var CRAFTS=[
 {id:50,fr:"Videographie",ar:"تصوير فيديو",en:"Videography",es:"Videografia",it:"Videografia",tr:"Video",nl:"Videografie",zh:"录像",hi:"वीडियोग्राफी",de:"Videografie",pt:"Videografia",icon:"🎬",c:"#880E4F",bg:"#FCE4EC"},
 {id:51,fr:"Organisation Evenements",ar:"تنظيم فعاليات",en:"Event Planning",es:"Eventos",it:"Eventi",tr:"Etkinlik",nl:"Evenementen",zh:"活动策划",hi:"इवेंट",de:"Eventorganisation",pt:"Organizacao de Eventos",icon:"🎉",c:"#6A1B9A",bg:"#F3E5F5"},
 {id:52,fr:"Traiteur",ar:"طباخ وتموين",en:"Catering",es:"Catering",it:"Catering",tr:"Catering",nl:"Catering",zh:"餐饮",hi:"कैटरिंग",de:"Catering",pt:"Catering",icon:"👨‍🍳",c:"#BF360C",bg:"#FBE9E7"},
-{id:53,fr:"Patisserie",ar:"حلويات",en:"Pastry",es:"Pasteleria",it:"Pasticceria",tr:"Pastane",nl:"Banketbakkerij",zh:"糕点",hi:"पेस्ट्री",de:"Konditorei",pt:"Confeitaria",icon:"🎂",c:"#E65100",bg:"#FBE9E7"},
+{id:53,fr:"Patisserie",ar:"حلويات",en:"Pastry",es:"Pasteleria",it:"Pasticceria",tr:"Pastane",nl:"Banketbakkerij",zh:"糕点",hi:"पेस्ट्री",de:"Konderei",pt:"Confeitaria",icon:"🎂",c:"#E65100",bg:"#FBE9E7"},
 {id:54,fr:"Cours de Soutien",ar:"دروس خصوصية",en:"Private Tutoring",es:"Clases",it:"Ripetizioni",tr:"Ozel Ders",nl:"Bijles",zh:"家教",hi:"ट्यूटरिंग",de:"Nachhilfe",pt:"Aulas Particulares",icon:"📚",c:"#1565C0",bg:"#E3F2FD"},
 {id:55,fr:"Langues Etrangeres",ar:"لغات اجنبية",en:"Foreign Languages",es:"Idiomas",it:"Lingue",tr:"Yabanci Dil",nl:"Talen",zh:"外语",hi:"भाषाएं",de:"Fremdsprachen",pt:"Idiomas",icon:"🌍",c:"#00695C",bg:"#E0F2F1"},
 {id:56,fr:"Musique",ar:"موسيقى",en:"Music",es:"Musica",it:"Musica",tr:"Muzik",nl:"Muziek",zh:"音乐",hi:"संगीत",de:"Musik",pt:"Musica",icon:"🎵",c:"#AD1457",bg:"#FCE4EC"},
@@ -1511,6 +1610,17 @@ function applyT(){
   set("tm-p3-t",t("tm_p3_t"));set("tm-p3-d",t("tm_p3_d"));
   set("tm-note",t("tm_note"));set("tm-btn-acc",t("tm_acc"));set("tm-btn-dec",t("tm_dec"));
 
+  // ترجمة محتوى نافذة التبليغ المنبثقة ديناميكياً
+  set("rep-modal-title", t("rep_modal_title"));
+  set("rep-modal-desc", t("rep_modal_desc"));
+  set("lbl-rep-q1", t("rep_q1"));
+  set("lbl-rep-q2", t("rep_q2"));
+  set("lbl-rep-q3", t("rep_q3"));
+  set("lbl-rep-q4", t("rep_q4"));
+  set("lbl-rep-q5", t("rep_q5"));
+  set("rep-btn-cancel", t("rep_btn_cancel"));
+  set("rep-btn-confirm", t("rep_btn_confirm"));
+
   document.querySelectorAll(".fi,.fsel").forEach(function(e){
     e.style.direction=T[lang].dir;
     e.style.textAlign=T[lang].dir==="rtl"?"right":"left";
@@ -1659,7 +1769,6 @@ function renderDet(w){
   var bioText = w.bio ? w.bio : (t("bio_empty") || "Contactez l'artisan directement pour les horaires.");
   var bioHtml = '<div class="bio-box"><div class="bio-title">📝 '+(t("bio_lbl")||"A propos & Horaires")+'</div>'+bioText+'</div>';
 
-  // تنبيه إنذار تلقائي يظهر للحرفي إذا تلقى إنذارات
   var warningHtml = "";
   if(currentUser && currentUser.uid === w.id && w.lastWarning){
     warningHtml = '<div style="background:#FFF3E0;border:1px solid #FFE082;border-radius:10px;padding:10px;margin-bottom:10px;font-size:12px;color:#E65100;">⚠️ <b>تنبيه إداري تلقائي:</b> '+w.lastWarning+'</div>';
@@ -1691,7 +1800,6 @@ function renderDet(w){
   b3.textContent="⬆️ "+t("sup")+" ("+(w.supports||0)+")";
   b3.onclick=(function(id){return function(){doSupport(id);};})(w.id);
 
-  // زر التبليغ الجديد مع القائمة المنبثقة
   var bReport=document.createElement("button");bReport.className="btn-r";
   bReport.textContent="🚨 " + t("rep");
   bReport.onclick=function(){confRep(w.id);};
@@ -1838,7 +1946,6 @@ function doRate(n,wid){
   }).then(function(){showToast("⭐ "+t("ok"));}).catch(function(){});
 }
 
-// نظام التبليغ التفاعلي الجديد
 var reportingWorkerId = null;
 function confRep(wid){
   reportingWorkerId = wid;
@@ -1855,13 +1962,14 @@ function closeReportModal(){
 function submitReportAction(){
   if(!reportingWorkerId) return;
   var radios = document.getElementsByName("rep_reason");
-  var selectedReason = "Violation des règles";
+  var selectedKey = "q1";
   for(var i=0; i<radios.length; i++){
     if(radios[i].checked){
-      selectedReason = radios[i].value;
+      selectedKey = radios[i].value;
       break;
     }
   }
+  var selectedReason = t("rep_" + selectedKey) || "Violation des règles";
   var wid = reportingWorkerId;
   closeReportModal();
 
@@ -1872,9 +1980,8 @@ function submitReportAction(){
     var reports=(data.reports||0)+1;
     var update={
       reports:reports,
-      lastWarning: "تنبيه بسبب شكوى: " + selectedReason
+      lastWarning: (lang==="ar" ? "تنبيه بسبب شكوى: " : "Avertissement (Signalement): ") + selectedReason
     };
-    // تجميد تلقائي إذا وصل عدد البلاغات إلى 3 أو أكثر لمدة 5 أيام
     if(reports>=3){
       var dt=new Date();
       dt.setDate(dt.getDate()+5);
@@ -2318,7 +2425,6 @@ document.addEventListener("DOMContentLoaded",function(){
   var e1=document.getElementById("eye1");if(e1)e1.onclick=function(){togglePass("r-pass","eye1");};
   var e2=document.getElementById("eye2");if(e2)e2.onclick=function(){togglePass("r-conf","eye2");};
   var e3=document.getElementById("eye3");if(e3)e3.onclick=function(){togglePass("l-pass","eye3");};
-  $("m-nk").onclick=function(){closeMo();};
   $("chat-send").onclick=function(){sendMsg();};
   $("chat-in").onkeydown=function(e){if(e.key==="Enter")sendMsg();};
   $("apr").onclick=function(){$("av-file").click();};
