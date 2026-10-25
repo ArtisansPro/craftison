@@ -42,6 +42,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .hero-sh{background:rgba(255,255,255,0.18);border:1.5px solid rgba(255,255,255,0.3);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:8px;}
 .hero-sh input{border:none;outline:none;background:transparent;color:#fff;font-size:14px;flex:1;width:100%;}
 .hero-sh input::placeholder{color:rgba(255,255,255,0.6);}
+.req-quick{background:#fff;border-radius:12px;padding:6px 6px 6px 12px;display:flex;align-items:center;gap:6px;margin-top:9px;box-shadow:0 3px 12px rgba(0,0,0,0.18);}
+.req-quick input{border:none;outline:none;background:transparent;color:#1A1A2E;font-size:13px;flex:1;width:100%;min-width:0;}
+.req-quick input::placeholder{color:#888;}
+.req-quick button{background:linear-gradient(135deg,#FF6F00,#E65100);color:#fff;border:none;border-radius:9px;padding:9px 12px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;flex-shrink:0;}
 .stats{display:flex;gap:6px;padding:10px 8px 0;flex-shrink:0;}
 .stat{flex:1;background:#fff;border-radius:12px;padding:9px 4px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.07);}
 .sn{font-size:18px;font-weight:900;color:#1565C0;}
@@ -146,8 +150,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .st2{font-size:18px;font-weight:900;color:#C62828;margin-bottom:8px;}
 .ss2{font-size:13px;color:#888;line-height:1.6;}
 .guest-badge{background:#FFF8E1;border:1px solid #FFE082;border-radius:10px;padding:7px 12px;margin:8px 10px;font-size:11px;color:#795548;text-align:center;}
-.home-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.home-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;}
 .home-action{background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.5);color:#fff;border-radius:20px;padding:7px 10px;font-size:11px;font-weight:800;cursor:pointer;white-space:nowrap;}
+.inbox-badge{display:inline-block;background:#FF1744;color:#fff;border-radius:10px;min-width:18px;height:18px;line-height:18px;text-align:center;font-size:10px;font-weight:900;padding:0 5px;margin-inline-start:4px;}
+
+.req-hint{background:#E3F2FD;border:1px solid #BBDEFB;border-radius:10px;padding:9px 12px;margin:10px 0;font-size:12px;color:#0D47A1;line-height:1.5;}
+.req-card{background:#fff;border-radius:13px;margin:0 9px 9px;padding:13px;box-shadow:0 2px 10px rgba(0,0,0,0.07);position:relative;}
+.req-card.new{border:2px solid #FF6F00;}
+.req-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:6px;}
+.req-who{font-size:12px;font-weight:800;color:#1565C0;}
+.req-time{font-size:10px;color:#888;}
+.req-txt{font-size:13px;line-height:1.6;color:#1A1A2E;white-space:pre-line;word-break:break-word;}
+.req-loc{font-size:11px;color:#666;margin-top:6px;}
+.req-acts{display:flex;gap:8px;margin-top:10px;}
+.req-acts button{flex:1;border:none;border-radius:10px;padding:10px;font-size:12px;font-weight:800;cursor:pointer;color:#fff;}
+.req-call{background:linear-gradient(135deg,#2E7D32,#1B5E20);}
+.req-reply{background:linear-gradient(135deg,#1565C0,#0D47A1);}
 
 .image-viewer{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:3000;display:none;align-items:center;justify-content:center;padding:24px;}
 .image-viewer.show{display:flex;}
@@ -192,20 +210,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div style="font-size:12px;opacity:.85;margin-top:2px;" id="h-sub"></div>
       </div>
       <div class="home-actions">
+        <button class="home-action" id="home-inbox-btn" style="display:none;background:#FF6F00;border-color:#FF6F00;" onclick="openInbox()">📥 <span id="home-inbox-t">Demandes</span><span class="inbox-badge" id="inbox-badge" style="display:none;">0</span></button>
         <button class="home-action" id="home-signup-btn" onclick="goSignupHome()">📝 <span id="home-signup-t">S'inscrire</span></button>
         <button class="home-action" id="home-login-btn" onclick="goLoginHome()">🔑 <span id="home-login-t">Se connecter</span></button>
       </div>
     </div>
     <div class="hero-sh"><span>🔍</span><input id="inp-home" oninput="filterCrafts()"></div>
+    <div class="req-quick">
+      <span>📢</span>
+      <input id="inp-req-quick" onkeydown="if(event.key==='Enter')openRequest($('inp-req-quick').value)">
+      <button id="btn-req-quick" onclick="openRequest($('inp-req-quick').value)">Envoyer</button>
+    </div>
   </div>
-  
-  <!-- زر إرسال طلب عام للحرفيين حسب التخصص والمنطقة -->
-  <div style="padding: 10px 10px 0 10px;">
-    <button onclick="openBroadcastModal()" style="width:100%;background:linear-gradient(135deg,#FF6F00,#E65100);color:#fff;border:none;border-radius:12px;padding:12px;font-size:13px;font-weight:800;cursor:pointer;box-shadow:0 2px 8px rgba(255,111,0,0.3);display:flex;align-items:center;justify-content:center;gap:6px;">
-      <span>📢</span> <span id="btn-broadcast-t">إرسال طلب لجميع حرفيي منطقة معينة</span>
-    </button>
-  </div>
-
   <div class="stats">
     <div class="stat"><div class="sn">100</div><div class="sl" id="sl-crafts"></div></div>
     <div class="stat"><div class="sn" id="sl-wnum">0</div><div class="sl" id="sl-workers"></div></div>
@@ -345,35 +361,42 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-</div>
-
-<!-- نافذة إرسال طلب جماعي للحرفيين حسب التخصص والمنطقة -->
-<div class="mo" id="broadcast-modal">
-  <div class="md">
-    <div class="mt4" id="bc-modal-title">📢 إرسال طلب للحرفيين</div>
-    <div class="mb4" style="margin-bottom:10px;font-size:12px;color:#666;" id="bc-modal-desc">حدد التخصص والمدينة ليصل طلبك لكل الحرفيين المعنيين:</div>
-    
-    <div class="fg" style="margin-bottom:8px;">
-      <label class="fl" id="bc-lbl-craft">التخصص المطلوب</label>
-      <select class="fsel" id="bc-craft-select"></select>
-    </div>
-    <div class="fg" style="margin-bottom:8px;">
-      <label class="fl" id="bc-lbl-city">المدينة / الولاية</label>
-      <input class="fi" id="bc-city-input" placeholder="مثال: وهران، سيدي بلعباس...">
-    </div>
-    <div class="fg" style="margin-bottom:12px;">
-      <label class="fl" id="bc-lbl-msg">نص الطلب أو المشكلة</label>
-      <textarea class="fi" id="bc-msg-input" rows="3" style="resize:none;" placeholder="اكتب تفاصيل طلبك هنا ليصل للحرفيين..."></textarea>
-    </div>
-
-    <div class="mbs">
-      <button class="mbtn mnk" onclick="closeBroadcastModal()">إلغاء</button>
-      <button class="mbtn" style="background:#1565C0;color:#fff;" onclick="submitBroadcastRequest()">إرسال الطلب</button>
+<!-- شاشة جديدة: إرسال طلب خدمة من الزبون -->
+<div id="s-req" class="screen">
+  <div class="lb-bar" id="lb6"></div>
+  <div class="hdr" style="background:linear-gradient(135deg,#FF6F00,#E65100);">
+    <button class="back" id="bk6"></button>
+    <div class="hdr-t" id="req-t">📢 Demande de service</div>
+  </div>
+  <div class="fsc" style="padding-top:10px;">
+    <div id="e-req"></div>
+    <div class="req-hint" id="req-hint"></div>
+    <div class="fg"><label class="fl" id="l-req-text"></label><textarea class="fi" id="rq-text" rows="4" style="resize:none;" oninput="onReqTextInput()"></textarea></div>
+    <div class="fg"><label class="fl" id="l-req-craft"></label><select class="fsel" id="rq-met" onchange="rqManualCraft=true;"></select></div>
+    <div class="fg"><label class="fl" id="l-req-pay"></label><select class="fsel" id="rq-pay"></select></div>
+    <div class="fg"><label class="fl" id="l-req-vil"></label><input class="fi" id="rq-vil"></div>
+    <div class="fg"><label class="fl" id="l-req-com"></label><input class="fi" id="rq-com"></div>
+    <div class="fg"><label class="fl" id="l-req-tel"></label><input class="fi" id="rq-tel" type="tel" placeholder="06XXXXXXXX"></div>
+    <div class="sbtn-wrap">
+      <button class="sbtn" id="btn-req-send" style="background:linear-gradient(135deg,#FF6F00,#E65100);box-shadow:0 4px 14px rgba(230,81,0,0.4);" onclick="submitRequest()"></button>
     </div>
   </div>
 </div>
 
-<!-- نافذة التبليغ المنبثقة الذكية -->
+<!-- شاشة جديدة: صندوق طلبات الحرفي -->
+<div id="s-inbox" class="screen">
+  <div class="lb-bar" id="lb7"></div>
+  <div class="hdr" style="background:linear-gradient(135deg,#FF6F00,#E65100);">
+    <button class="back" id="bk7"></button>
+    <div class="hdr-t" id="inbox-t">📥 Demandes</div>
+  </div>
+  <div class="li" id="inbox-sub" style="padding-top:10px;"></div>
+  <div class="scroll" id="inbox-list"></div>
+</div>
+
+</div>
+
+<!-- نافذة التبليغ المنبثقة الذكية (مترجمة بالكامل تلقائياً حسب لغة التطبيق) -->
 <div class="mo" id="report-modal">
   <div class="md">
     <div class="mt4" id="rep-modal-title">🚨 إبلاغ عن الحرفي</div>
@@ -553,7 +576,35 @@ var T={
     rep_q4: "💰 Augmentation injustifiée du prix convenu",
     rep_q5: "🗣️ Comportement inapproprié ou impoli",
     rep_btn_cancel: "Annuler",
-    rep_btn_confirm: "Confirmer"
+    rep_btn_confirm: "Confirmer",
+    rq_quick_ph: "Ex : je cherche un plombier...",
+    rq_quick_btn: "Envoyer",
+    rq_title: "📢 Demande de service",
+    rq_hint: "Écrivez votre besoin : il sera envoyé aux artisans du métier choisi qui travaillent dans votre zone.",
+    rq_l_text: "Votre demande *",
+    rq_text_ph: "Ex : j'ai une fuite d'eau dans la cuisine, je cherche un plombier aujourd'hui...",
+    rq_l_craft: "Métier recherché *",
+    rq_l_pay: "Pays *",
+    rq_l_vil: "Ville *",
+    rq_l_com: "Commune / Quartier",
+    rq_l_tel: "Votre téléphone (optionnel, pour être rappelé)",
+    rq_btn: "📤 Envoyer ma demande",
+    rq_err_text: "Écrivez votre demande (5 caractères minimum)",
+    rq_err_fields: "Choisissez le métier, le pays et la ville",
+    rq_wait: "Veuillez patienter avant d'envoyer une autre demande",
+    rq_sent: "✅ Demande envoyée aux artisans de votre zone",
+    rq_sent_n: "✅ Demande envoyée à {n} artisan(s) de votre zone",
+    rq_sent_0: "✅ Demande publiée. Aucun artisan inscrit dans votre zone pour le moment",
+    inbox_btn: "Demandes",
+    inbox_t: "📥 Demandes des clients",
+    inbox_sub: "Demandes dans votre métier et votre zone",
+    inbox_empty: "Aucune demande pour le moment",
+    inbox_empty_s: "Les nouvelles demandes de votre zone apparaîtront ici",
+    inbox_call: "📞 Appeler",
+    inbox_reply: "💬 Répondre",
+    inbox_new: "NOUVEAU",
+    inbox_anon: "Client",
+    inbox_err: "Erreur de chargement"
   },
   ar: {
     sub: "ابحث عن أفضل الحرفيين",
@@ -636,7 +687,35 @@ var T={
     rep_q4: "💰 رفع السعر غير المبرر عن المتفق عليه",
     rep_q5: "🗣️ سلوك غير لائق أو كلام غير محترم",
     rep_btn_cancel: "إلغاء",
-    rep_btn_confirm: "تأكيد البلاغ"
+    rep_btn_confirm: "تأكيد البلاغ",
+    rq_quick_ph: "مثال: أريد سباكاً...",
+    rq_quick_btn: "إرسال",
+    rq_title: "📢 طلب خدمة",
+    rq_hint: "اكتب ما تحتاجه، وسيصل طلبك إلى الحرفيين أصحاب الاختصاص المطلوب في منطقتك.",
+    rq_l_text: "طلبك *",
+    rq_text_ph: "مثال: عندي تسرب مياه في المطبخ وأحتاج سباكاً اليوم...",
+    rq_l_craft: "الحرفة المطلوبة *",
+    rq_l_pay: "البلد *",
+    rq_l_vil: "المدينة *",
+    rq_l_com: "الحي / البلدية",
+    rq_l_tel: "رقم هاتفك (اختياري ليتصل بك الحرفي)",
+    rq_btn: "📤 إرسال الطلب",
+    rq_err_text: "اكتب طلبك (5 أحرف على الأقل)",
+    rq_err_fields: "اختر الحرفة والبلد والمدينة",
+    rq_wait: "يرجى الانتظار قليلاً قبل إرسال طلب آخر",
+    rq_sent: "✅ تم إرسال طلبك إلى الحرفيين في منطقتك",
+    rq_sent_n: "✅ تم إرسال طلبك إلى {n} حرفي في منطقتك",
+    rq_sent_0: "✅ تم نشر طلبك. لا يوجد حرفيون مسجلون في منطقتك حالياً",
+    inbox_btn: "الطلبات",
+    inbox_t: "📥 طلبات الزبائن",
+    inbox_sub: "الطلبات الخاصة بحرفتك وفي منطقتك",
+    inbox_empty: "لا توجد طلبات حالياً",
+    inbox_empty_s: "ستظهر هنا الطلبات الجديدة في منطقتك",
+    inbox_call: "📞 اتصل",
+    inbox_reply: "💬 رد",
+    inbox_new: "جديد",
+    inbox_anon: "زبون",
+    inbox_err: "خطأ في التحميل"
   },
   en: {
     sub: "Find the best craftsmen near you",
@@ -719,7 +798,35 @@ var T={
     rep_q4: "💰 Unjustified price increase",
     rep_q5: "🗣️ Inappropriate or rude behavior",
     rep_btn_cancel: "Cancel",
-    rep_btn_confirm: "Confirm Report"
+    rep_btn_confirm: "Confirm Report",
+    rq_quick_ph: "e.g. I need a plumber...",
+    rq_quick_btn: "Send",
+    rq_title: "📢 Service Request",
+    rq_hint: "Write what you need: your request will be sent to the craftsmen of the chosen trade working in your area.",
+    rq_l_text: "Your request *",
+    rq_text_ph: "e.g. I have a water leak in my kitchen and need a plumber today...",
+    rq_l_craft: "Craft needed *",
+    rq_l_pay: "Country *",
+    rq_l_vil: "City *",
+    rq_l_com: "District / Neighborhood",
+    rq_l_tel: "Your phone (optional, so they can call you)",
+    rq_btn: "📤 Send my request",
+    rq_err_text: "Write your request (5 characters minimum)",
+    rq_err_fields: "Choose the craft, country and city",
+    rq_wait: "Please wait before sending another request",
+    rq_sent: "✅ Request sent to craftsmen in your area",
+    rq_sent_n: "✅ Request sent to {n} craftsman(men) in your area",
+    rq_sent_0: "✅ Request posted. No craftsmen registered in your area yet",
+    inbox_btn: "Requests",
+    inbox_t: "📥 Client Requests",
+    inbox_sub: "Requests for your craft in your area",
+    inbox_empty: "No requests yet",
+    inbox_empty_s: "New requests from your area will appear here",
+    inbox_call: "📞 Call",
+    inbox_reply: "💬 Reply",
+    inbox_new: "NEW",
+    inbox_anon: "Client",
+    inbox_err: "Loading error"
   },
   es: {
     sub: "Encuentra al mejor artesano",
@@ -1398,7 +1505,7 @@ var CRAFTS=[
 {id:92,fr:"Pizza & Fast Food",ar:"بيتزا وأكل سريع",en:"Pizza & Fast Food",es:"Pizza y Comida Rapida",it:"Pizza & Fast Food",tr:"Pizza ve Fast Food",nl:"Pizza & Fastfood",zh:"比萨与快餐",hi:"पिज़्ज़ा और फ़ास्ट फ़ूड",de:"Pizza & Fast Food",pt:"Pizza & Fast Food",icon:"🍕",c:"#E65100",bg:"#FBE9E7"},
 {id:93,fr:"Depannage & Remorquage Auto",ar:"إسعاف وسحب السيارات (دباناج)",en:"Car Towing & Recovery",es:"Grua de Coches",it:"Soccorso Stradale",tr:"Arac Cekici",nl:"Autosleepdienst",zh:"汽车拖车",hi:"कार टोइंग",de:"Pannenhilfe & Abschleppdienst",pt:"Guincho de Carros",icon:"🚙",c:"#BF360C",bg:"#FBE9E7"},
 {id:94,fr:"Remorquage Poids Lourd",ar:"سحب وإسعاف الشاحنات الثقيلة",en:"Heavy Truck Towing",es:"Grua Camiones",it:"Soccorso Camion",tr:"Agir Vasıta Cekici",nl:"Zware Vrachtwagen Sleepdienst",zh:"重型卡车拖车",hi:"भारी ट्रक टोइंग",de:"LKW Abschleppdienst",pt:"Guincho de Caminhao",icon:"🚛",c:"#1565C0",bg:"#E3F2FD"},
-{id:95,fr:"Mecanique Camions",ar:"ميكانيك الشاحنات",en:"Truck Mechanics",es:"Mecanica Camiones",it:"Meccanica Camion",tr:"Kamyon Tamiri",nl:"Vrachtwagen Monteur",zh:"卡车修理",hi:"ट्रक मैकेनिक्स",de:"LKW Mechaniker",pt:"Mica de Caminhoes",icon:"🔧",c:"#37474F",bg:"#ECEFF1"},
+{id:95,fr:"Mecanique Camions",ar:"ميكانيك الشاحنات",en:"Truck Mechanics",es:"Mecanica Camiones",it:"Meccanica Camion",tr:"Kamyon Tamiri",nl:"Vrachtwagen Monteur",zh:"卡车修理",hi:"ट्रक मैकेनिक्स",de:"LKW Mechaniker",pt:"Mecanica de Caminhoes",icon:"🔧",c:"#37474F",bg:"#ECEFF1"},
 {id:96,fr:"Electricite Camions",ar:"كهرباء الشاحنات",en:"Truck Electricity",es:"Electricidad Camiones",it:"Elettricita Camion",tr:"Kamyon Elektrik",nl:"Vrachtwagen Elektra",zh:"卡车电路",hi:"ट्रक बिजली",de:"LKW Elektrik",pt:"Eletricista de Caminhoes",icon:"⚡",c:"#F57C00",bg:"#FFF3E0"},
 {id:97,fr:"Montage Meubles",ar:"تركيب الأثاث والديكور",en:"Furniture Assembly",es:"Montaje Muebles",it:"Montaggio Mobili",tr:"Mobilya Montaj",nl:"Meubelmontage",zh:"家具组装",hi:"फर्नीचर असेंबली",de:"Mabelmontage",pt:"Montagem de Moveis",icon:"🪛",c:"#5D4037",bg:"#EFEBE9"},
 {id:98,fr:"Forage Puits & Pompes",ar:"حفر الأبار ومضخات المياه",en:"Well Drilling & Pumps",es:"Perforacion Pozos",it:"Trivellazione Pozzi",tr:"Kuyu Sondaj",nl:"Putboring",zh:"钻井与水泵",hi:"कुआं ड्रिलिंग",de:"Brunnenbau",pt:"Perfuracao de Pocos",icon:"🚰",c:"#0288D1",bg:"#E1F5FE"},
@@ -1521,6 +1628,14 @@ var editGalFiles = [];
 var editExistingGallery = [];
 var targetEditingWorkerId = null;
 
+/* ===== متغيرات نظام طلبات الزبائن ===== */
+var rqManualCraft = false;
+var myWorker = null;
+var inboxUnsub = null;
+var inboxRequests = [];
+var REQ_MAX_AGE_MS = 7*24*60*60*1000;
+var REQ_COOLDOWN_MS = 60*1000;
+
 function checkFirstLaunchTerms(){
   var accepted = localStorage.getItem("craftison_terms_accepted");
   if(!accepted){
@@ -1553,7 +1668,7 @@ function getGuestId(){
 }
 var GUEST_ID = getGuestId();
 
-function t(k){return(T[lang]&&T[lang][k])||"";}
+function t(k){return(T[lang]&&T[lang][k])||(T.en&&T.en[k])||"";}
 function $(id){return document.getElementById(id);}
 function set(id,v){var e=$(id);if(e)e.textContent=v;}
 function ph(id,v){var e=$(id);if(e)e.placeholder=v;}
@@ -1562,6 +1677,7 @@ function ini(n){var s=(n||"").split(" ");return(s.map(function(x){return x[0]||"
 function ac(id){return AC[Math.abs((id+"").charCodeAt(0))%AC.length];}
 function showToast(msg){var e=$("toast");e.textContent=msg;e.classList.add("show");setTimeout(function(){e.classList.remove("show");},2500);}
 function showErr(id,msg){$(id).innerHTML='<div class="errmsg">'+msg+"</div>";}
+function esc(s){return (s==null?"":String(s)).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;");}
 
 function currentScreenName(){
   var active=document.querySelector(".screen.active");
@@ -1620,6 +1736,7 @@ function setLang(l){
   buildLB();applyT();renderCrafts(CRAFTS);
   if(craft)loadWorkers(craft.id);
   if(worker)renderDet(worker);
+  if(currentScreenName()==="inbox")renderInbox();
 }
 
 function applyT(){
@@ -1637,9 +1754,6 @@ function applyT(){
   set("av-hint",t("ah"));
   var hlbt=$("home-login-t");if(hlbt)hlbt.textContent=t("tl");
   var hsbt=$("home-signup-t");if(hsbt)hsbt.textContent=t("tr2");
-  
-  var btnBcT = $("btn-broadcast-t");
-  if(btnBcT) btnBcT.textContent = lang==="ar" ? "إرسال طلب عام للحرفيين حسب التخصص والمنطقة" : "Envoyer une demande aux artisans de votre zone";
 
   set("tm-sub",t("tm_sub"));set("tm-welcome",t("tm_welcome"));
   set("tm-p1-t",t("tm_p1_t"));set("tm-p1-d",t("tm_p1_d"));
@@ -1657,10 +1771,30 @@ function applyT(){
   set("rep-btn-cancel", t("rep_btn_cancel"));
   set("rep-btn-confirm", t("rep_btn_confirm"));
 
+  /* ترجمة عناصر نظام الطلبات */
+  ph("inp-req-quick", t("rq_quick_ph"));
+  set("btn-req-quick", t("rq_quick_btn"));
+  set("home-inbox-t", t("inbox_btn"));
+  set("bk6", t("bk"));set("bk7", t("bk"));
+  set("req-t", t("rq_title"));
+  set("req-hint", t("rq_hint"));
+  set("l-req-text", t("rq_l_text"));
+  ph("rq-text", t("rq_text_ph"));
+  set("l-req-craft", t("rq_l_craft"));
+  set("l-req-pay", t("rq_l_pay"));
+  set("l-req-vil", t("rq_l_vil"));
+  set("l-req-com", t("rq_l_com"));
+  set("l-req-tel", t("rq_l_tel"));
+  set("btn-req-send", t("rq_btn"));
+  set("inbox-t", t("inbox_t"));
+  set("inbox-sub", t("inbox_sub"));
+
   document.querySelectorAll(".fi,.fsel").forEach(function(e){
     e.style.direction=T[lang].dir;
     e.style.textAlign=T[lang].dir==="rtl"?"right":"left";
   });
+  var rqq=$("inp-req-quick");
+  if(rqq){rqq.style.direction=T[lang].dir;rqq.style.textAlign=T[lang].dir==="rtl"?"right":"left";}
   loadTotalStats();
 }
 
@@ -1810,18 +1944,8 @@ function renderDet(w){
     warningHtml = '<div style="background:#FFF3E0;border:1px solid #FFE082;border-radius:10px;padding:10px;margin-bottom:10px;font-size:12px;color:#E65100;">⚠️ <b>تنبيه إداري تلقائي:</b> '+w.lastWarning+'</div>';
   }
 
-  // قسم الطلبات الخاصة الواردة لهذا الحرفي حسب تخصصه ومنطقته
-  var incomingRequestsHtml = "";
-  if(currentUser && currentUser.uid === w.id){
-    incomingRequestsHtml = '<div id="craftsman-requests-box" style="background:#F0F4F8;border:1.5px solid #1565C0;border-radius:12px;padding:12px;margin-bottom:12px;">'+
-      '<div style="font-weight:800;font-size:12px;color:#1565C0;margin-bottom:6px;">📥 الطلبات العامة الواردة لـ ('+w.city+') في تخصصك:</div>'+
-      '<div id="craftsman-requests-list" style="font-size:11px;color:#555;">جاري تحميل الطلبات...</div>'+
-    '</div>';
-  }
-
   dc.innerHTML=
     warningHtml +
-    incomingRequestsHtml +
     '<div class="dav" style="background:'+ac(w.id)+'">'+(w.photoURL?'<img src="'+w.photoURL+'">':"")+(w.photoURL?"":ini(w.name||""))+"</div>"+
     '<div class="dn">'+(w.name||"")+"</div>"+
     '<div class="dbw"><span class="dbg" style="background:'+c.bg+";color:"+c.c+'">'+c.icon+" "+cn(c)+"</span></div>"+
@@ -1833,10 +1957,6 @@ function renderDet(w){
     '<div class="ir"><div class="iri">📞</div><div><div class="irl">'+t("ph")+'</div><div class="irv">'+(w.phone||"")+"</div></div></div>"+
     bioHtml;
   
-  if(currentUser && currentUser.uid === w.id){
-    loadCraftsmanBroadcastRequests(w.craftId, w.city);
-  }
-
   var profileImage=dc.querySelector(".dav img");
   if(profileImage) bindZoomImage(profileImage, [w.photoURL], 0);
 
@@ -1908,77 +2028,6 @@ function renderDet(w){
     bindZoomImage(img, galList, idx);
   });
   el.appendChild(gc);
-}
-
-// دالة جلب الطلبات العامة للحرفي حسب تخصصه وكونه في نفس المدينة
-function loadCraftsmanBroadcastRequests(craftId, city){
-  var listEl = $("craftsman-requests-list");
-  if(!listEl) return;
-  DB.collection("broadcast_requests")
-    .where("craftId", "==", craftId)
-    .get()
-    .then(function(snap){
-      var requests = [];
-      snap.forEach(function(d){
-        var r = d.data();
-        // مطابقة المدينة إذا وجد حقل المدينة
-        if(!r.city || !city || r.city.trim().toLowerCase() === city.trim().toLowerCase()){
-          requests.push(r);
-        }
-      });
-      if(!requests.length){
-        listEl.innerHTML = '<span style="color:#888;">لا توجد طلبات جديدة حالياً في منطقتك.</span>';
-        return;
-      }
-      listEl.innerHTML = requests.map(function(req){
-        return '<div style="background:#fff;padding:8px;border-radius:8px;margin-bottom:6px;border:1px solid #E2E8F0;">'+
-          '<div><b>الطلب:</b> '+req.message+'</div>'+
-          '<div style="font-size:10px;color:#888;margin-top:2px;">📍 المدينة: '+(req.city||"الكل")+' | 🕒 الوقت: قريباً</div>'+
-        '</div>';
-      }).join("");
-    }).catch(function(){
-      listEl.innerHTML = '<span style="color:#C62828;">تعذر تحميل الطلبات.</span>';
-    });
-}
-
-// فتح نافذة إرسال طلب عام للزبون
-function openBroadcastModal(){
-  var sel = $("bc-craft-select");
-  if(sel){
-    sel.innerHTML='<option value="">'+t("cp")+"</option>"+CRAFTS.map(function(c){return'<option value="'+c.id+'">'+c.icon+" "+cn(c)+"</option>";}).join("");
-  }
-  $("bc-city-input").value = "";
-  $("bc-msg-input").value = "";
-  $("broadcast-modal").classList.add("show");
-}
-
-function closeBroadcastModal(){
-  $("broadcast-modal").classList.remove("show");
-}
-
-// إرسال الطلب العام لقاعدة البيانات ليطلع عليه الحرفيون المعنيون
-function submitBroadcastRequest(){
-  var craftId = parseInt($("bc-craft-select").value)||0;
-  var city = $("bc-city-input").value.trim();
-  var message = $("bc-msg-input").value.trim();
-
-  if(!craftId || !message){
-    showToast(lang==="ar" ? "يرجى اختيار التخصص وكتابة تفاصيل الطلب" : "Veuillez choisir le métier et le message");
-    return;
-  }
-
-  DB.collection("broadcast_requests").add({
-    craftId: craftId,
-    city: city,
-    message: message,
-    clientId: GUEST_ID,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp()
-  }).then(function(){
-    showToast(lang==="ar" ? "📢 تم إرسال طلبك بنجاح إلى الحرفيين المعنيين!" : "Demande envoyée avec succès !");
-    closeBroadcastModal();
-  }).catch(function(err){
-    showToast("Erreur: " + err.message);
-  });
 }
 
 function bindZoomImage(img, imagesArray, index){
@@ -2414,6 +2463,8 @@ function saveProfileChanges(){
       worker = Object.assign({id:snap.id}, snap.data());
       renderDet(worker);
       goBack();
+      /* تحديث بيانات الحرفي الحالي (المنطقة/الحرفة) لصندوق الطلبات */
+      if(currentUser && snap.id===currentUser.uid){ loadMyWorkerProfile(currentUser); }
     }
   }).catch(function(e){
     showErr("e-edit", "Erreur: "+e.message);
@@ -2482,6 +2533,7 @@ function doReg(){
     $("r-tel").value="";$("r-vil").value="";$("r-com").value="";$("r-pay").value="";$("r-met").value="";$("r-bio").value="";
     $("apr").innerHTML="&#128247;";avFile=null;galFiles=[];buildGalUp();
     loadWorkers(craftId);go("craft");
+    loadMyWorkerProfile(cred.user);
   }).catch(function(e){
     showErr("e-reg",e.code==="auth/email-already-in-use"?t("ee"):e.message);
   }).finally(function(){$("btn-reg").textContent=t("br2");});
@@ -2513,7 +2565,288 @@ function doLog(){
   }).finally(function(){$("btn-log").textContent=t("bl");});
 }
 
-AUTH.onAuthStateChanged(function(user){currentUser=user;});
+/* ==========================================================
+   نظام طلبات الزبائن (Demandes de service)
+   - الزبون يكتب طلبه ← يُحفظ في مجموعة "requests"
+   - الحرفي (نفس الحرفة + نفس المدينة/البلد) يرى الطلب في صندوقه
+   ========================================================== */
+
+function normAr(s){
+  return normalizeSearchText(s)
+    .replace(/[\u064B-\u065F\u0670]/g,"")
+    .replace(/[أإآ]/g,"ا")
+    .replace(/ة/g,"ه")
+    .replace(/ى/g,"ي");
+}
+
+/* اكتشاف الحرفة تلقائياً من نص الزبون (مثال: "أريد سباكاً" ← سباكة) */
+function detectCraft(text){
+  var words = normAr(text).split(/[\s,.;:!?؟،\-_\/()]+/).filter(function(w){return w.length>=4;});
+  if(!words.length) return 0;
+  for(var wi=0; wi<words.length; wi++){
+    var w = words[wi];
+    var stem = w.slice(0, Math.max(4, w.length-3));
+    for(var ci=0; ci<CRAFTS.length; ci++){
+      var c = CRAFTS[ci];
+      for(var key in c){
+        if(typeof c[key] !== "string") continue;
+        if(key==="icon"||key==="c"||key==="bg") continue;
+        var n = normAr(c[key]);
+        if(n && n.indexOf(stem) !== -1) return c.id;
+      }
+    }
+  }
+  return 0;
+}
+
+function sameArea(aCountry, aCity, bCountry, bCity){
+  var ac_ = normAr(aCountry), bc_ = normAr(bCountry);
+  var ai = normAr(aCity), bi = normAr(bCity);
+  if(ac_ && bc_ && ac_ !== bc_) return false;
+  if(ai && bi){
+    return ai === bi || ai.indexOf(bi) !== -1 || bi.indexOf(ai) !== -1;
+  }
+  return true;
+}
+
+function buildRequestForm(){
+  var met=$("rq-met");
+  if(met){
+    met.innerHTML='<option value="">'+t("cp")+"</option>"+CRAFTS.map(function(c){return'<option value="'+c.id+'">'+c.icon+" "+cn(c)+"</option>";}).join("");
+  }
+  var pay=$("rq-pay");
+  if(pay){
+    pay.innerHTML='<option value="">'+t("cpay")+"</option>"+COUNTRIES.map(function(c){return'<option value="'+c+'">'+c+"</option>";}).join("");
+  }
+}
+
+function openRequest(prefill){
+  buildRequestForm();
+  rqManualCraft=false;
+  $("e-req").innerHTML="";
+  $("rq-text").value=(prefill||"").trim();
+  $("rq-met").value="";
+  $("rq-tel").value="";
+
+  /* استرجاع آخر موقع استعمله الزبون، أو موقع الحرفي المسجل */
+  var loc={};
+  try{loc=JSON.parse(localStorage.getItem("craftison_req_loc")||"{}");}catch(e){loc={};}
+  if(!loc.country && myWorker){loc={country:myWorker.country||"",city:myWorker.city||"",commune:myWorker.commune||""};}
+  $("rq-pay").value=loc.country||"";
+  $("rq-vil").value=loc.city||"";
+  $("rq-com").value=loc.commune||"";
+  if(loc.phone) $("rq-tel").value=loc.phone;
+
+  /* اختيار الحرفة تلقائياً إن كانت الصفحة الحالية صفحة حرفة، أو من النص */
+  if(craft && currentScreenName()==="craft"){ $("rq-met").value=craft.id; rqManualCraft=true; }
+  var det=detectCraft($("rq-text").value);
+  if(det && !rqManualCraft){ $("rq-met").value=det; }
+
+  var q=$("inp-req-quick"); if(q) q.value="";
+  go("req");
+}
+
+function onReqTextInput(){
+  if(rqManualCraft) return;
+  var det=detectCraft($("rq-text").value);
+  if(det) $("rq-met").value=det;
+}
+
+function submitRequest(){
+  var text=$("rq-text").value.trim();
+  var craftId=parseInt($("rq-met").value)||0;
+  var country=$("rq-pay").value;
+  var city=$("rq-vil").value.trim();
+  var commune=$("rq-com").value.trim();
+  var phone=$("rq-tel").value.trim();
+
+  if(text.length<5){showErr("e-req",t("rq_err_text"));return;}
+  if(!craftId||!country||!city){showErr("e-req",t("rq_err_fields"));return;}
+
+  var last=parseInt(localStorage.getItem("craftison_req_last")||"0")||0;
+  if(Date.now()-last<REQ_COOLDOWN_MS){showErr("e-req",t("rq_wait"));return;}
+
+  var clientId=currentUser?currentUser.uid:GUEST_ID;
+  var clientName=currentUser?(currentUser.displayName||currentUser.email||t("inbox_anon")):t("guest");
+  var cr=CRAFTS.find(function(c){return c.id===craftId;});
+
+  var btn=$("btn-req-send");
+  btn.disabled=true;
+  btn.textContent=t("send");
+
+  DB.collection("requests").add({
+    text:text.slice(0,600),
+    craftId:craftId,
+    craftName:cr?cr.fr:"",
+    country:country,
+    city:city,
+    commune:commune,
+    phone:phone,
+    clientId:clientId,
+    clientName:clientName,
+    isGuest:!currentUser,
+    status:"open",
+    createdAt:firebase.firestore.FieldValue.serverTimestamp()
+  }).then(function(){
+    localStorage.setItem("craftison_req_last",String(Date.now()));
+    localStorage.setItem("craftison_req_loc",JSON.stringify({country:country,city:city,commune:commune,phone:phone}));
+    /* عدّ الحرفيين المعنيّين لإعلام الزبون */
+    return DB.collection("workers").where("craftId","==",craftId).get().then(function(snap){
+      var n=0;
+      snap.forEach(function(d){var w=d.data();if(sameArea(country,city,w.country,w.city))n++;});
+      return n;
+    }).catch(function(){return -1;});
+  }).then(function(n){
+    var msg = n>0 ? t("rq_sent_n").replace("{n}",n) : (n===0 ? t("rq_sent_0") : t("rq_sent"));
+    $("rq-text").value="";
+    rqManualCraft=false;
+    goBack();
+    showToast(msg);
+  }).catch(function(e){
+    showErr("e-req","Erreur: "+(e&&e.message?e.message:e));
+  }).finally(function(){
+    btn.disabled=false;
+    btn.textContent=t("rq_btn");
+  });
+}
+
+/* ===== جانب الحرفي: صندوق الطلبات ===== */
+
+function getSeenReqs(){
+  try{return JSON.parse(localStorage.getItem("craftison_seen_reqs")||"[]");}catch(e){return [];}
+}
+
+function loadMyWorkerProfile(user){
+  if(!user){return;}
+  DB.collection("workers").doc(user.uid).get().then(function(snap){
+    if(snap.exists){
+      myWorker=Object.assign({id:snap.id},snap.data());
+      showInboxButton(true);
+      startInboxListener();
+    } else {
+      myWorker=null;
+      showInboxButton(false);
+      stopInboxListener();
+    }
+  }).catch(function(){});
+}
+
+function showInboxButton(show){
+  var b=$("home-inbox-btn");
+  if(b) b.style.display=show?"inline-block":"none";
+  if(!show){var bd=$("inbox-badge");if(bd)bd.style.display="none";}
+}
+
+function stopInboxListener(){
+  if(inboxUnsub){inboxUnsub();inboxUnsub=null;}
+  inboxRequests=[];
+}
+
+function relevantRequests(list){
+  if(!myWorker) return [];
+  var now=Date.now();
+  return list.filter(function(r){
+    var ms=r.createdAt?(r.createdAt.toMillis?r.createdAt.toMillis():r.createdAt):now;
+    if(now-ms>REQ_MAX_AGE_MS) return false;
+    if(r.craftId!==myWorker.craftId) return false;
+    return sameArea(r.country,r.city,myWorker.country,myWorker.city);
+  }).sort(function(a,b){
+    var am=a.createdAt?(a.createdAt.toMillis?a.createdAt.toMillis():a.createdAt):Date.now();
+    var bm=b.createdAt?(b.createdAt.toMillis?b.createdAt.toMillis():b.createdAt):Date.now();
+    return bm-am;
+  });
+}
+
+function startInboxListener(){
+  stopInboxListener();
+  if(!myWorker||!currentUser) return;
+  inboxUnsub=DB.collection("requests").where("craftId","==",myWorker.craftId).onSnapshot(function(snap){
+    var all=[];
+    snap.forEach(function(d){all.push(Object.assign({id:d.id},d.data()));});
+    inboxRequests=relevantRequests(all);
+    updateInboxBadge();
+    if(currentScreenName()==="inbox"){renderInbox();markRequestsSeen();}
+  },function(){});
+}
+
+function updateInboxBadge(){
+  var seen=getSeenReqs();
+  var n=inboxRequests.filter(function(r){return seen.indexOf(r.id)===-1;}).length;
+  var bd=$("inbox-badge");
+  if(!bd) return;
+  if(n>0){bd.textContent=n>99?"99+":n;bd.style.display="inline-block";}
+  else{bd.style.display="none";}
+}
+
+function markRequestsSeen(){
+  var seen=getSeenReqs();
+  inboxRequests.forEach(function(r){if(seen.indexOf(r.id)===-1)seen.push(r.id);});
+  if(seen.length>300) seen=seen.slice(seen.length-300);
+  localStorage.setItem("craftison_seen_reqs",JSON.stringify(seen));
+  updateInboxBadge();
+}
+
+function openInbox(){
+  if(!myWorker){return;}
+  $("inbox-list").innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';
+  set("inbox-t",t("inbox_t"));
+  set("inbox-sub",t("inbox_sub"));
+  go("inbox");
+  DB.collection("requests").where("craftId","==",myWorker.craftId).get().then(function(snap){
+    var all=[];
+    snap.forEach(function(d){all.push(Object.assign({id:d.id},d.data()));});
+    inboxRequests=relevantRequests(all);
+    renderInbox();
+    markRequestsSeen();
+  }).catch(function(){
+    $("inbox-list").innerHTML='<div class="empty"><div class="ei">⚠️</div><div class="et">'+t("inbox_err")+'</div></div>';
+  });
+}
+
+function renderInbox(){
+  var el=$("inbox-list");
+  if(!el) return;
+  el.innerHTML="";
+  if(!inboxRequests.length){
+    el.innerHTML='<div class="empty"><div class="ei">📭</div><div class="et">'+t("inbox_empty")+'</div><div class="es">'+t("inbox_empty_s")+'</div></div>';
+    return;
+  }
+  var seen=getSeenReqs();
+  inboxRequests.forEach(function(r){
+    var ms=r.createdAt?(r.createdAt.toMillis?r.createdAt.toMillis():r.createdAt):Date.now();
+    var when=new Date(ms).toLocaleString([],{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+    var isNew=seen.indexOf(r.id)===-1;
+    var d=document.createElement("div");
+    d.className="req-card"+(isNew?" new":"");
+    d.innerHTML=
+      '<div class="req-top"><div class="req-who">👤 '+esc(r.clientName||t("inbox_anon"))+(isNew?' <span class="inbox-badge" style="background:#FF6F00;">'+t("inbox_new")+'</span>':"")+'</div><div class="req-time">'+esc(when)+'</div></div>'+
+      '<div class="req-txt">'+esc(r.text)+'</div>'+
+      '<div class="req-loc">📍 '+esc(r.commune?r.commune+", ":"")+esc(r.city)+", "+esc(r.country)+(r.phone?' &nbsp;·&nbsp; 📞 '+esc(r.phone):"")+'</div>';
+    var acts=document.createElement("div");acts.className="req-acts";
+    if(r.phone){
+      var bc=document.createElement("button");bc.className="req-call";bc.textContent=t("inbox_call");
+      bc.onclick=(function(ph){return function(){window.open("tel:"+ph);};})(r.phone);
+      acts.appendChild(bc);
+    }
+    var br=document.createElement("button");br.className="req-reply";br.textContent=t("inbox_reply");
+    br.onclick=(function(cid,nm){return function(){replyToRequest(cid,nm);};})(r.clientId,r.clientName||t("inbox_anon"));
+    acts.appendChild(br);
+    d.appendChild(acts);
+    el.appendChild(d);
+  });
+}
+
+function replyToRequest(clientId, clientName){
+  if(!currentUser||!clientId) return;
+  chatWorkerId=null; /* لا يمكن التبليغ عن الزبون من هذه الشاشة */
+  startChat(clientId, clientName, currentUser.uid, false);
+}
+
+AUTH.onAuthStateChanged(function(user){
+  currentUser=user;
+  if(user){ loadMyWorkerProfile(user); }
+  else { myWorker=null; showInboxButton(false); stopInboxListener(); }
+});
 
 document.addEventListener("DOMContentLoaded",function(){
   var savedLang = localStorage.getItem("craftison_user_lang");
@@ -2537,10 +2870,12 @@ document.addEventListener("DOMContentLoaded",function(){
   $("bk3").onclick=function(){goBack();};
   $("bk4").onclick=function(){goBack();};
   var bk5=$("bk5"); if(bk5) bk5.onclick=function(){goBack();};
+  var bk6=$("bk6"); if(bk6) bk6.onclick=function(){goBack();};
+  var bk7=$("bk7"); if(bk7) bk7.onclick=function(){goBack();};
 
   $("reg-btn").onclick=function(){goReg();};
-  $("t-reg").onclick=function(){swTag("reg");};
-  $("t-log").onclick=function(){swTag("log");};
+  $("t-reg").onclick=function(){swTab("reg");};
+  $("t-log").onclick=function(){swTab("log");};
   $("btn-reg").onclick=function(){doReg();};
   $("btn-log").onclick=function(){doLog();};
   var e1=document.getElementById("eye1");if(e1)e1.onclick=function(){togglePass("r-pass","eye1");};
