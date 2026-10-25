@@ -207,7 +207,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 
   <div class="stats">
-    <div class="stat"><div class="sn">100</div><div class="sl" id="sl-crafts"></div></div>
+    <div class="stat"><div class="sn">60</div><div class="sl" id="sl-crafts"></div></div>
     <div class="stat"><div class="sn" id="sl-wnum">0</div><div class="sl" id="sl-workers"></div></div>
     <div class="stat"><div class="sn" id="sl-cnum">0</div><div class="sl" id="sl-clients"></div></div>
     <div class="stat"><div class="sn">🌍</div><div class="sl" id="sl-country"></div></div>
@@ -739,6 +739,110 @@ var T={
     bc_city: "City / Area",
     bc_msg: "Request details",
     bc_send: "Broadcast"
+  },
+  es: {
+    sub: "Encuentra al mejor artesano",
+    sh: "Buscar oficio...",
+    sc: "Oficios",
+    sw: "Artesanos",
+    scli: "Clientes",
+    sy: "Mundial",
+    sa: "Todos los oficios",
+    art: "artesanos",
+    av: "disponibles",
+    bk: "Volver",
+    dir: "ltr"
+  },
+  de: {
+    sub: "Finden Sie den besten Handwerker",
+    sh: "Handwerk suchen...",
+    sc: "Handwerke",
+    sw: "Handwerker",
+    scli: "Kunden",
+    sy: "Weltweit",
+    sa: "Alle Handwerke",
+    art: "Handwerker",
+    av: "verfügbar",
+    bk: "Zurück",
+    dir: "ltr"
+  },
+  it: {
+    sub: "Trova il miglior artigiano",
+    sh: "Cerca un mestiere...",
+    sc: "Mestieri",
+    sw: "Artigiani",
+    scli: "Clienti",
+    sy: "Mondiale",
+    sa: "Tutti i mestieri",
+    art: "artigiani",
+    av: "disponibili",
+    bk: "Indietro",
+    dir: "ltr"
+  },
+  zh: {
+    sub: "寻找最好的工匠",
+    sh: "搜索手艺...",
+    sc: "手艺",
+    sw: "工匠",
+    scli: "客户",
+    sy: "全球",
+    sa: "所有手艺",
+    art: "工匠",
+    av: "可用",
+    bk: "返回",
+    dir: "ltr"
+  },
+  tr: {
+    sub: "En iyi zanaatkarı bulun",
+    sh: "Zanaat ara...",
+    sc: "Zanaatlar",
+    sw: "Zanaatkarlar",
+    scli: "Müşteriler",
+    sy: "Dünya Çapında",
+    sa: "Tüm Zanaatlar",
+    art: "zanaatkar",
+    av: "müsait",
+    bk: "Geri",
+    dir: "ltr"
+  },
+  nl: {
+    sub: "Vind de beste vakman",
+    sh: "Zoek een vak...",
+    sc: "Vakken",
+    sw: "Vakmensen",
+    scli: "Klanten",
+    sy: "Wereldwijd",
+    sa: "Alle vakken",
+    art: "vakmensen",
+    av: "beschikbaar",
+    bk: "Terug",
+    dir: "ltr"
+  },
+  hi: {
+    sub: "सर्वोत्तम कारीगर ढूंढें",
+    sh: "शिल्प खोजें...",
+    sc: "शिल्پ",
+    sw: "कारीगर",
+    scli: "ग्राहकों",
+    sy: "विश्वव्यापी",
+    sa: "सभी शिल्प",
+    art: "कारीगर",
+    av: "उपलब्ध",
+    bk: "वापस",
+    dir: "ltr"
+  },
+  pt: {
+    sub: "Encontre o melhor artesão",
+    sh: "Pesquisar ofício...",
+    sc: "Ofícios",
+    sw: "Artesãos",
+    scli: "Clientes",
+    sy: "Mundial",
+    sa: "Todos os ofícios",
+    art: "artesãos",
+    av: "disponíveis",
+    bk: "Voltar",
+    dir: "ltr"
   }
 };
 
@@ -749,23 +853,90 @@ var CRAFTS=[
 {id:2,fr:"Electricite Batiment",ar:"كهرباء منازل",en:"Electrician",es:"Electricidad",it:"Elettricita",tr:"Elektrik",nl:"Elektriciteit",zh:"电工",hi:"इलेक्ट्रीशियन",de:"Elektriker",pt:"Eletricista",icon:"⚡",c:"#F57C00",bg:"#FFF3E0"},
 {id:3,fr:"Peinture",ar:"دهان",en:"Painting",es:"Pintura",it:"Pittura",tr:"Boyacilik",nl:"Schilder",zh:"油漆",hi:"पेंटिंग",de:"Maler",pt:"Pintura",icon:"🎨",c:"#6A1B9A",bg:"#F3E5F5"},
 {id:4,fr:"Maconnerie",ar:"بناء",en:"Masonry",es:"Albanileria",it:"Muratura",tr:"Duvarcilik",nl:"Metselwerk",zh:"砌砖",hi:"राजमिस्त्री",de:"Maurer",pt:"Alvenaria",icon:"🧱",c:"#455A64",bg:"#ECEFF1"},
-{id:91,fr:"Livraison Express (Moto/Voiture)",ar:"التوصيل السريع (دراجة أو سيارة)",en:"Express Delivery (Moto/Car)",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिलीवरी",de:"Expresslieferung",pt:"Entrega Expressa",icon:"🛵",c:"#C62828",bg:"#FFEBEE"},
-{id:92,fr:"Pizza & Fast Food",ar:"بيتزا وأكل سريع",en:"Pizza & Fast Food",es:"Pizza y Comida Rapida",it:"Pizza & Fast Food",tr:"Pizza ve Fast Food",nl:"Pizza & Fastfood",zh:"比萨与快餐",hi:"पिज़्ज़ा और फ़ास्ट फ़ूड",de:"Pizza & Fast Food",pt:"Pizza & Fast Food",icon:"🍕",c:"#E65100",bg:"#FBE9E7"},
-{id:93,fr:"Depannage & Remorquage Auto",ar:"إسعاف وسحب السيارات (دباناج)",en:"Car Towing & Recovery",es:"Grua de Coches",it:"Soccorso Stradale",tr:"Arac Cekici",nl:"Autosleepdienst",zh:"汽车拖车",hi:"कार टोइंग",de:"Pannenhilfe & Abschleppdienst",pt:"Guincho de Carros",icon:"🚙",c:"#BF360C",bg:"#FBE9E7"},
-{id:94,fr:"Remorquage Poids Lourd",ar:"سحب وإسعاف الشاحنات الثقيلة",en:"Heavy Truck Towing",es:"Grua Camiones",it:"Soccorso Camion",tr:"Agir Vasıta Cekici",nl:"Zware Vrachtwagen Sleepdienst",zh:"重型卡车拖车",hi:"भारी ट्रक टोइंग",de:"LKW Abschleppdienst",pt:"Guincho de Caminhao",icon:"🚛",c:"#1565C0",bg:"#E3F2FD"},
-{id:95,fr:"Mecanique Camions",ar:"ميكانيك الشاحنات",en:"Truck Mechanics",es:"Mecanica Camiones",it:"Meccanica Camion",tr:"Kamyon Tamiri",nl:"Vrachtwagen Monteur",zh:"卡车修理",hi:"ट्रक मैकेनिक्स",de:"LKW Mechaniker",pt:"Mecanica de Caminhoes",icon:"🔧",c:"#37474F",bg:"#ECEFF1"},
-{id:96,fr:"Electricite Camions",ar:"كهرباء الشاحنات",en:"Truck Electricity",es:"Electricidad Camiones",it:"Elettricita Camion",tr:"Kamyon Elektrik",nl:"Vrachtwagen Elektra",zh:"卡车电路",hi:"ट्रक बिजली",de:"LKW Elektrik",pt:"Eletricista de Caminhoes",icon:"⚡",c:"#F57C00",bg:"#FFF3E0"},
-{id:97,fr:"Montage Meubles",ar:"تركيب الأثاث والديكور",en:"Furniture Assembly",es:"Montaje Muebles",it:"Montaggio Mobili",tr:"Mobilya Montaj",nl:"Meubelmontage",zh:"家具组装",hi:"फर्नीचर असेंबली",de:"Mabelmontage",pt:"Montagem de Moveis",icon:"🪛",c:"#5D4037",bg:"#EFEBE9"},
-{id:98,fr:"Forage Puits & Pompes",ar:"حفر الأبار ومضخات المياه",en:"Well Drilling & Pumps",es:"Perforacion Pozos",it:"Trivellazione Pozzi",tr:"Kuyu Sondaj",nl:"Putboring",zh:"钻井与水泵",hi:"कुआं ड्रिलिंग",de:"Brunnenbau",pt:"Perfuracao de Pocos",icon:"🚰",c:"#0288D1",bg:"#E1F5FE"},
-{id:99,fr:"Detailing Auto",ar:"تلميع وتغليف السيارات",en:"Car Detailing",es:"Detailing Auto",it:"Detailing Auto",tr:"Oto Detay",nl:"Car Detailing",zh:"汽车美容",hi:"कार डिटेलिंग",de:"Fahrzeugaufbereitung",pt:"Detailing Automotivo",icon:"🏎️",c:"#D84315",bg:"#FBE9E7"},
-{id:100,fr:"Entretien Piscines",ar:"صيانة وتنظيف المسابح",en:"Pool Maintenance",es:"Mantenimiento Piscinas",it:"Manutenzione Piscine",tr:"Havuz Bakim",nl:"Zwembadonderhoud",zh:"泳池维护",hi:"पूल रखरखाव",de:"Poolwartung",pt:"Manutencao de Piscinas",icon:"🏊‍♂️",c:"#00838F",bg:"#E0F7FA"}
+{id:5,fr:"Menuiserie Bois & Alum",ar:"نجارة الخشب والألومنيوم",en:"Wood & Aluminum Carpentry",es:"Carpinteria",it:"Falegnameria",tr:"Marangoz",nl:"Houtbewerking",zh:"木工",hi:"बढ़ईगीरी",de:"Schreinerei",pt:"Carpintaria",icon:"🪚",c:"#5D4037",bg:"#EFEBE9"},
+{id:6,fr:"Soudure & Fonderie",ar:"تلحيم و حدادة",en:"Welding & Ironwork",es:"Soldadura",it:"Saldatura",tr:"Kaynak",nl:"Lassen",zh:"焊接",hi:"वेल्डिंग",de:"Schweißen",pt:"Soldagem",icon:"⚒️",c:"#37474F",bg:"#ECEFF1"},
+{id:7,fr:"Climatisation & Froid",ar:"التبريد وتكييف الهواء",en:"Air Conditioning & Refrigeration",es:"Climatizacion",it:"Climatizzazione",tr:"Klima",nl:"Airconditioning",zh:"空调制冷",hi:"एसी और रेफ्रिजरेशन",de:"Klimaanlage",pt:"Ar Condicionado",icon:"❄️",c:"#0288D1",bg:"#E1F5FE"},
+{id:8,fr:"Reparation Electromenager",ar:"إصلاح الكهرومنزلية",en:"Home Appliance Repair",es:"Reparacion Electrodomesticos",it:"Riparazione Elettrodomestici",tr:"Beyaz Esya Tamiri",nl:"Witgoed Reparatie",zh:"家电维修",hi:"घरेलू उपकरण मरम्मत",de:"Haushaltsgeräte-Reparatur",pt:"Reparo de Eletrodomésticos",icon:"🔌",c:"#C2185B",bg:"#FCE4EC"},
+{id:9,fr:"Carrelage & Mosaique",ar:"تركيب السيراميك والرخام",en:"Tiling & Flooring",es:"Alicatado",it:"Piastrellista",tr:"Fayans",nl:"Tegelzetten",zh:"铺瓷砖",hi:"टाइलिंग",de:"Fliesenleger",pt:"Azulejista",icon:"🏠",c:"#00796B",bg:"#E0F2F1"},
+{id:10,fr:"Placo & Decoration",ar:"تلبيس الجبس والديكور (بلاكو بلاتر)",en:"Plasterboard & Decoration",es:"Pladur",it:"Cartongesso",tr:"Alcipan",nl:"Gipsplaat",zh:"石膏板",hi:"जिप्सम बोर्ड",de:"Trockenbau",pt:"Gesso Acartonado",icon:"🏛️",c:"#512DA8",bg:"#EDE7F6"},
+{id:11,fr:"Etancheite & Toiture",ar:"العزل المائي والأسطح",en:"Waterproofing & Roofing",es:"Impermeabilizacion",it:"Impermeabilizzazione",tr:"Yalitim",nl:"Dakdekker",zh:"防水屋顶",hi:"वाटरप्रूफिंग",de:"Dachdeckerei",pt:"Impermeabilização",icon:"🌧️",c:"#004D40",bg:"#E0F2F1"},
+{id:12,fr:"Jardinage & Paysage",ar:"البستنة وتنسيق الحدائق",en:"Gardening & Landscaping",es:"Jardineria",it:"Giardinaggio",tr:"Bahcivan",nl:"Tuinieren",zh:"园艺",hi:"बागवानी",de:"Gartenbau",pt:"Jardinagem",icon:"🌱",c:"#33691E",bg:"#F1F8E9"},
+{id:13,fr:"Nettoyage & Vitres",ar:"التنظيف وغسيل الواجهات",en:"Cleaning & Windows",es:"Limpieza",it:"Pulizie",tr:"Temizlik",nl:"Schoonmaak",zh:"清洁",hi:"सफाई",de:"Reinigung",pt:"Limpeza",icon:"🧽",c:"#0277BD",bg:"#E1F5FE"},
+{id:14,fr:"Mecanique Auto",ar:"ميكانيك السيارات",en:"Auto Mechanics",es:"Mecanica Coches",it:"Meccanica Auto",tr:"Oto Tamir",nl:"Automonteur",zh:"汽车修理",hi:"कार मैकेनिक्स",de:"Kfz-Mechanik",pt:"Mecânica Automotiva",icon:"🚗",c:"#D32F2F",bg:"#FFEBEE"},
+{id:15,fr:"Electricite Auto",ar:"كهرباء السيارات",en:"Auto Electricity",es:"Electricidad Automotriz",it:"Elettricita Auto",tr:"Oto Elektrik",nl:"Auto Elektra",zh:"汽车电工",hi:"ऑटो इलेक्ट्रिसिटी",det:"Kfz-Elektrik",pt:"Eletricista Automotivo",icon:"🔋",c:"#F57C00",bg:"#FFF3E0"},
+{id:16,fr:"Tollerie & Peinture Auto",ar:"سمكرة ودهان السيارات",en:"Auto Body & Paint",es:"Chapa y Pintura",it:"Carrozzeria",tr:"Oto Boya Kaporta",nl:"Autospuiter",zh:"汽车喷漆",hi:"कार पेंटिंग",de:"Karosserie & Lack",pt:"Funilaria e Pintura",icon:"🚙",c:"#7B1FA2",bg:"#F3E5F5"},
+{id:17,fr:"Tapisserie & Sellerie",ar:"تنجيد الأثاث والسيارات",en:"Upholstery",es:"Tapiceria",it:"Tappezzeria",tr:"doseme",nl:"Stoffeerder",zh:"家具/汽车 upholstery",hi:"अपॉल्स्ट्री",de:"Polsterei",pt:"Tapeçaria",icon:"🛋️",c:"#4E342E",bg:"#EFEBE9"},
+{id:18,fr:"Serrurerie & Cles",ar:"صناعة المفاتيح وفتح الأبواب",en:"Locksmith & Keys",es:"Cerrajeria",it:"Fabbro",tr:"Cilingir",nl:"Slotenmaker",zh:"锁匠",hi:"ताला चाबी",de:"Schlüsseldienst",pt:"Chaveiro",icon:"🔑",c:"#455A64",bg:"#ECEFF1"},
+{id:19,fr:"Vitrerie & Miroiterie",ar:"صناعة الزجاج والمرايا",en:"Glass & Mirrors",es:"Cristaleria",it:"Vetraio",tr:"Camci",nl:"Glazenier",zh:"玻璃镜子",hi:"ग्लैस और मिरर",de:"Glaser",pt:"Vidraçaria",icon:"🪟",c:"#00838F",bg:"#E0F7FA"},
+{id:20,fr:"Deménagement & Transport",ar:"نقل العفش والبضائع",en:"Moving & Transport",es:"Mudanzas",it:"Traslochi",tr:"Nakliye",nl:"Verhuizing",zh:"搬家运输",hi:"मूविंग और ट्रांसपोर्ट",de:"Umzug & Transport",pt:"Mudanças e Fretes",icon:"📦",c:"#E65100",bg:"#FBE9E7"},
+{id:21,fr:"Informatique & Reseaux",ar:"صيانة الحاسوب والشبكات",en:"IT & Networking",es:"Informatica",it:"Informatica",tr:"Bilgisayar Ag",nl:"IT & Netwerken",zh:"计算机网络",hi:"आईटी और नेटवर्किंग",de:"IT & Netzwerke",pt:"TI e Redes",icon:"💻",c:"#283593",bg:"#E8EAF6"},
+{id:22,fr:"Reparation Smartphones",ar:"إصلاح الهواتف الذكية",en:"Smartphone Repair",es:"Reparacion Moviles",it:"Riparazione Smartphone",tr:"Telefon Tamir",nl:"Telefoon Reparatie",zh:"手机维修",hi:"मोबाइल रिपेयर",de:"Handy-Reparatur",pt:"Reparo de Celulares",icon:"📱",c:"#AD1457",bg:"#FCE4EC"},
+{id:23,fr:"Antennes & Paraboles",ar:"تركيب وضبط الهوائيات والساتالايت",en:"Antennas & Satellites",es:"Antenas",it:"Antenne",tr:"Uydu Anten",nl:"Antennes",zh:"天线卫星",hi:"एंटीना और सैटेलाइट",de:"Antennenbau",pt:"Antenas e Parabólicas",icon:"📡",c:"#00695C",bg:"#E0F2F1"},
+{id:24,fr:"Cameras & Securite",ar:"كاميرات المراقبة وأنظمة الإنذار",en:"CCTV & Security Systems",es:"Camaras Seguridad",it:"Videosorveglianza",tr:"Guvenlik Kamerasi",nl:"Beveiligingscamera's",zh:"监控安防",hi:"सीसीटीवी और सुरक्षा",de:"Überwachungskameras",pt:"Câmeras e Segurança",icon:"📹",c:"#37474F",bg:"#ECEFF1"},
+{id:25,fr:"Fotographie & Video",ar:"التصوير الفوتوغرافي والفيديو",en:"Photography & Video",es:"Fotografia",it:"Fotografia",tr:"Fotograf",nl:"Fotografie",zh:"摄影摄像",hi:"फोटोग्राफी",de:"Fotografie & Video",pt:"Fotografia e Vídeo",icon:"📷",c:"#6A1B9A",bg:"#F3E5F5"},
+{id:26,fr:"Imprimerie & Publicite",ar:"الطباعة والإشهار",en:"Printing & Advertising",es:"Imprenta",it:"Stampa & Grafica",tr:"Matbaa Reklam",nl:"Drukwerk",zh:"印刷广告",hi:"प्रिंटिंग और विज्ञापन",de:"Druckerei & Werbung",pt:"Gráfica e Publicidade",icon:"🖨️",c:"#AD1457",bg:"#FCE4EC"},
+{id:27,fr:"Couture & Retouches",ar:"الخياطة وتعديل الملابس",en:"Tailoring & Alterations",es:"Costura",it:"Sartoria",tr:"Terzi",nl:"Kledingmaker",zh:"裁缝剪裁",hi:"सिलाई",de:"Schneiderei",pt:"Costura e Ajustes",icon:"🧵",c:"#880E4F",bg:"#FCE4EC"},
+{id:28,fr:"Coiffure Hommes",ar:"حلاقة الرجال",en:"Men's Hairdressing",es:"Peluqueria Hombre",it:"Barbiere",tr:"Kuafor Erkek",nl:"Herenkapper",zh:"男士理发",hi:"पुरुषों के बाल काटना",de:"Herrenfriseur",pt:"Barbearia",icon:"💇‍♂️",c:"#0277BD",bg:"#E1F5FE"},
+{id:29,fr:"Coiffure Dames & Esthetique",ar:"حلاقة وتجميل السيدات",en:"Women's Hair & Beauty",es:"Peluqueria Mujer",it:"Parrucchiera Donna",tr:"Kuafor Kadin",nl:"Dameskapper",zh:"女士美发美容",hi:"महिलाओं के बाल और सौंदर्य",de:"Damenfriseur & Kosmetik",pt:"Salão de Beleza Feminino",icon:"💇‍♀️",c:"#C2185B",bg:"#FCE4EC"},
+{id:30,fr:"Maquillage & Mariees",ar:"مكياج وتحضير العرائس",en:"Bridal Makeup & Styling",es:"Maquillaje Bodas",it:"Trucco Sposa",tr:"Gelin Makyaj",nl:"Bruidsmake-up",zh:"新娘化妆",hi:"ब्राइडल मेकअप",de:"Braut-Make-up",pt:"Maquiagem de Noivas",icon:"💄",c:"#880E4F",bg:"#FCE4EC"},
+{id:31,fr:"Esthetique & Onglerie",ar:"العناية بالأظافر والتجميل",en:"Nails & Aesthetics",es:"Estetica y Uñas",it:"Estetica & Unghie",tr:"Manikur Pedikur",nl:"Nagelstudio",zh:"美甲美容",hi:"नेल आर्ट",de:"Nagelstudio & Kosmetik",pt:"Manicure e Estética",icon:"💅",c:"#AD1457",bg:"#FCE4EC"},
+{id:32,fr:"Traiteur & Fetes",ar:"خدمات التموين والافراح",en:"Catering & Events",es:"Catering",it:"Catering & Eventi",tr:"Catering Organizasyon",nl:"Catering",zh:"餐饮庆典",hi:"केटरिंग और इवेंट्स",de:"Catering & Events",pt:"Buffet e Eventos",icon:"🍲",c:"#E65100",bg:"#FBE9E7"},
+{id:33,fr:"Patisserie & Gateaux",ar:"صناعة الحلويات والمخبوزات",en:"Bakery & Pastry",es:"Pasteleria",it:"Pasticceria",tr:"Pastane",nl:"Bakkerij",zh:"糕点烘焙",hi:"बेकरी और पेस्ट्री",de:"Bäckerei & Konditorei",pt:"Confeitaria e Bolos",icon:"🎂",c:"#D84315",bg:"#FBE9E7"},
+{id:34,fr:"Nettoyage Canapes & Tapis",ar:"تنظيف السجاد والأرائك",en:"Sofa & Carpet Cleaning",es:"Limpieza Tapiceria",it:"Pulizia Divani",tr:"Koltuk Yikama",nl:"Tapijtreiniging",zh:"地毯沙发清洗",hi:"सोफा और कालीन की सफाई",de:"Teppich- & Polsterreinigung",pt:"Limpeza de Estofados",icon:"🧼",c:"#00838F",bg:"#E0F7FA"},
+{id:35,fr:"Chauffage & Radiateurs",ar:"صناعة وتركيب أنظمة التدفئة",en:"Heating Systems",es:"Calefaccion",it:"Riscaldamento",tr:"Kombi Petek",nl:"Verwarming",zh:"供暖系统",hi:"हीटिंग सिस्टम",de:"Heizungsbau",pt:"Sistemas de Aquecimento",icon:"🔥",c:"#BF360C",bg:"#FBE9E7"},
+{id:36,fr:"Depannage TV & Audio",ar:"إصلاح التلفزيون والأجهزة الصوتية",en:"TV & Audio Repair",es:"Reparacion TV",it:"Riparazione TV",tr:"TV Tamir",nl:"TV Reparatie",zh:"电视音响修理",hi:"टीवी और ऑडियो रिपेयर",de:"TV- & Audio-Reparatur",pt:"Reparo de TV e Som",icon:"📺",c:"#37474F",bg:"#ECEFF1"},
+{id:37,fr:"Escaliers & Rampes Metal",ar:"صناعة السلالم والدرابزين",en:"Stairs & Metal Railings",es:"Barandillas Metalicas",it:"Ringhiere & Scale",tr:"Merdiven Korkuluk",nl:"Trappen & Hekken",zh:"楼梯铁艺",hi:"सीढ़ियाँ और रेलिंग",de:"Treppen- & Geländerbau",pt:"Escadas e Corrimãos",icon:"🪜",c:"#455A64",bg:"#ECEFF1"},
+{id:38,fr:"Portes Automatiques & Rideaux",ar:"الأبواب الآلية والستائر المعدنية",en:"Automatic Doors & Shutters",es:"Puertas Automaticas",it:"Porte Automatiche",tr:"Otomatik Kapi",nl:"Automatische Deuren",zh:"自动门卷帘门",hi:"ऑटोमेटिक दरवाजे",de:"Automatiktüren & Rollläden",pt:"Portas Automáticas",icon:"🚪",c:"#263238",bg:"#ECEFF1"},
+{id:39,fr:"Panneaux Solaires & ENR",ar:"الطاقة الشمسية والطاقات المتجددة",en:"Solar Panels & Green Energy",es:"Energia Solar",it:"Pannelli Solari",tr:"Gunes Enerjisi",nl:"Zonnepanelen",zh:"太阳能光伏",hi:"सौर ऊर्जा",de:"Solaranlagen & Photovoltaik",pt:"Energia Solar",icon:"☀️",c:"#F57F17",bg:"#FFFDE7"},
+{id:40,fr:"Architecture & Plan 3D",ar:"الهندسة المعمارية وتصميم 3D",en:"Architecture & 3D Design",es:"Arquitectura 3D",it:"Architettura & 3D",tr:"Mimari 3D",nl:"Architectuur 3D",zh:"建筑设计3D",hi:"आर्किटेक्चर और 3D डिजाइन",de:"Architektur & 3D-Design",pt:"Arquitetura e Design 3D",icon:"📐",c:"#0277BD",bg:"#E1F5FE"},
+{id:41,fr:"Geometre & Topographie",ar:"المساحة الطبوغرافية والعقارية",en:"Land Surveying & Topography",es:"Topografia",it:"Topografia",tr:"Harita Kadastro",nl:"Landmeten",zh:"测绘地形",hi:"सर्वेक्षण और टोपोग्राफी",de:"Vermessung & Topographie",pt:"Topografia",icon:"🛰️",c:"#37474F",bg:"#ECEFF1"},
+{id:42,fr:"Controle Technique Batiment",ar:"المراقبة التقنية للبناء",en:"Building Technical Control",es:"Control Tecnico",it:"Controllo Tecnico",tr:"Yapi Denetim",nl:"Bouwtechnische Keuring",zh:"建筑技术检测",hi:"बिल्डिंग तकनीकी नियंत्रण",de:"Bautechnische Prüfung",pt:"Controle Técnico de Obras",icon:"📋",c:"#004D40",bg:"#E0F2F1"},
+{id:43,fr:"Forets & Elagage Arbres",ar:"تقليم وقطع الأشجار الكبيرة",en:"Tree Pruning & Cutting",es:"Poda de Arboles",it:"Potatura Alberi",tr:"Agac Budama",nl:"Bomen snoeien",zh:"修剪树木",hi:"पेड़ों की छटाई",de:"Baumpflege & Fällung",pt:"Poda e Corte de Árvores",icon:"🌳",c:"#2E7D32",bg:"#E8F5E9"},
+{id:44,fr:"Abattage & Viande Halal",ar:"الجزارة وذبائح الأنعام",en:"Butchery & Halal Meat",es:"Carniceria",it:"Macelleria",tr:"Kasap",nl:"Slagerij",zh:"肉铺清真肉",hi:"कसाई की दुकान",de:"Metzgerei",pt:"Açougue",icon:"🥩",c:"#C62828",bg:"#FFEBEE"},
+{id:45,fr:"Poissons &fruits de mer",ar:"بيع الأسماك وثمار البحر",en:"Fishmonger & Seafood",es:"Pescaderia",it:"Pescheria",tr:"Balikci",nl:"Viswinkel",zh:"海鲜水产",hi:"मछली की दुकान",de:"Fischgeschäft",pt:"Pescados e Frutos do Mar",icon:"🐟",c:"#0288D1",bg:"#E1F5FE"},
+{id:46,fr:"Fleurs & Decoration Florale",ar:"تنسيق الزهور والهدايا",en:"Florist & Floral Design",es:"Floristeria",it:"Fiorista",tr:"Çiçekçi",nl:"Bloemist",zh:"花艺设计",hi:"फूलों की दुकान",de:"Floristik & Blumen",icon:"💐",c:"#AD1457",bg:"#FCE4EC"},
+{id:47,fr:"Pressing & Blanchisserie",ar:"الغسيل الجاف وتنظيف الملابس",en:"Dry Cleaning & Laundry",es:"Tintoreria",it:"Lavanderia",tr:"Kuru Temizleme",nl:"Stomerij",zh:"干洗洗衣",hi:"ड्राई क्लीनिंग और लॉन्ड्री",de:"Reinigung & Wäscherei",pt:"Lavanderia e Tinturaria",icon:"👔",c:"#1565C0",bg:"#E3F2FD"},
+{id:48,fr:"Horlogerie & Bijouterie",ar:"صيانة الساعات والمجوهرات",en:"Watch & Jewelry Repair",es:"Relojeria Joyeria",it:"Orologeria & Gioielleria",tr:"Saatci Kuyumcu",nl:"Horlogerie",zh:"钟表珠宝维修",hi:"घड़ी और आभूषण मरम्मत",de:"Uhren- & Schmuckreparatur",pt:"Relojoaria e Joalheria",icon:"⌚",c:"#F57F17",bg:"#FFFDE7"},
+{id:49,fr:"Optique & Lunettes",ar:"صيانة النظارات والبصريات",en:"Optics & Glasses",es:"Optica",it:"Ottica",tr:"Optik Gozluk",nl:"Opticien",zh:"眼镜视力",hi:"ऑप्टिक्स और चश्मा",de:"Optik & Brillen",pt:"Ótica e Óculos",icon:"👓",c:"#0277BD",bg:"#E1F5FE"},
+{id:50,fr:"Librairie & Reliure",ar:"تجليد الكتب والخدمات المكتبية",en:"Bookbinding & Stationery",es:"Enuadernacion",it:"Legatoria",tr:"Ciltleme Kirtasiye",nl:"Boekbinderij",zh:"书籍装订文具",hi:"बुक बाइंडिंग",de:"Buchbinderei & Schreibwaren",pt:"Encadernação e Papelaria",icon:"📚",c:"#4E342E",bg:"#EFEBE9"},
+{id:51,fr:"Enseignes & Neon Publicitaire",ar:"صناعة اللافتات المضيئة والنيون",en:"Signs & Neon Advertising",es:"Rotulos y Neon",it:"Insegne & Neon",tr:"Tabela Neon",nl:"Lichtreclame",zh:"广告招牌霓虹灯",hi:"साइनबोर्ड और विज्ञापन",de:"Leuchtreklame & Schildermacher",pt:"Letreiros e Luminosos",icon:"💡",c:"#E65100",bg:"#FBE9E7"},
+{id:52,fr:"Pavage & Amenagement Exterieur",ar:"تبليط الساحات وتنسيق الممرات",en:"Paving & Outdoor Hardscaping",es:"Pavimentacion",it:"Pavimentazione Esterna",tr:"Parke Tasi",nl:"Bestrating",zh:"铺路室外硬化",hi:"पेविंग और आउटडोर",de:"Pflasterbau & Wegebau",pt:"Pavimentação Externa",icon:"🧱",c:"#37474F",bg:"#ECEFF1"},
+{id:53,fr:"Echafaudage & Montage",ar:"تركيب السقالات الفولاذية للبناء",en:"Scaffolding & Erection",es:"Andamios",it:"Ponteggi",tr:"Iskele Kurulumu",nl:"Steigers",zh:"脚手架搭建",hi:"मचान निर्माण",de:"Gerüstbau",pt:"Montagem de Andaimes",icon:"🏗️",c:"#D84315",bg:"#FBE9E7"},
+{id:54,fr:"Sable & Materiaux de Construction",ar:"بيع رمل ومواد البناء بالجملة",en:"Sand & Building Materials",es:"Materiales Construccion",it:"Materiali Edili",tr:"Insaat Malzemeleri",nl:"Bouwmaterialen",zh:"沙子建筑材料",hi:"रेत और निर्माण सामग्री",de:"Baustoffe & Sand",pt:"Materiais de Construção",icon:"🚛",c:"#5D4037",bg:"#EFEBE9"},
+{id:55,fr:"Location Materiel Chantier",ar:"تأجير معدات وآلات البناء",en:"Construction Equipment Rental",es:"Alquiler Maquinaria",it:"Noleggio Macchinari",tr:"Insaat Ekipman Kiralama",nl:"Bouwmaterieel Verhuur",zh:"建筑设备租赁",hi:"उपकरण किराया",de:"Baumaschinenverleih",pt:"Aluguel de Equipamentos",icon:"🚜",c:"#F57C00",bg:"#FFF3E0"},
+{id:56,fr:"Depannage Ascenseurs",ar:"صيانة وإصلاح المصاعد الكهربائية",en:"Elevator Repair & Maintenance",es:"Reparacion Ascensores",it:"Manutenzione Ascensori",tr:"Asansor Bakim",nl:"Liftreparatie",zh:"电梯维修保养",hi:"लिफ्ट रिपेयर",de:"Aufzugreparatur & Wartung",pt:"Manutenção de Elevadores",icon:"🛗",c:"#283593",bg:"#E8EAF6"},
+{id:57,fr:"Isolation Thermique & Phonique",ar:"العزل الحراري والصوتي",en:"Thermal & Acoustic Insulation",es:"Aislamiento Termico",it:"Isolamento Termico",tr:"Isi Yalitim",nl:"Isolatie",zh:"隔热隔音",hi:"थर्मल और ध्वनिक इन्सुलेशन",de:"Wärme- & Schallschutz",pt:"Isolamento Térmico e Acústico",icon:"🛡️",c:"#00695C",bg:"#E0F2F1"},
+{id:58,fr:"Nettoyage Apres Chantier",ar:"التنظيف الشامل بعد البناء والأشغال",en:"Post-Construction Cleaning",es:"Limpieza Fin de Obra",it:"Pulizie Post-Cantiere",tr:"Insaat Sonrasi Temizlik",nl:"Opleveringsschoonmaak",zh:"装修后清洁",hi:"पोस्ट-कंस्ट्रक्शन सफाई",de:"Bauendreinigung",pt:"Limpeza Pós-Obra",icon:"✨",c:"#0277BD",bg:"#E1F5FE"},
+{id:59,fr:"Forges & Art du Fer",ar:"الحدادة الفنية والديكور الحديدي",en:"Artistic Ironwork & Forging",ar2:"الحدادة الفنية",es:"Forja Artistica",it:"Battuto Artistico",tr:"Sanatsal Demir",nl:"Smeedwerk",zh:"艺术铁艺",hi:"आर्टिस्टिक आयरनवर्क",de:"Kunstschmiede",pt:"Ferragem Artística",icon:"⚙️",c:"#37474F",bg:"#ECEFF1"},
+{id:60,fr:"Services Divers & Petits Travaux",ar:"خدمات متنوعة وأشغال صغيرة",en:"Miscellaneous Services & Handyman",es:"Servicios Varios",it:"Servizi Vari",tr:"Diger Hizmetler",nl:"Diverse Diensten",zh:"综合杂务服务",hi:"विविध सेवाएं",de:"Diverse Handwerkerdienste",pt:"Serviços Diversos",icon:"🛠️",c:"#0A3880",bg:"#E3F2FD"}
 ];
 
-var LANGS=[{c:"fr",f:"🇫🇷",l:"FR"},{c:"ar",f:"🇩🇿",l:"ع"},{c:"en",f:"🇬🇧",l:"EN"}];
+var LANGS=[
+  {c:"fr",f:"🇫🇷",l:"FR"},
+  {c:"ar",f:"🇩🇿",l:"ع"},
+  {c:"en",f:"🇬🇧",l:"EN"},
+  {c:"es",f:"🇪🇸",l:"ES"},
+  {c:"de",f:"🇩🇪",l:"DE"},
+  {c:"it",f:"🇮🇹",l:"IT"},
+  {c:"zh",f:"🇨🇳",l:"ZH"},
+  {c:"tr",f:"🇹🇷",l:"TR"},
+  {c:"nl",f:"🇳🇱",l:"NL"},
+  {c:"hi",f:"🇮🇳",l:"HI"},
+  {c:"pt",f:"🇵🇹",l:"PT"}
+];
+
 var LANG_FLAG_SVG={
   fr:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#0055A4" d="M0 0h10v20H0z"/><path fill="#fff" d="M10 0h10v20H10z"/><path fill="#EF4135" d="M20 0h10v20H20z"/></svg>',
   ar:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#006233" d="M0 0h15v20H0z"/><path fill="#fff" d="M15 0h15v20H15z"/><circle cx="15.8" cy="10" r="5" fill="#D21034"/><circle cx="17.5" cy="8.8" r="4.2" fill="#fff"/><path fill="#D21034" d="m20.4 6.2.8 2.1 2.2.1-1.7 1.4.6 2.1-1.9-1.2-1.8 1.2.6-2.1-1.7-1.4 2.2-.1z"/></svg>',
-  en:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#012169" d="M0 0h30v20H0z"/><path d="M0 0 30 20M30 0 0 20" stroke="#fff" stroke-width="4"/><path d="M0 0 30 20M30 0 0 20" stroke="#C8102E" stroke-width="1.5"/><path d="M15 0v20M0 10h30" stroke="#fff" stroke-width="6"/><path d="M15 0v20M0 10h30" stroke="#C8102E" stroke-width="2.8"/></svg>'
+  en:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#012169" d="M0 0h30v20H0z"/><path d="M0 0 30 20M30 0 0 20" stroke="#fff" stroke-width="4"/><path d="M0 0 30 20M30 0 0 20" stroke="#C8102E" stroke-width="1.5"/><path d="M15 0v20M0 10h30" stroke="#fff" stroke-width="6"/><path d="M15 0v20M0 10h30" stroke="#C8102E" stroke-width="2.8"/></svg>',
+  es:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#AA151B" d="M0 0h30v20H0z"/><path fill="#F1BF00" d="M0 5h30v10H0z"/></svg>',
+  de:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#000" d="M0 0h30v6.6H0z"/><path fill="#D00" d="M0 6.6h30v6.6H0z"/><path fill="#FFCE00" d="M0 13.2h30V20H0z"/></svg>',
+  it:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#009246" d="M0 0h10v20H0z"/><path fill="#fff" d="M10 0h10v20H10z"/><path fill="#CE2B37" d="M20 0h10v20H20z"/></svg>',
+  zh:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#DE2910" d="M0 0h30v20H0z"/><path fill="#FFDE00" d="m6 3 1.2 3.6h3.8l-3 2.2 1.1 3.6L6 10.3l-3.1 2.1 1.1-3.6-3-2.2h3.8z"/></svg>',
+  tr:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#E30A17" d="M0 0h30v20H0z"/><circle cx="11" cy="10" r="5" fill="#fff"/><circle cx="12" cy="10" r="4" fill="#E30A17"/><path fill="#fff" d="m17 7 1.5 3.5h3.8l-3 2.2 1.1 3.6-3.4-2.2-3.4 2.2 1.1-3.6-3-2.2h3.8z"/></svg>',
+  nl:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#AE1C28" d="M0 0h30v6.6H0z"/><path fill="#fff" d="M0 6.6h30v6.6H0z"/><path fill="#21468B" d="M0 13.2h30V20H0z"/></svg>',
+  hi:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#FF9933" d="M0 0h30v6.6H0z"/><path fill="#fff" d="M0 6.6h30v6.6H0z"/><path fill="#128807" d="M0 13.2h30V20H0z"/><circle cx="15" cy="10" r="2.5" fill="none" stroke="#000088" stroke-width="0.5"/></svg>',
+  pt:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#006600" d="M0 0h11v20H0z"/><path fill="#FFCC00" d="M11 0h19v20H11z"/><circle cx="11" cy="10" r="4" fill="#CC0000"/></svg>'
 };
 
 var lang="fr",craft=null,worker=null,currentUser=null,avFile=null,galFiles=[],chatId=null,chatUnsub=null,allCraftWorkers=[];
@@ -814,7 +985,7 @@ function getGuestId(){
 }
 var GUEST_ID = getGuestId();
 
-function t(k){return(T[lang]&&T[lang][k])||"";}
+function t(k){return(T[lang]&&T[lang][k])||(T["fr"][k])||"";}
 function $(id){return document.getElementById(id);}
 function set(id,v){var e=$(id);if(e)e.textContent=v;}
 function ph(id,v){var e=$(id);if(e)e.placeholder=v;}
@@ -876,7 +1047,7 @@ function buildLB(){
 function setLang(l){
   lang=l;
   localStorage.setItem("craftison_user_lang", l);
-  document.documentElement.dir=T[l].dir;
+  document.documentElement.dir=T[l]?T[l].dir||"ltr":"ltr";
   document.documentElement.lang=l;
   buildLB();applyT();renderCrafts(CRAFTS);
   if(craft)loadWorkers(craft.id);
@@ -924,9 +1095,10 @@ function applyT(){
   set("bc-btn-cancel", t("rep_btn_cancel"));
   set("bc-btn-send", t("bc_send"));
 
+  var curDir = T[lang] ? T[lang].dir || "ltr" : "ltr";
   document.querySelectorAll(".fi,.fsel").forEach(function(e){
-    e.style.direction=T[lang].dir;
-    e.style.textAlign=T[lang].dir==="rtl"?"right":"left";
+    e.style.direction=curDir;
+    e.style.textAlign=curDir==="rtl"?"right":"left";
   });
   loadTotalStats();
 }
@@ -1759,7 +1931,7 @@ document.addEventListener("DOMContentLoaded",function(){
     lang = savedLang;
   }
 
-  document.documentElement.dir = T[lang].dir;
+  document.documentElement.dir = T[lang] ? T[lang].dir || "ltr" : "ltr";
   document.documentElement.lang = lang;
 
   window.history.replaceState({screen: "home"}, "", "#home");
