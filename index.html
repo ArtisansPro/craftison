@@ -373,8 +373,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="req-hint" id="req-hint"></div>
     <div class="fg"><label class="fl" id="l-req-text"></label><textarea class="fi" id="rq-text" rows="4" style="resize:none;" oninput="onReqTextInput()"></textarea></div>
     <div class="fg"><label class="fl" id="l-req-craft"></label><select class="fsel" id="rq-met" onchange="rqManualCraft=true;"></select></div>
-    <div class="fg"><label class="fl" id="l-req-pay"></label><select class="fsel" id="rq-pay"></select></div>
-    <div class="fg"><label class="fl" id="l-req-vil"></label><input class="fi" id="rq-vil"></div>
+    <div class="fg"><label class="fl" id="l-req-pay"></label><select class="fsel" id="rq-pay" onchange="rqManualLoc=true;"></select></div>
+    <div class="fg"><label class="fl" id="l-req-vil"></label><input class="fi" id="rq-vil" oninput="rqManualLoc=true;"></div>
     <div class="fg"><label class="fl" id="l-req-com"></label><input class="fi" id="rq-com"></div>
     <div class="fg"><label class="fl" id="l-req-tel"></label><input class="fi" id="rq-tel" type="tel" placeholder="06XXXXXXXX"></div>
     <div class="sbtn-wrap">
@@ -577,20 +577,20 @@ var T={
     rep_q5: "🗣️ Comportement inapproprié ou impoli",
     rep_btn_cancel: "Annuler",
     rep_btn_confirm: "Confirmer",
-    rq_quick_ph: "Ex : je cherche un plombier...",
+    rq_quick_ph: "Ex : coiffeur à Sidi Bel Abbès...",
     rq_quick_btn: "Envoyer",
     rq_title: "📢 Demande de service",
-    rq_hint: "Écrivez votre besoin : il sera envoyé aux artisans du métier choisi qui travaillent dans votre zone.",
+    rq_hint: "Écrivez votre besoin comme vous voulez (arabe, français ou les deux) avec le nom de votre ville. Ex : coiffeur à Sidi Bel Abbès. Il sera envoyé aux artisans du métier concerné dans votre zone.",
     rq_l_text: "Votre demande *",
-    rq_text_ph: "Ex : j'ai une fuite d'eau dans la cuisine, je cherche un plombier aujourd'hui...",
+    rq_text_ph: "Ex : je cherche un plombier à Sidi Bel Abbès...",
     rq_l_craft: "Métier recherché *",
     rq_l_pay: "Pays *",
-    rq_l_vil: "Ville *",
+    rq_l_vil: "Ville",
     rq_l_com: "Commune / Quartier",
     rq_l_tel: "Votre téléphone (optionnel, pour être rappelé)",
     rq_btn: "📤 Envoyer ma demande",
     rq_err_text: "Écrivez votre demande (5 caractères minimum)",
-    rq_err_fields: "Choisissez le métier, le pays et la ville",
+    rq_err_fields: "Précisez le métier et la ville (vous pouvez les écrire dans votre demande)",
     rq_wait: "Veuillez patienter avant d'envoyer une autre demande",
     rq_sent: "✅ Demande envoyée aux artisans de votre zone",
     rq_sent_n: "✅ Demande envoyée à {n} artisan(s) de votre zone",
@@ -604,7 +604,9 @@ var T={
     inbox_reply: "💬 Répondre",
     inbox_new: "NOUVEAU",
     inbox_anon: "Client",
-    inbox_err: "Erreur de chargement"
+    inbox_err: "Erreur de chargement",
+    inbox_all: "Toutes les demandes (Admin)",
+    inbox_of: "Demandes de"
   },
   ar: {
     sub: "ابحث عن أفضل الحرفيين",
@@ -688,20 +690,20 @@ var T={
     rep_q5: "🗣️ سلوك غير لائق أو كلام غير محترم",
     rep_btn_cancel: "إلغاء",
     rep_btn_confirm: "تأكيد البلاغ",
-    rq_quick_ph: "مثال: أريد سباكاً...",
+    rq_quick_ph: "مثال: أريد حلاقة في سيدي بلعباس",
     rq_quick_btn: "إرسال",
     rq_title: "📢 طلب خدمة",
-    rq_hint: "اكتب ما تحتاجه، وسيصل طلبك إلى الحرفيين أصحاب الاختصاص المطلوب في منطقتك.",
+    rq_hint: "اكتب طلبك بأي لغة تريد (عربية أو فرنسية أو مزيج) مع اسم مدينتك. مثال: أريد حلاقة في سيدي بلعباس. سيصل إلى الحرفيين أصحاب الاختصاص في منطقتك.",
     rq_l_text: "طلبك *",
-    rq_text_ph: "مثال: عندي تسرب مياه في المطبخ وأحتاج سباكاً اليوم...",
+    rq_text_ph: "مثال: أريد سباكاً في سيدي بلعباس...",
     rq_l_craft: "الحرفة المطلوبة *",
     rq_l_pay: "البلد *",
-    rq_l_vil: "المدينة *",
+    rq_l_vil: "المدينة",
     rq_l_com: "الحي / البلدية",
     rq_l_tel: "رقم هاتفك (اختياري ليتصل بك الحرفي)",
     rq_btn: "📤 إرسال الطلب",
     rq_err_text: "اكتب طلبك (5 أحرف على الأقل)",
-    rq_err_fields: "اختر الحرفة والبلد والمدينة",
+    rq_err_fields: "حدّد الحرفة والمدينة (يمكنك كتابتهما داخل نص الطلب)",
     rq_wait: "يرجى الانتظار قليلاً قبل إرسال طلب آخر",
     rq_sent: "✅ تم إرسال طلبك إلى الحرفيين في منطقتك",
     rq_sent_n: "✅ تم إرسال طلبك إلى {n} حرفي في منطقتك",
@@ -715,7 +717,9 @@ var T={
     inbox_reply: "💬 رد",
     inbox_new: "جديد",
     inbox_anon: "زبون",
-    inbox_err: "خطأ في التحميل"
+    inbox_err: "خطأ في التحميل",
+    inbox_all: "كل الطلبات (Admin)",
+    inbox_of: "طلبات"
   },
   en: {
     sub: "Find the best craftsmen near you",
@@ -799,20 +803,20 @@ var T={
     rep_q5: "🗣️ Inappropriate or rude behavior",
     rep_btn_cancel: "Cancel",
     rep_btn_confirm: "Confirm Report",
-    rq_quick_ph: "e.g. I need a plumber...",
+    rq_quick_ph: "e.g. a barber in Oran...",
     rq_quick_btn: "Send",
     rq_title: "📢 Service Request",
-    rq_hint: "Write what you need: your request will be sent to the craftsmen of the chosen trade working in your area.",
+    rq_hint: "Write your request in any language (Arabic, French or mixed) with your city name. e.g. a barber in Sidi Bel Abbès. It will be sent to the matching craftsmen in your area.",
     rq_l_text: "Your request *",
-    rq_text_ph: "e.g. I have a water leak in my kitchen and need a plumber today...",
+    rq_text_ph: "e.g. I need a plumber in Sidi Bel Abbès...",
     rq_l_craft: "Craft needed *",
     rq_l_pay: "Country *",
-    rq_l_vil: "City *",
+    rq_l_vil: "City",
     rq_l_com: "District / Neighborhood",
     rq_l_tel: "Your phone (optional, so they can call you)",
     rq_btn: "📤 Send my request",
     rq_err_text: "Write your request (5 characters minimum)",
-    rq_err_fields: "Choose the craft, country and city",
+    rq_err_fields: "Specify the craft and the city (you can write them in your request)",
     rq_wait: "Please wait before sending another request",
     rq_sent: "✅ Request sent to craftsmen in your area",
     rq_sent_n: "✅ Request sent to {n} craftsman(men) in your area",
@@ -826,7 +830,9 @@ var T={
     inbox_reply: "💬 Reply",
     inbox_new: "NEW",
     inbox_anon: "Client",
-    inbox_err: "Loading error"
+    inbox_err: "Loading error",
+    inbox_all: "All requests (Admin)",
+    inbox_of: "Requests of"
   },
   es: {
     sub: "Encuentra al mejor artesano",
@@ -1630,6 +1636,8 @@ var targetEditingWorkerId = null;
 
 /* ===== متغيرات نظام طلبات الزبائن ===== */
 var rqManualCraft = false;
+var rqManualLoc = false;
+var inboxTarget = null;
 var myWorker = null;
 var inboxUnsub = null;
 var inboxRequests = [];
@@ -1774,7 +1782,7 @@ function applyT(){
   /* ترجمة عناصر نظام الطلبات */
   ph("inp-req-quick", t("rq_quick_ph"));
   set("btn-req-quick", t("rq_quick_btn"));
-  set("home-inbox-t", t("inbox_btn"));
+  updateInboxBtnLabel();
   set("bk6", t("bk"));set("bk7", t("bk"));
   set("req-t", t("rq_title"));
   set("req-hint", t("rq_hint"));
@@ -1989,6 +1997,13 @@ function renderDet(w){
   }
 
   if(isAdmin){
+    var bReqs=document.createElement("button");
+    bReqs.className="btn-b";
+    bReqs.style.background="linear-gradient(135deg, #6A1B9A, #4A148C)";
+    bReqs.textContent = "📥 " + (lang==="ar"?"طلبات هذا الحرفي (Admin)":"Demandes de cet artisan (Admin)");
+    bReqs.onclick=function(){openInbox(w);};
+    dc.appendChild(bReqs);
+
     var bDel=document.createElement("button");
     bDel.className="btn-r";
     bDel.style.marginTop="10px";
@@ -2567,48 +2582,345 @@ function doLog(){
 
 /* ==========================================================
    نظام طلبات الزبائن (Demandes de service)
-   - الزبون يكتب طلبه ← يُحفظ في مجموعة "requests"
-   - الحرفي (نفس الحرفة + نفس المدينة/البلد) يرى الطلب في صندوقه
+   - الزبون يكتب طلبه بأي لغة (عربية / فرنسية / مزيج / Arabizi)
+   - التطبيق يستخرج الحرفة والمدينة من النص تلقائياً
+   - الحرفي (نفس الحرفة + نفس الولاية/المدينة) يرى الطلب في صندوقه
+   - المدير (Admin) يستطيع رؤية طلبات أي حرفي أو كل الطلبات
    ========================================================== */
 
 function normAr(s){
   return normalizeSearchText(s)
-    .replace(/[\u064B-\u065F\u0670]/g,"")
+    .replace(/[\u064B-\u065F\u0670\u0640]/g,"")
     .replace(/[أإآ]/g,"ا")
     .replace(/ة/g,"ه")
     .replace(/ى/g,"ي");
 }
 
-/* اكتشاف الحرفة تلقائياً من نص الزبون (مثال: "أريد سباكاً" ← سباكة) */
+/* ---------- بصمة صوتية: تجعل "بلعباس" و "bel abbes" و "Bel Abbès" متقاربة ---------- */
+var SK_AR={"ب":"b","پ":"b","ت":"t","ث":"t","ج":"j","ح":"h","خ":"k","د":"t","ذ":"t","ر":"r","ز":"s","س":"s","ش":"s","ص":"s","ض":"t","ط":"t","ظ":"t","غ":"k","ف":"f","ڤ":"f","ق":"k","ك":"k","گ":"k","ل":"l","م":"m","ن":"n","ه":"h","چ":"s"};
+var SK_LAT={b:"b",c:"k",d:"t",f:"f",g:"k",h:"h",j:"j",k:"k",l:"l",m:"m",n:"n",p:"b",q:"k",r:"r",s:"s",t:"t",v:"f",x:"s",z:"s"};
+
+function skeleton(s){
+  var x=normalizeSearchText(s).replace(/[\u064B-\u065F\u0670\u0640]/g,"").replace(/ة/g,"")
+    .replace(/dj/g,"j").replace(/gh/g,"k").replace(/kh/g,"k")
+    .replace(/ch/g,"s").replace(/sh/g,"s").replace(/ph/g,"f").replace(/th/g,"t").replace(/ou/g,"o");
+  var out="";
+  for(var i=0;i<x.length;i++){
+    var c=x.charAt(i);
+    var m=SK_AR[c]||SK_LAT[c];
+    if(m) out+=m;
+  }
+  return out.replace(/(.)\1+/g,"$1");
+}
+
+function cleanGram(s){
+  return normAr(s).replace(/\./g,"").replace(/['’\-_]/g," ").replace(/\s+/g," ").trim();
+}
+
+/* ---------- الولايات الجزائرية بكل كتاباتها المحتملة ---------- */
+var WIL_DATA=[
+ [1,"Adrar","أدرار"],
+ [2,"Chlef","الشلف","شلف","chelef"],
+ [3,"Laghouat","الأغواط","الاغواط","اغواط"],
+ [4,"Oum El Bouaghi","أم البواقي","ام البواقي"],
+ [5,"Batna","باتنة"],
+ [6,"Béjaïa","بجاية","bejaia","bgayet","bougie"],
+ [7,"Biskra","بسكرة"],
+ [8,"Béchar","بشار"],
+ [9,"Blida","البليدة","بليدة"],
+ [10,"Bouira","البويرة","بويرة"],
+ [11,"Tamanrasset","تمنراست","tamanghasset"],
+ [12,"Tébessa","تبسة"],
+ [13,"Tlemcen","تلمسان","tlemsen"],
+ [14,"Tiaret","تيارت"],
+ [15,"Tizi Ouzou","تيزي وزو","tizi wezzu"],
+ [16,"Alger","الجزائر العاصمة","algiers","alger centre","dzayer"],
+ [17,"Djelfa","الجلفة","جلفة"],
+ [18,"Jijel","جيجل"],
+ [19,"Sétif","سطيف","setif"],
+ [20,"Saïda","سعيدة","saida"],
+ [21,"Skikda","سكيكدة"],
+ [22,"Sidi Bel Abbès","سيدي بلعباس","سيدي بل عباس","سيدي بلعباس","بلعباس","بل عباس","بعباس","sidi bel abbes","sidi belabbes","sidi bel abbès","bel abbes","belabbes","bel abbès","sba","s b a","sidi bel abbas","sidi belabes","belabes","bel abes"],
+ [23,"Annaba","عنابة"],
+ [24,"Guelma","قالمة","galma"],
+ [25,"Constantine","قسنطينة","qacentina"],
+ [26,"Médéa","المدية","مدية","medea"],
+ [27,"Mostaganem","مستغانم"],
+ [28,"M'Sila","المسيلة","مسيلة","msila"],
+ [29,"Mascara","معسكر"],
+ [30,"Ouargla","ورقلة","wargla"],
+ [31,"Oran","وهران","wahran"],
+ [32,"El Bayadh","البيض"],
+ [33,"Illizi","إليزي","اليزي"],
+ [34,"Bordj Bou Arréridj","برج بوعريريج","برج بوعريرج","bba","bordj bou arreridj"],
+ [35,"Boumerdès","بومرداس","boumerdes"],
+ [36,"El Tarf","الطارف"],
+ [37,"Tindouf","تندوف"],
+ [38,"Tissemsilt","تيسمسيلت"],
+ [39,"El Oued","الوادي","oued souf","الوادي سوف"],
+ [40,"Khenchela","خنشلة"],
+ [41,"Souk Ahras","سوق أهراس","سوق اهراس"],
+ [42,"Tipaza","تيبازة","tipasa"],
+ [43,"Mila","ميلة"],
+ [44,"Aïn Defla","عين الدفلى","ain defla"],
+ [45,"Naâma","النعامة","naama"],
+ [46,"Aïn Témouchent","عين تموشنت","ain temouchent"],
+ [47,"Ghardaïa","غرداية","ghardaia"],
+ [48,"Relizane","غليزان","relizan"],
+ [49,"Timimoun","تيميمون"],
+ [50,"Bordj Badji Mokhtar","برج باجي مختار"],
+ [51,"Ouled Djellal","أولاد جلال","اولاد جلال"],
+ [52,"Béni Abbès","بني عباس","beni abbes"],
+ [53,"In Salah","عين صالح","ain salah"],
+ [54,"In Guezzam","عين قزام","ain guezzam"],
+ [55,"Touggourt","تقرت","tougourt"],
+ [56,"Djanet","جانت"],
+ [57,"El M'Ghair","المغير"],
+ [58,"El Meniaa","المنيعة","el menia"]
+];
+var WIL_INDEX=null,WIL_BY_ID={};
+
+function buildWilIndex(){
+  WIL_INDEX=[];
+  WIL_DATA.forEach(function(w){
+    WIL_BY_ID[w[0]]={id:w[0],disp:w[1]};
+    for(var i=1;i<w.length;i++){
+      var n=cleanGram(w[i]);
+      if(!n) continue;
+      WIL_INDEX.push({id:w[0],n:n,sk:skeleton(w[i])});
+    }
+  });
+}
+
+/* يبحث في أي نص عن اسم ولاية (مهما كانت اللغة أو الكتابة) */
+function findWilayas(text){
+  if(!WIL_INDEX) buildWilIndex();
+  if(!text) return [];
+  var tokens=normAr(text).split(/[\s,;:!?؟،\-_\/()"'’]+/)
+    .map(function(w){return w.replace(/\./g,"");}).filter(Boolean).slice(0,80);
+  var found=[];
+  for(var n=Math.min(4,tokens.length);n>=1;n--){
+    for(var i=0;i+n<=tokens.length;i++){
+      var gram=tokens.slice(i,i+n).join(" ");
+      var gs=null;
+      for(var k=0;k<WIL_INDEX.length;k++){
+        var a=WIL_INDEX[k];
+        var ok=(a.n===gram);
+        if(!ok && a.sk.length>=4){
+          if(gs===null) gs=skeleton(gram);
+          ok=(gs===a.sk);
+        }
+        if(ok && found.indexOf(a.id)===-1) found.push(a.id);
+      }
+    }
+  }
+  return found;
+}
+
+/* ---------- كلمات مفتاحية للحرف بالعربية والفرنسية والعامية ---------- */
+var CRAFT_KW={
+1:"سباك|سباكة|plombier|plomberie|plumber|sebbak|sabbak|fuite|تسرب|حنفية|robinet",
+2:"كهربائي|كهربجي|كهرباء|electricien|electrician|kahrabaji|kahraba",
+3:"صباغ|دهان|peintre|peinture|sebbagh|sabbagh|painter",
+4:"بناء|macon|maconnerie|bennay|benay|mason",
+5:"نجار|نجارة|menuisier|menuiserie|nejjar|najjar|carpenter",
+6:"المنيوم|aluminium",
+7:"حداد|حدادة|forgeron|ferronnier|haddad|ferronnerie",
+8:"مبلط|تبليط|carreleur|carrelage|faience|فايونس",
+9:"مكيف|تكييف|clim|climatisation|climatiseur|airco",
+10:"تبريد|مبرد|frigoriste|froid|refrigeration",
+11:"لحام|soudeur|soudure|welder",
+12:"عزل مائي|etancheite|etancheur",
+14:"اسقف مستعارة|faux plafond|placoplatre",
+15:"طاقة شمسية|panneau solaire|panneaux solaires|solaire|solar|الواح شمسية",
+16:"كاميرات|camera|cameras|surveillance|مراقبة|alarme",
+17:"parabole|antenne|satellite|بارابول",
+18:"مصعد|ascenseur|elevator|asensor",
+19:"ميكانيكي|ميكانيك|mecanicien|mecano|garagiste|garage|mechanic",
+20:"سكانر|scanner|diagnostic",
+21:"طولي|tolier|tolerie",
+22:"carrosserie|carrossier|هيكل",
+23:"زجاج|vitrier|vitrerie|vitre",
+24:"عجلات|vulcanisateur|vulcanisation|pneu|pneus|فولكانيزاتور|crevaison",
+25:"غسيل سيارات|lavage auto|lavage voiture|station de lavage|carwash",
+26:"كهرباء سيارات|electricien auto|auto electricien",
+27:"اصلاح منزلي|bricoleur|bricolage|depannage domicile",
+28:"فريجيدار|frigo|machine a laver|lave linge|electromenager|ثلاجة|غسالة|refrigerateur",
+29:"تصليح هاتف|اصلاح هاتف|reparation telephone|reparateur telephone|smartphone",
+30:"حاسوب|ordinateur|laptop|pc portable|informaticien|كمبيوتر",
+31:"شبكة|reseau|wifi|network|انترنت|fibre",
+32:"حلاق|حلاقة|coiffeur|barbier|hallak|hellak|barber",
+33:"كوافيرة|كوافير|coiffeuse|hairdresser|coiffure femme|حلاقة نساء|مصففة",
+34:"تجميل|esthetique|estheticienne|maquillage|مكياج|beauty|manucure|onglerie",
+35:"مساج|massage|تدليك",
+36:"ممرض|ممرضة|infirmier|infirmiere|soins infirmiers|حقن",
+37:"بيطري|veterinaire",
+38:"محامي|avocat|avocate|lawyer",
+39:"خياط|خياطة|couturier|couturiere|couture|tailleur",
+40:"منجد|tapissier|tapisserie|تنجيد",
+41:"تنظيف كنب|nettoyage canape|nettoyage salon",
+42:"غسيل سجاد|nettoyage tapis|lavage tapis",
+43:"تنظيف ما بعد البناء|nettoyage chantier|nettoyage fin de chantier",
+44:"تنظيف منازل|femme de menage|menage|nettoyage domicile|عاملة نظافة|nettoyage maison",
+45:"تنظيف جاف|pressing|dry cleaning|lavage a sec|blanchisserie",
+46:"نقل عفش|نقل اثاث|demenagement|demenageur|moving",
+47:"نقل بضائع|transport marchandise|transporteur|freight",
+48:"تصميم جرافيك|graphiste|graphisme|infographe|infographie|graphic designer|logo",
+49:"مصور|تصوير فوتوغرافي|photographe|photographie|photographer",
+50:"فيديو|videaste|videographe|videographie|مونتاج|montage video",
+51:"تنظيم حفلات|organisateur evenement|organisation evenement|wedding planner|event planner|تنظيم فعاليات",
+52:"طباخ|تموين|traiteur|cuisinier|catering|طبخ",
+53:"حلويات|patissier|patisserie|gateau|gateaux|حلواني|تورتة",
+54:"دروس خصوصية|cours particulier|cours de soutien|professeur|enseignant|tutor|مدرس|استاذ",
+55:"لغات|cours de langue|traducteur|traduction|مترجم",
+56:"musicien|عازف|موسيقي|cours de musique|animateur musical|orchestre",
+57:"رياضة|coach|coach sportif|salle de sport|fitness|مدرب رياضي|entraineur",
+58:"حراسة|gardien|gardiennage|agent de securite|security|حارس",
+59:"architecte|تهيئة|amenagement|مهندس معماري|topographe",
+60:"جبس|platrier|platrerie|plastering|platre",
+61:"ارضيات|parquet|revetement sol|parqueteur|moquette",
+62:"تسقيف|toiture|couvreur|toit|roofing|zingueur|charpente",
+63:"مطبخ|cuisine equipee|cuisiniste|kitchen",
+64:"حمام|salle de bain|salle de bains|bathroom|baignoire|douche",
+65:"ديكور|decorateur|decoration|designer interieur|interior",
+66:"جنان|بستاني|jardinier|jardinage|gardener|paysagiste|حديقة",
+67:"بناء مسابح|construction piscine|constructeur piscine|piscinier",
+68:"اعمال ترابية|terrassement|pelle mecanique|bulldozer|tractopelle",
+69:"محاسب|comptable|comptabilite|fiscalite|accountant|expert comptable|محاسبة",
+70:"مولد كهربائي|groupe electrogene|groupes electrogenes|generateur|مولدات|مولد",
+71:"sanitaire|اعمال صحية|installateur sanitaire",
+72:"رصف|pavage|dallage|paveur",
+73:"دهان صناعي|peinture industrielle|sablage|thermolaquage",
+74:"تطريز|broderie|brodeuse",
+75:"كرداني|cordonnier|cordonnerie|اسكافي|صباط",
+76:"مخبزة|boulanger|boulangerie|خباز|bakery",
+77:"سائق خاص|chauffeur|chauffeur prive|driver|سائق",
+78:"تعليم سواقة|auto ecole|autoecole|permis de conduire|moniteur auto|مدرسة سياقة",
+79:"طباعة|imprimerie|imprimeur|impression",
+80:"irrigation|drainage|arrosage|السقي",
+81:"تركيب ابواب|pose de porte|pose de portes|poseur|installation porte|porte blindee",
+82:"اعمال خشبية|travaux bois|ebeniste|ebenisterie|خشب",
+83:"site web|developpeur|developer|webmaster|application mobile|برمجة|مبرمج|web designer|creation site",
+84:"الكترونيات|electronicien|electronique|carte electronique",
+85:"موثق|كاتب عدل|notaire|notariat",
+87:"تاكسي|taxi|taxis",
+91:"livraison|livreur|livreuse|توصيل|delivery|موزع",
+92:"بيتزا|pizza|pizzeria|fast food|fastfood|sandwich|tacos|snack",
+93:"دباناج|depannage auto|depanneuse|remorque|remorquage|towing|سحب سيارة|سحب سيارات",
+94:"remorquage poids lourd|سحب شاحنات|سحب الشاحنات|depannage camion|grue camion",
+95:"mecanique camion|mecanicien camion|ميكانيك الشاحنات|ميكانيكي شاحنات|ميكانيك شاحنات",
+96:"electricite camion|كهرباء الشاحنات|كهرباء شاحنات",
+97:"montage meuble|montage meubles|monteur meuble|تركيب اثاث|تركيب الاثاث|montage cuisine|ikea",
+98:"forage|puits|pompe|pompes|حفر الابار|حفر بئر|حفر آبار|مضخة|مضخات|forreur",
+99:"detailing|polissage|lustrage|nettoyage voiture|تلميع|تغليف السيارات|covering",
+100:"entretien piscine|nettoyage piscine|صيانة مسابح|تنظيف مسابح|piscine"
+};
+var CRAFT_KW_INDEX=null;
+
+function buildCraftKwIndex(){
+  CRAFT_KW_INDEX=[];
+  Object.keys(CRAFT_KW).forEach(function(id){
+    CRAFT_KW[id].split("|").forEach(function(kw){
+      var kn=cleanGram(kw);
+      if(!kn) return;
+      var multi=kn.indexOf(" ")!==-1;
+      CRAFT_KW_INDEX.push({id:parseInt(id,10),kn:kn,kt:multi?kn:kn.replace(/ه$/,""),multi:multi});
+    });
+  });
+}
+
+function wordVariants(w){
+  var v=[w];
+  if(w.indexOf("ال")===0 && w.length>4) v.push(w.slice(2));
+  if(/^[وبلكف]/.test(w) && w.length>4){
+    var s=w.slice(1);
+    v.push(s);
+    if(s.indexOf("ال")===0 && s.length>4) v.push(s.slice(2));
+  }
+  return v;
+}
+
+/* اكتشاف الحرفة من نص الزبون بأي لغة (مثال: "أريد حلاقة في sidi bel abbes" ← حلاقة رجال) */
 function detectCraft(text){
-  var words = normAr(text).split(/[\s,.;:!?؟،\-_\/()]+/).filter(function(w){return w.length>=4;});
-  if(!words.length) return 0;
-  for(var wi=0; wi<words.length; wi++){
-    var w = words[wi];
-    var stem = w.slice(0, Math.max(4, w.length-3));
-    for(var ci=0; ci<CRAFTS.length; ci++){
-      var c = CRAFTS[ci];
+  if(!text) return 0;
+  if(!CRAFT_KW_INDEX) buildCraftKwIndex();
+  var tn=cleanGram(text);
+  if(!tn) return 0;
+  var tn2=(" "+tn).replace(/ ال/g," ").trim();
+  var words=tn.split(" ").filter(Boolean);
+  var best=0,bestLen=0;
+  CRAFT_KW_INDEX.forEach(function(k){
+    var hit=false;
+    if(k.multi){
+      hit=((" "+tn).indexOf(" "+k.kn)!==-1)||((" "+tn2).indexOf(" "+k.kn)!==-1);
+    } else {
+      for(var i=0;i<words.length && !hit;i++){
+        var vs=wordVariants(words[i]);
+        for(var j=0;j<vs.length;j++){
+          if(vs[j].indexOf(k.kt)===0 && vs[j].length-k.kt.length<=3){hit=true;break;}
+        }
+      }
+    }
+    if(hit && k.kt.length>bestLen){best=k.id;bestLen=k.kt.length;}
+  });
+  if(best) return best;
+
+  /* احتياطي: مقارنة مع أسماء الحرف نفسها */
+  var wordsL=words.filter(function(w){return w.length>=4;});
+  for(var wi=0;wi<wordsL.length;wi++){
+    var w=wordsL[wi];
+    var stem=w.slice(0,Math.max(4,w.length-3));
+    for(var ci=0;ci<CRAFTS.length;ci++){
+      var c=CRAFTS[ci];
       for(var key in c){
-        if(typeof c[key] !== "string") continue;
+        if(typeof c[key]!=="string") continue;
         if(key==="icon"||key==="c"||key==="bg") continue;
-        var n = normAr(c[key]);
-        if(n && n.indexOf(stem) !== -1) return c.id;
+        var n=normAr(c[key]);
+        if(n && n.indexOf(stem)!==-1) return c.id;
       }
     }
   }
   return 0;
 }
 
-function sameArea(aCountry, aCity, bCountry, bCity){
-  var ac_ = normAr(aCountry), bc_ = normAr(bCountry);
-  var ai = normAr(aCity), bi = normAr(bCity);
-  if(ac_ && bc_ && ac_ !== bc_) return false;
-  if(ai && bi){
-    return ai === bi || ai.indexOf(bi) !== -1 || bi.indexOf(ai) !== -1;
-  }
-  return true;
+/* ---------- مطابقة المنطقة بين الطلب والحرفي ---------- */
+function fieldMatch(a,b){
+  var sa=skeleton(a),sb=skeleton(b);
+  if(!sa||!sb) return false;
+  if(sa===sb) return true;
+  if(sa.length>=4 && sb.indexOf(sa)!==-1) return true;
+  if(sb.length>=4 && sa.indexOf(sb)!==-1) return true;
+  return false;
 }
 
+function unionIds(){
+  var out=[];
+  for(var i=0;i<arguments.length;i++){
+    arguments[i].forEach(function(id){if(out.indexOf(id)===-1)out.push(id);});
+  }
+  return out;
+}
+
+/* req: {country,city,commune,text}   wk: {country,city,commune} */
+function areaMatch(req,wk){
+  if(req.country && wk.country && normAr(req.country)!==normAr(wk.country)) return false;
+  var rw=unionIds(findWilayas(req.city),findWilayas(req.commune),findWilayas(req.text));
+  var ww=unionIds(findWilayas(wk.city),findWilayas(wk.commune));
+  if(rw.length && ww.length){
+    return rw.some(function(id){return ww.indexOf(id)!==-1;});
+  }
+  var A=[req.city,req.commune].filter(Boolean);
+  var B=[wk.city,wk.commune].filter(Boolean);
+  if(!A.length||!B.length) return true;
+  for(var i=0;i<A.length;i++){
+    for(var j=0;j<B.length;j++){
+      if(fieldMatch(A[i],B[j])) return true;
+    }
+  }
+  return false;
+}
+
+/* ---------- شاشة طلب الخدمة ---------- */
 function buildRequestForm(){
   var met=$("rq-met");
   if(met){
@@ -2620,15 +2932,30 @@ function buildRequestForm(){
   }
 }
 
+function autoFillFromText(){
+  var txt=$("rq-text").value;
+  if(!rqManualCraft){
+    var det=detectCraft(txt);
+    if(det) $("rq-met").value=String(det);
+  }
+  if(!rqManualLoc){
+    var ids=findWilayas(txt);
+    if(ids.length){
+      $("rq-vil").value=WIL_BY_ID[ids[0]].disp;
+      if(!$("rq-pay").value) $("rq-pay").value="Algerie";
+    }
+  }
+}
+
 function openRequest(prefill){
   buildRequestForm();
   rqManualCraft=false;
+  rqManualLoc=false;
   $("e-req").innerHTML="";
   $("rq-text").value=(prefill||"").trim();
   $("rq-met").value="";
   $("rq-tel").value="";
 
-  /* استرجاع آخر موقع استعمله الزبون، أو موقع الحرفي المسجل */
   var loc={};
   try{loc=JSON.parse(localStorage.getItem("craftison_req_loc")||"{}");}catch(e){loc={};}
   if(!loc.country && myWorker){loc={country:myWorker.country||"",city:myWorker.city||"",commune:myWorker.commune||""};}
@@ -2637,20 +2964,14 @@ function openRequest(prefill){
   $("rq-com").value=loc.commune||"";
   if(loc.phone) $("rq-tel").value=loc.phone;
 
-  /* اختيار الحرفة تلقائياً إن كانت الصفحة الحالية صفحة حرفة، أو من النص */
   if(craft && currentScreenName()==="craft"){ $("rq-met").value=craft.id; rqManualCraft=true; }
-  var det=detectCraft($("rq-text").value);
-  if(det && !rqManualCraft){ $("rq-met").value=det; }
+  autoFillFromText();
 
   var q=$("inp-req-quick"); if(q) q.value="";
   go("req");
 }
 
-function onReqTextInput(){
-  if(rqManualCraft) return;
-  var det=detectCraft($("rq-text").value);
-  if(det) $("rq-met").value=det;
-}
+function onReqTextInput(){ autoFillFromText(); }
 
 function submitRequest(){
   var text=$("rq-text").value.trim();
@@ -2661,6 +2982,15 @@ function submitRequest(){
   var phone=$("rq-tel").value.trim();
 
   if(text.length<5){showErr("e-req",t("rq_err_text"));return;}
+
+  /* إكمال ما ينقص من النص نفسه */
+  if(!craftId) craftId=detectCraft(text);
+  if(!city){
+    var ids=findWilayas(text);
+    if(ids.length){ city=WIL_BY_ID[ids[0]].disp; if(!country) country="Algerie"; }
+  }
+  if(!country && findWilayas(city).length) country="Algerie";
+
   if(!craftId||!country||!city){showErr("e-req",t("rq_err_fields"));return;}
 
   var last=parseInt(localStorage.getItem("craftison_req_last")||"0")||0;
@@ -2690,16 +3020,16 @@ function submitRequest(){
   }).then(function(){
     localStorage.setItem("craftison_req_last",String(Date.now()));
     localStorage.setItem("craftison_req_loc",JSON.stringify({country:country,city:city,commune:commune,phone:phone}));
-    /* عدّ الحرفيين المعنيّين لإعلام الزبون */
     return DB.collection("workers").where("craftId","==",craftId).get().then(function(snap){
       var n=0;
-      snap.forEach(function(d){var w=d.data();if(sameArea(country,city,w.country,w.city))n++;});
+      snap.forEach(function(d){var w=d.data();if(areaMatch({country:country,city:city,commune:commune,text:text},w))n++;});
       return n;
     }).catch(function(){return -1;});
   }).then(function(n){
     var msg = n>0 ? t("rq_sent_n").replace("{n}",n) : (n===0 ? t("rq_sent_0") : t("rq_sent"));
     $("rq-text").value="";
     rqManualCraft=false;
+    rqManualLoc=false;
     goBack();
     showToast(msg);
   }).catch(function(e){
@@ -2710,7 +3040,15 @@ function submitRequest(){
   });
 }
 
-/* ===== جانب الحرفي: صندوق الطلبات ===== */
+/* ---------- صندوق الطلبات ---------- */
+
+function isAdminUser(){
+  return !!(currentUser && currentUser.email && currentUser.email.toLowerCase()===ADMIN_EMAIL.toLowerCase());
+}
+
+function isOwnTarget(){
+  return !!(inboxTarget && inboxTarget!=="all" && myWorker && inboxTarget.id===myWorker.id);
+}
 
 function getSeenReqs(){
   try{return JSON.parse(localStorage.getItem("craftison_seen_reqs")||"[]");}catch(e){return [];}
@@ -2725,15 +3063,20 @@ function loadMyWorkerProfile(user){
       startInboxListener();
     } else {
       myWorker=null;
-      showInboxButton(false);
       stopInboxListener();
+      showInboxButton(isAdminUser());
     }
-  }).catch(function(){});
+  }).catch(function(){ showInboxButton(isAdminUser()); });
+}
+
+function updateInboxBtnLabel(){
+  set("home-inbox-t", t("inbox_btn")+((!myWorker && isAdminUser())?" (Admin)":""));
 }
 
 function showInboxButton(show){
   var b=$("home-inbox-btn");
   if(b) b.style.display=show?"inline-block":"none";
+  updateInboxBtnLabel();
   if(!show){var bd=$("inbox-badge");if(bd)bd.style.display="none";}
 }
 
@@ -2742,19 +3085,20 @@ function stopInboxListener(){
   inboxRequests=[];
 }
 
-function relevantRequests(list){
-  if(!myWorker) return [];
+function reqMillis(r){
+  return r.createdAt?(r.createdAt.toMillis?r.createdAt.toMillis():r.createdAt):Date.now();
+}
+
+/* wk === "all" ← كل الطلبات (للمدير) ، وإلا ← الطلبات المناسبة لهذا الحرفي */
+function relevantRequests(list,wk){
+  if(!wk) return [];
   var now=Date.now();
   return list.filter(function(r){
-    var ms=r.createdAt?(r.createdAt.toMillis?r.createdAt.toMillis():r.createdAt):now;
-    if(now-ms>REQ_MAX_AGE_MS) return false;
-    if(r.craftId!==myWorker.craftId) return false;
-    return sameArea(r.country,r.city,myWorker.country,myWorker.city);
-  }).sort(function(a,b){
-    var am=a.createdAt?(a.createdAt.toMillis?a.createdAt.toMillis():a.createdAt):Date.now();
-    var bm=b.createdAt?(b.createdAt.toMillis?b.createdAt.toMillis():b.createdAt):Date.now();
-    return bm-am;
-  });
+    if(now-reqMillis(r)>REQ_MAX_AGE_MS) return false;
+    if(wk==="all") return true;
+    if(r.craftId!==wk.craftId) return false;
+    return areaMatch(r,wk);
+  }).sort(function(a,b){return reqMillis(b)-reqMillis(a);});
 }
 
 function startInboxListener(){
@@ -2763,15 +3107,22 @@ function startInboxListener(){
   inboxUnsub=DB.collection("requests").where("craftId","==",myWorker.craftId).onSnapshot(function(snap){
     var all=[];
     snap.forEach(function(d){all.push(Object.assign({id:d.id},d.data()));});
-    inboxRequests=relevantRequests(all);
-    updateInboxBadge();
-    if(currentScreenName()==="inbox"){renderInbox();markRequestsSeen();}
+    var mine=relevantRequests(all,myWorker);
+    updateInboxBadge(mine);
+    if(currentScreenName()==="inbox" && isOwnTarget()){
+      inboxRequests=mine;
+      renderInbox();
+      markRequestsSeen();
+    } else if(!inboxTarget || isOwnTarget()){
+      inboxRequests=mine;
+    }
   },function(){});
 }
 
-function updateInboxBadge(){
+function updateInboxBadge(list){
   var seen=getSeenReqs();
-  var n=inboxRequests.filter(function(r){return seen.indexOf(r.id)===-1;}).length;
+  var src=list||inboxRequests;
+  var n=(myWorker?src:[]).filter(function(r){return seen.indexOf(r.id)===-1;}).length;
   var bd=$("inbox-badge");
   if(!bd) return;
   if(n>0){bd.textContent=n>99?"99+":n;bd.style.display="inline-block";}
@@ -2779,47 +3130,64 @@ function updateInboxBadge(){
 }
 
 function markRequestsSeen(){
+  if(!isOwnTarget()) return;
   var seen=getSeenReqs();
   inboxRequests.forEach(function(r){if(seen.indexOf(r.id)===-1)seen.push(r.id);});
   if(seen.length>300) seen=seen.slice(seen.length-300);
   localStorage.setItem("craftison_seen_reqs",JSON.stringify(seen));
-  updateInboxBadge();
+  updateInboxBadge(inboxRequests);
 }
 
-function openInbox(){
-  if(!myWorker){return;}
+function updateInboxTitle(){
+  var ttl=t("inbox_t");
+  if(inboxTarget==="all") ttl="📥 "+t("inbox_all");
+  else if(inboxTarget && !isOwnTarget()) ttl="📥 "+t("inbox_of")+" "+(inboxTarget.name||"");
+  set("inbox-t",ttl);
+  set("inbox-sub",inboxTarget==="all"?"":t("inbox_sub"));
+}
+
+/* target: كائن حرفي (للمدير)، أو "all"، أو بدون وسيط ← صندوق الحرفي نفسه */
+function openInbox(target){
+  var tgt=target||myWorker||(isAdminUser()?"all":null);
+  if(!tgt) return;
+  inboxTarget=tgt;
   $("inbox-list").innerHTML='<div class="spinner-wrap"><div class="spinner"></div></div>';
-  set("inbox-t",t("inbox_t"));
-  set("inbox-sub",t("inbox_sub"));
+  updateInboxTitle();
   go("inbox");
-  DB.collection("requests").where("craftId","==",myWorker.craftId).get().then(function(snap){
+  var q=(tgt==="all")
+    ? DB.collection("requests").orderBy("createdAt","desc").limit(200)
+    : DB.collection("requests").where("craftId","==",tgt.craftId);
+  q.get().then(function(snap){
     var all=[];
     snap.forEach(function(d){all.push(Object.assign({id:d.id},d.data()));});
-    inboxRequests=relevantRequests(all);
+    inboxRequests=relevantRequests(all,tgt);
     renderInbox();
     markRequestsSeen();
-  }).catch(function(){
-    $("inbox-list").innerHTML='<div class="empty"><div class="ei">⚠️</div><div class="et">'+t("inbox_err")+'</div></div>';
+  }).catch(function(e){
+    $("inbox-list").innerHTML='<div class="empty"><div class="ei">⚠️</div><div class="et">'+t("inbox_err")+'</div><div class="es">'+esc(e&&e.message?e.message:"")+'</div></div>';
   });
 }
 
 function renderInbox(){
   var el=$("inbox-list");
   if(!el) return;
+  updateInboxTitle();
   el.innerHTML="";
   if(!inboxRequests.length){
     el.innerHTML='<div class="empty"><div class="ei">📭</div><div class="et">'+t("inbox_empty")+'</div><div class="es">'+t("inbox_empty_s")+'</div></div>';
     return;
   }
   var seen=getSeenReqs();
+  var own=isOwnTarget();
   inboxRequests.forEach(function(r){
-    var ms=r.createdAt?(r.createdAt.toMillis?r.createdAt.toMillis():r.createdAt):Date.now();
-    var when=new Date(ms).toLocaleString([],{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
-    var isNew=seen.indexOf(r.id)===-1;
+    var when=new Date(reqMillis(r)).toLocaleString([],{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
+    var isNew=own && seen.indexOf(r.id)===-1;
+    var cr=CRAFTS.find(function(c){return c.id===r.craftId;});
     var d=document.createElement("div");
     d.className="req-card"+(isNew?" new":"");
     d.innerHTML=
       '<div class="req-top"><div class="req-who">👤 '+esc(r.clientName||t("inbox_anon"))+(isNew?' <span class="inbox-badge" style="background:#FF6F00;">'+t("inbox_new")+'</span>':"")+'</div><div class="req-time">'+esc(when)+'</div></div>'+
+      (inboxTarget==="all"&&cr?'<div class="req-loc" style="margin:0 0 4px;">'+cr.icon+' '+esc(cn(cr))+'</div>':"")+
       '<div class="req-txt">'+esc(r.text)+'</div>'+
       '<div class="req-loc">📍 '+esc(r.commune?r.commune+", ":"")+esc(r.city)+", "+esc(r.country)+(r.phone?' &nbsp;·&nbsp; 📞 '+esc(r.phone):"")+'</div>';
     var acts=document.createElement("div");acts.className="req-acts";
@@ -2828,24 +3196,26 @@ function renderInbox(){
       bc.onclick=(function(ph){return function(){window.open("tel:"+ph);};})(r.phone);
       acts.appendChild(bc);
     }
-    var br=document.createElement("button");br.className="req-reply";br.textContent=t("inbox_reply");
-    br.onclick=(function(cid,nm){return function(){replyToRequest(cid,nm);};})(r.clientId,r.clientName||t("inbox_anon"));
-    acts.appendChild(br);
-    d.appendChild(acts);
+    if(own){
+      var br=document.createElement("button");br.className="req-reply";br.textContent=t("inbox_reply");
+      br.onclick=(function(cid,nm){return function(){replyToRequest(cid,nm);};})(r.clientId,r.clientName||t("inbox_anon"));
+      acts.appendChild(br);
+    }
+    if(acts.children.length) d.appendChild(acts);
     el.appendChild(d);
   });
 }
 
 function replyToRequest(clientId, clientName){
   if(!currentUser||!clientId) return;
-  chatWorkerId=null; /* لا يمكن التبليغ عن الزبون من هذه الشاشة */
+  chatWorkerId=null;
   startChat(clientId, clientName, currentUser.uid, false);
 }
 
 AUTH.onAuthStateChanged(function(user){
   currentUser=user;
   if(user){ loadMyWorkerProfile(user); }
-  else { myWorker=null; showInboxButton(false); stopInboxListener(); }
+  else { myWorker=null; inboxTarget=null; showInboxButton(false); stopInboxListener(); }
 });
 
 document.addEventListener("DOMContentLoaded",function(){
