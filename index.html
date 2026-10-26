@@ -46,6 +46,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .req-quick input{border:none;outline:none;background:transparent;color:#1A1A2E;font-size:13px;flex:1;width:100%;min-width:0;}
 .req-quick input::placeholder{color:#888;}
 .req-quick button{background:linear-gradient(135deg,#FF6F00,#E65100);color:#fff;border:none;border-radius:9px;padding:9px 12px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+
+.mic-btn,.mic-lang{border:1.5px solid #BBDEFB;background:#E3F2FD;color:#1565C0;border-radius:10px;padding:9px 14px;font-size:13px;font-weight:800;cursor:pointer;line-height:1;}
+.mic-lang{padding:9px 11px;font-size:12px;}
+.req-quick .mic-btn{background:#E3F2FD;color:#1565C0;font-size:16px;padding:8px 10px;border:none;}
+.req-quick .mic-lang{background:#EEF2FF;color:#1565C0;padding:9px 8px;font-size:11px;border:none;}
+.mic-btn.rec{background:#C62828 !important;color:#fff !important;border-color:#C62828;animation:micPulse 1s infinite;}
+@keyframes micPulse{0%{box-shadow:0 0 0 0 rgba(198,40,40,.55);}70%{box-shadow:0 0 0 10px rgba(198,40,40,0);}100%{box-shadow:0 0 0 0 rgba(198,40,40,0);}}
 .stats{display:flex;gap:6px;padding:10px 8px 0;flex-shrink:0;}
 .stat{flex:1;background:#fff;border-radius:12px;padding:9px 4px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,0.07);}
 .sn{font-size:18px;font-weight:900;color:#1565C0;}
@@ -219,6 +226,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="req-quick">
       <span>📢</span>
       <input id="inp-req-quick" onkeydown="if(event.key==='Enter')openRequest($('inp-req-quick').value)">
+      <button type="button" class="mic-lang" onclick="toggleMicLang()">FR</button>
+      <button type="button" class="mic-btn" id="mic-quick" onclick="toggleMic('inp-req-quick','mic-quick')">🎤</button>
       <button id="btn-req-quick" onclick="openRequest($('inp-req-quick').value)">Envoyer</button>
     </div>
   </div>
@@ -371,7 +380,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="fsc" style="padding-top:10px;">
     <div id="e-req"></div>
     <div class="req-hint" id="req-hint"></div>
-    <div class="fg"><label class="fl" id="l-req-text"></label><textarea class="fi" id="rq-text" rows="4" style="resize:none;" oninput="onReqTextInput()"></textarea></div>
+    <div class="fg"><label class="fl" id="l-req-text"></label><textarea class="fi" id="rq-text" rows="4" style="resize:none;" oninput="onReqTextInput()"></textarea>
+      <div style="display:flex;gap:8px;margin-top:6px;"><button type="button" class="mic-lang" onclick="toggleMicLang()">FR</button><button type="button" class="mic-btn" id="mic-req" onclick="toggleMic('rq-text','mic-req')">🎤 <span id="mic-req-t"></span></button></div></div>
     <div class="fg"><label class="fl" id="l-req-craft"></label><select class="fsel" id="rq-met" onchange="rqManualCraft=true;"></select></div>
     <div class="fg"><label class="fl" id="l-req-pay"></label><select class="fsel" id="rq-pay" onchange="rqManualLoc=true;"></select></div>
     <div class="fg"><label class="fl" id="l-req-vil"></label><input class="fi" id="rq-vil" oninput="rqManualLoc=true;"></div>
@@ -606,7 +616,13 @@ var T={
     inbox_anon: "Client",
     inbox_err: "Erreur de chargement",
     inbox_all: "Toutes les demandes (Admin)",
-    inbox_of: "Demandes de"
+    inbox_of: "Demandes de",
+    mic_btn: "Dicter",
+    mic_listening: "🎤 Écoute… parlez maintenant",
+    mic_denied: "Micro refusé : autorisez-le dans les réglages du navigateur",
+    mic_nospeech: "Aucune voix détectée, réessayez",
+    mic_error: "Erreur du micro, réessayez",
+    mic_unsupported: "Dictée vocale non supportée : utilisez Chrome"
   },
   ar: {
     sub: "ابحث عن أفضل الحرفيين",
@@ -719,7 +735,13 @@ var T={
     inbox_anon: "زبون",
     inbox_err: "خطأ في التحميل",
     inbox_all: "كل الطلبات (Admin)",
-    inbox_of: "طلبات"
+    inbox_of: "طلبات",
+    mic_btn: "تحدّث",
+    mic_listening: "🎤 أستمع… تكلّم الآن",
+    mic_denied: "تم رفض المايك: اسمح به من إعدادات المتصفح",
+    mic_nospeech: "لم أسمع صوتاً، حاول مجدداً",
+    mic_error: "خطأ في المايك، حاول مجدداً",
+    mic_unsupported: "الإدخال الصوتي غير مدعوم: استعمل متصفح Chrome"
   },
   en: {
     sub: "Find the best craftsmen near you",
@@ -832,7 +854,13 @@ var T={
     inbox_anon: "Client",
     inbox_err: "Loading error",
     inbox_all: "All requests (Admin)",
-    inbox_of: "Requests of"
+    inbox_of: "Requests of",
+    mic_btn: "Speak",
+    mic_listening: "🎤 Listening… speak now",
+    mic_denied: "Microphone denied: allow it in browser settings",
+    mic_nospeech: "No speech detected, try again",
+    mic_error: "Microphone error, try again",
+    mic_unsupported: "Voice input not supported: use Chrome"
   },
   es: {
     sub: "Encuentra al mejor artesano",
@@ -1783,6 +1811,8 @@ function applyT(){
   ph("inp-req-quick", t("rq_quick_ph"));
   set("btn-req-quick", t("rq_quick_btn"));
   updateInboxBtnLabel();
+  set("mic-req-t", t("mic_btn"));
+  updateMicLangButtons();
   set("bk6", t("bk"));set("bk7", t("bk"));
   set("req-t", t("rq_title"));
   set("req-hint", t("rq_hint"));
@@ -3210,6 +3240,73 @@ function replyToRequest(clientId, clientName){
   if(!currentUser||!clientId) return;
   chatWorkerId=null;
   startChat(clientId, clientName, currentUser.uid, false);
+}
+
+/* ---------- الإدخال الصوتي (المايك) ---------- */
+var MIC_LOCALE={fr:"fr-FR",ar:"ar-DZ",en:"en-US",es:"es-ES",it:"it-IT",tr:"tr-TR",nl:"nl-NL",zh:"zh-CN",hi:"hi-IN",de:"de-DE",pt:"pt-BR"};
+var micRec=null;
+
+function getMicLang(){
+  return localStorage.getItem("craftison_mic_lang")||MIC_LOCALE[lang]||"fr-FR";
+}
+
+function micLabel(loc){
+  return loc.indexOf("ar")===0?"ع":loc.slice(0,2).toUpperCase();
+}
+
+function updateMicLangButtons(){
+  var lab=micLabel(getMicLang());
+  document.querySelectorAll(".mic-lang").forEach(function(b){b.textContent=lab;});
+}
+
+/* يبدّل لغة التعرف على الصوت بين العربية (الجزائر) والفرنسية */
+function toggleMicLang(){
+  var list=["ar-DZ","fr-FR"];
+  var i=list.indexOf(getMicLang());
+  var next=list[(i+1)%list.length];
+  localStorage.setItem("craftison_mic_lang",next);
+  updateMicLangButtons();
+  showToast("🎤 "+micLabel(next)+" ("+next+")");
+}
+
+function toggleMic(inputId,btnId){
+  var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){showToast(t("mic_unsupported"));return;}
+  if(micRec){try{micRec.stop();}catch(e){} return;}
+  var input=$(inputId),btn=$(btnId);
+  if(!input||!btn) return;
+  var rec=new SR();
+  rec.lang=getMicLang();
+  rec.interimResults=true;
+  rec.continuous=false;
+  rec.maxAlternatives=1;
+  var base=input.value?input.value.replace(/\s+$/,"")+" ":"";
+  var finalText="";
+  rec.onstart=function(){
+    micRec=rec;
+    btn.classList.add("rec");
+    showToast(t("mic_listening"));
+  };
+  rec.onresult=function(ev){
+    var interim="";
+    for(var i=ev.resultIndex;i<ev.results.length;i++){
+      var tr=ev.results[i][0].transcript;
+      if(ev.results[i].isFinal) finalText+=tr; else interim+=tr;
+    }
+    input.value=base+finalText+interim;
+    input.dispatchEvent(new Event("input",{bubbles:true}));
+  };
+  rec.onerror=function(ev){
+    var code=ev&&ev.error;
+    if(code==="not-allowed"||code==="service-not-allowed") showToast(t("mic_denied"));
+    else if(code==="no-speech") showToast(t("mic_nospeech"));
+    else if(code!=="aborted") showToast(t("mic_error"));
+  };
+  rec.onend=function(){
+    micRec=null;
+    btn.classList.remove("rec");
+  };
+  try{rec.start();}catch(e){micRec=null;btn.classList.remove("rec");showToast(t("mic_error"));}
 }
 
 AUTH.onAuthStateChanged(function(user){
