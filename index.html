@@ -371,7 +371,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- شاشة لوحة تحكم المدير (Admin Dashboard) الشاملة والمحدثة -->
+<!-- شاشة لوحة تحكم المدير (Admin Dashboard) المدمجة -->
 <div id="s-admin" class="screen">
   <div class="lb-bar" id="lb-admin"></div>
   <div class="hdr" style="background:linear-gradient(135deg,#6A1B9A,#4A148C);">
@@ -384,12 +384,12 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div style="display:flex;gap:10px;">
         <div style="flex:1;background:#F3E5F5;padding:10px;border-radius:8px;text-align:center;">
           <div id="adm-total-workers" style="font-size:20px;font-weight:900;color:#6A1B9A;">0</div>
-          <div style="font-size:11px;color:#666;">إجمالي الحرفيين المسجلين</div>
+          <div style="font-size:11px;color:#666;">إجمالي الحرفيين</div>
         </div>
       </div>
     </div>
     <div style="background:white;border-radius:12px;padding:15px;box-shadow:0 2px 10px rgba(0,0,0,0.07);">
-      <h3 style="font-size:16px;margin-bottom:10px;color:#4A148C;">إدارة الحرفيين (كل التفاصيل)</h3>
+      <h3 style="font-size:16px;margin-bottom:10px;color:#4A148C;">قائمة الحرفيين المسجلين</h3>
       <div id="adm-workers-list">
         <div class="spinner-wrap"><div class="spinner"></div></div>
       </div>
@@ -617,7 +617,7 @@ var T={
     rq_quick_ph: "Ex : coiffeur à Sidi Bel Abbès...",
     rq_quick_btn: "Envoyer",
     rq_title: "📢 Demande de service",
-    rq_hint: "Écrivez votre besoin comme vous voulez (arabe, français ou les deux) avec le nom de votre ville. Ex : coiffeur à Sidi Bel Abbès. Il será envoyé aux artisans du métier concerné dans votre zone.",
+    rq_hint: "Écrivez votre besoin comme vous voulez (arabe, français ou les deux) avec le nom de votre ville. Ex : coiffeur à Sidi Bel Abbès. Il sera envoyé aux artisans du métier concerné dans votre zone.",
     rq_l_text: "Votre demande *",
     rq_text_ph: "Ex : je cherche un plombier à Sidi Bel Abbès...",
     rq_l_craft: "Métier recherché *",
@@ -2609,7 +2609,7 @@ function doLog(){
 }
 
 /* ==========================================================
-   إدارة لوحة التحكم الخاصة بالمدير (Admin Dashboard) المحدثة والشاملة
+   إدارة لوحة التحكم الخاصة بالمدير (Admin Panel) داخل التطبيق
    ========================================================== */
 function checkAdminAccess(user){
   var btn = $("home-admin-btn");
@@ -2641,40 +2641,21 @@ function loadAdminPanelData(){
     snap.forEach(function(d){
       var w = Object.assign({id:d.id}, d.data());
       var c = CRAFTS.find(function(x){return x.id===w.craftId;})||CRAFTS[0];
-      
       var item = document.createElement("div");
-      item.style.cssText = "display:flex;flex-direction:column;padding:12px 0;border-bottom:1px solid #eee;gap:6px;";
+      item.style.cssText = "display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee;gap:10px;";
       item.innerHTML = 
-        '<div style="display:flex;justify-content:space-between;align-items:flex-start;">'+
-          '<div>'+
-            '<div style="font-weight:900;font-size:14px;color:#1A1A2E;">'+esc(w.name||'')+'</div>'+
-            '<div style="font-size:12px;color:#1565C0;margin-top:2px;">'+(c?c.icon+' '+cn(c):'')+'</div>'+
-          '</div>'+
-          '<div style="font-size:11px;background:#E3F2FD;color:#0D47A1;padding:2px 8px;border-radius:6px;font-weight:700;">⭐ '+(w.ratingAvg?w.ratingAvg.toFixed(1):'0.0')+'</div>'+
+        '<div style="min-width:0;flex:1;">'+
+          '<div style="font-weight:800;font-size:13px;">'+esc(w.name||'')+'</div>'+
+          '<div style="font-size:11px;color:#666;">'+(c?c.icon+' '+cn(c):'')+' - '+esc(w.city||'')+'</div>'+
+          '<div style="font-size:10px;color:#999;">'+esc(w.email||'')+'</div>'+
         '</div>'+
-        '<div style="font-size:12px;color:#555;display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px;">'+
-          '<div>📍 المدينة: <b>'+esc(w.city||'-')+'</b></div>'+
-          '<div>📞 الهاتف: <b>'+esc(w.phone||'-')+'</b></div>'+
-          '<div style="grid-column:span 2;color:#777;">✉️ الإيميل: '+esc(w.email||'-')+'</div>'+
-        '</div>'+
-        '<div style="display:flex;gap:8px;margin-top:8px;">'+
-          '<button style="flex:1;background:#1565C0;color:#fff;border:none;border-radius:8px;padding:8px;font-size:12px;font-weight:700;cursor:pointer;" onclick="openW(\''+w.id+'\')">👁️ عرض الملف</button>'+
-          '<button style="flex:1;background:#FF6F00;color:#fff;border:none;border-radius:8px;padding:8px;font-size:12px;font-weight:700;cursor:pointer;" onclick="openEditProfileFromAdmin(\''+w.id+'\')">✏️ تعديل</button>'+
-          '<button style="background:#C62828;color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;" onclick="adminDeleteWorker(\''+w.id+'\')">🗑️ حذف</button>'+
+        '<div style="display:flex;gap:5px;">'+
+          '<button style="background:#C62828;color:#white;border:none;border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;" onclick="adminDeleteWorker(\''+w.id+'\')">حذف</button>'+
         '</div>';
       listEl.appendChild(item);
     });
   }).catch(function(err){
     listEl.innerHTML = '<div style="color:red;text-align:center;">خطأ في تحميل البيانات</div>';
-  });
-}
-
-function openEditProfileFromAdmin(wid){
-  DB.collection("workers").doc(wid).get().then(function(snap){
-    if(snap.exists){
-      var w = Object.assign({id:snap.id}, snap.data());
-      openEditProfile(w);
-    }
   });
 }
 
