@@ -217,7 +217,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div style="font-size:12px;opacity:.85;margin-top:2px;" id="h-sub"></div>
       </div>
       <div class="home-actions">
-        <button class="home-action" id="home-admin-btn" style="display:none;background:#6A1B9A;border-color:#6A1B9A;" onclick="openAdminPanel()">👑 Admin</button>
         <button class="home-action" id="home-inbox-btn" style="display:none;background:#FF6F00;border-color:#FF6F00;" onclick="openInbox()">📥 <span id="home-inbox-t">Demandes</span><span class="inbox-badge" id="inbox-badge" style="display:none;">0</span></button>
         <button class="home-action" id="home-signup-btn" onclick="goSignupHome()">📝 <span id="home-signup-t">S'inscrire</span></button>
         <button class="home-action" id="home-login-btn" onclick="goLoginHome()">🔑 <span id="home-login-t">Se connecter</span></button>
@@ -371,32 +370,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- شاشة لوحة تحكم المدير (Admin Dashboard) المدمجة -->
-<div id="s-admin" class="screen">
-  <div class="lb-bar" id="lb-admin"></div>
-  <div class="hdr" style="background:linear-gradient(135deg,#6A1B9A,#4A148C);">
-    <button class="back" id="bk-admin">رجوع</button>
-    <div class="hdr-t">👑 لوحة تحكم المدير (Admin)</div>
-  </div>
-  <div class="scroll" style="padding:15px;">
-    <div style="background:white;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 2px 10px rgba(0,0,0,0.07);">
-      <h3 style="font-size:16px;margin-bottom:10px;color:#4A148C;">إحصائيات عامة</h3>
-      <div style="display:flex;gap:10px;">
-        <div style="flex:1;background:#F3E5F5;padding:10px;border-radius:8px;text-align:center;">
-          <div id="adm-total-workers" style="font-size:20px;font-weight:900;color:#6A1B9A;">0</div>
-          <div style="font-size:11px;color:#666;">إجمالي الحرفيين</div>
-        </div>
-      </div>
-    </div>
-    <div style="background:white;border-radius:12px;padding:15px;box-shadow:0 2px 10px rgba(0,0,0,0.07);">
-      <h3 style="font-size:16px;margin-bottom:10px;color:#4A148C;">قائمة الحرفيين المسجلين</h3>
-      <div id="adm-workers-list">
-        <div class="spinner-wrap"><div class="spinner"></div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- شاشة جديدة: إرسال طلب خدمة من الزبون -->
 <div id="s-req" class="screen">
   <div class="lb-bar" id="lb6"></div>
@@ -433,7 +406,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 </div>
 
-<!-- نافذة التبليغ المنبثقة الذكية -->
+<!-- نافذة التبليغ المنبثقة الذكية (مترجمة بالكامل تلقائياً حسب لغة التطبيق) -->
 <div class="mo" id="report-modal">
   <div class="md">
     <div class="mt4" id="rep-modal-title">🚨 إبلاغ عن الحرفي</div>
@@ -1657,7 +1630,7 @@ var CRAFTS=[
 {id:87,fr:"Taxi",ar:"تاكسي",en:"Taxi",es:"Taxi",it:"Taxi",tr:"Taksi",nl:"Taxi",zh:"出租车",hi:"टैक्सी",de:"Taxi",pt:"Taxi",icon:"🚕",c:"#F9A825",bg:"#FFFDE7"},
 {id:88,fr:"Livreur",ar:"عامل توصيل",en:"Delivery Man",es:"Repartidor",it:"Fattorino",tr:"Kurye",nl:"Bezorger",zh:"快递员",hi:"डिलीवरी मैन",de:"Lieferant",pt:"Entregador",icon:"🛵",c:"#E65100",bg:"#FBE9E7"},
 {id:89,fr:"Medecin Generaliste",ar:"طبيب عام",en:"General Practitioner",es:"Medico General",it:"Medico di Base",tr:"Pratisyen Hekim",nl:"Huisarts",zh:"全科医生",hi:"सामान्य चिकित्सक",de:"Hausarzt",pt:"Medico Geral",icon:"🩺",c:"#1565C0",bg:"#E3F2FD"},
-{id:90,fr:"Livraison Express",ar:"توصيل سريع",en:"Express Delivery",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिलीवरी",de:"Expresslieferung",pt:"Expressa",icon:"📦",c:"#C62828",bg:"#FFEBEE"}
+{id:90,fr:"Livraison Express",ar:"توصيل سريع",en:"Express Delivery",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिलीवरी",de:"Expresslieferung",pt:"Entrega Expressa",icon:"📦",c:"#C62828",bg:"#FFEBEE"}
 ];
 
 var LANGS=[{c:"fr",f:"🇫🇷",l:"FR"},{c:"ar",f:"🇩🇿",l:"ع"},{c:"en",f:"🇬🇧",l:"EN"},{c:"es",f:"🇪🇸",l:"ES"},{c:"it",f:"🇮🇹",l:"IT"},{c:"tr",f:"🇹🇷",l:"TR"},{c:"nl",f:"🇳🇱",l:"NL"},{c:"zh",f:"🇨🇳",l:"中"},{c:"hi",f:"🇮🇳",l:"हि"},{c:"de",f:"🇩🇪",l:"DE"},{c:"pt",f:"🇧🇷",l:"PT"}];
@@ -1689,6 +1662,7 @@ var editGalFiles = [];
 var editExistingGallery = [];
 var targetEditingWorkerId = null;
 
+/* ===== متغيرات نظام طلبات الزبائن ===== */
 var rqManualCraft = false;
 var rqManualLoc = false;
 var inboxTarget = null;
@@ -1799,7 +1773,6 @@ function setLang(l){
   if(craft)loadWorkers(craft.id);
   if(worker)renderDet(worker);
   if(currentScreenName()==="inbox")renderInbox();
-  if(currentScreenName()==="admin")loadAdminPanelData();
 }
 
 function applyT(){
@@ -1834,6 +1807,7 @@ function applyT(){
   set("rep-btn-cancel", t("rep_btn_cancel"));
   set("rep-btn-confirm", t("rep_btn_confirm"));
 
+  /* ترجمة عناصر نظام الطلبات */
   ph("inp-req-quick", t("rq_quick_ph"));
   set("btn-req-quick", t("rq_quick_btn"));
   updateInboxBtnLabel();
@@ -2052,6 +2026,33 @@ function renderDet(w){
     dc.appendChild(bEdit);
   }
 
+  if(isAdmin){
+    var bReqs=document.createElement("button");
+    bReqs.className="btn-b";
+    bReqs.style.background="linear-gradient(135deg, #6A1B9A, #4A148C)";
+    bReqs.textContent = "📥 " + (lang==="ar"?"طلبات هذا الحرفي (Admin)":"Demandes de cet artisan (Admin)");
+    bReqs.onclick=function(){openInbox(w);};
+    dc.appendChild(bReqs);
+
+    var bDel=document.createElement("button");
+    bDel.className="btn-r";
+    bDel.style.marginTop="10px";
+    bDel.style.fontWeight="950";
+    bDel.textContent = lang==="ar" ? "🗑️ حذف هذا الحرفي نهائياً (خاص بالمدير)" : "🗑️ Supprimer cet artisan (Admin)";
+    bDel.onclick = function(){
+      if(confirm(lang==="ar" ? "هل أنت متأكد من حذف هذا الحرفي نهائياً من التطبيق؟" : "Voulez-vous vraiment supprimer cet artisan ?")){
+        DB.collection("workers").doc(w.id).delete().then(function(){
+          showToast(lang==="ar" ? "تم الحذف بنجاح" : "Supprimé avec succès");
+          goBack();
+          if(craft) loadWorkers(craft.id);
+        }).catch(function(err){
+          showToast("Erreur: " + err.message);
+        });
+      }
+    };
+    dc.appendChild(bDel);
+  }
+
   el.appendChild(dc);
 
   var rs=document.createElement("div");rs.className="rs";
@@ -2062,7 +2063,7 @@ function renderDet(w){
     sb.onclick=(function(n,wid){return function(){doRate(n,wid);};})(i,w.id);
     sr.appendChild(sb);
   });
-  rs.appendChild(rs);el.appendChild(rs);
+  rs.appendChild(sr);el.appendChild(rs);
 
   var gc=document.createElement("div");gc.className="gc";
   gc.innerHTML='<div class="gt">🖼️ '+t("cg")+'</div><div class="gg">'+galH+"</div>";
@@ -2507,6 +2508,7 @@ function saveProfileChanges(){
       worker = Object.assign({id:snap.id}, snap.data());
       renderDet(worker);
       goBack();
+      /* تحديث بيانات الحرفي الحالي (المنطقة/الحرفة) لصندوق الطلبات */
       if(currentUser && snap.id===currentUser.uid){ loadMyWorkerProfile(currentUser); }
     }
   }).catch(function(e){
@@ -2609,66 +2611,12 @@ function doLog(){
 }
 
 /* ==========================================================
-   إدارة لوحة التحكم الخاصة بالمدير (Admin Panel) داخل التطبيق
+   نظام طلبات الزبائن (Demandes de service)
+   - الزبون يكتب طلبه بأي لغة (عربية / فرنسية / مزيج / Arabizi)
+   - التطبيق يستخرج الحرفة والمدينة من النص تلقائياً
+   - الحرفي (نفس الحرفة + نفس الولاية/المدينة) يرى الطلب في صندوقه
+   - المدير (Admin) يستطيع رؤية طلبات أي حرفي أو كل الطلبات
    ========================================================== */
-function checkAdminAccess(user){
-  var btn = $("home-admin-btn");
-  if(user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()){
-    if(btn) btn.style.display = "inline-block";
-  } else {
-    if(btn) btn.style.display = "none";
-  }
-}
-
-function openAdminPanel(){
-  if(!currentUser || currentUser.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) return;
-  go("admin");
-  loadAdminPanelData();
-}
-
-function loadAdminPanelData(){
-  var listEl = $("adm-workers-list");
-  listEl.innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
-  
-  DB.collection("workers").get().then(function(snap){
-    set("adm-total-workers", snap.size);
-    listEl.innerHTML = "";
-    if(snap.empty){
-      listEl.innerHTML = '<div style="text-align:center;color:#888;padding:20px;">لا يوجد حرفيون مسجلون بعد</div>';
-      return;
-    }
-    
-    snap.forEach(function(d){
-      var w = Object.assign({id:d.id}, d.data());
-      var c = CRAFTS.find(function(x){return x.id===w.craftId;})||CRAFTS[0];
-      var item = document.createElement("div");
-      item.style.cssText = "display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee;gap:10px;";
-      item.innerHTML = 
-        '<div style="min-width:0;flex:1;">'+
-          '<div style="font-weight:800;font-size:13px;">'+esc(w.name||'')+'</div>'+
-          '<div style="font-size:11px;color:#666;">'+(c?c.icon+' '+cn(c):'')+' - '+esc(w.city||'')+'</div>'+
-          '<div style="font-size:10px;color:#999;">'+esc(w.email||'')+'</div>'+
-        '</div>'+
-        '<div style="display:flex;gap:5px;">'+
-          '<button style="background:#C62828;color:#white;border:none;border-radius:6px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer;" onclick="adminDeleteWorker(\''+w.id+'\')">حذف</button>'+
-        '</div>';
-      listEl.appendChild(item);
-    });
-  }).catch(function(err){
-    listEl.innerHTML = '<div style="color:red;text-align:center;">خطأ في تحميل البيانات</div>';
-  });
-}
-
-function adminDeleteWorker(wid){
-  if(confirm("هل أنت متأكد من حذف هذا الحرفي نهائياً؟")){
-    DB.collection("workers").doc(wid).delete().then(function(){
-      showToast("تم الحذف بنجاح");
-      loadAdminPanelData();
-    }).catch(function(err){
-      showToast("خطأ: "+err.message);
-    });
-  }
-}
 
 function normAr(s){
   return normalizeSearchText(s)
@@ -2678,6 +2626,7 @@ function normAr(s){
     .replace(/ى/g,"ي");
 }
 
+/* ---------- بصمة صوتية: تجعل "بلعباس" و "bel abbes" و "Bel Abbès" متقاربة ---------- */
 var SK_AR={"ب":"b","پ":"b","ت":"t","ث":"t","ج":"j","ح":"h","خ":"k","د":"t","ذ":"t","ر":"r","ز":"s","س":"s","ش":"s","ص":"s","ض":"t","ط":"t","ظ":"t","غ":"k","ف":"f","ڤ":"f","ق":"k","ك":"k","گ":"k","ل":"l","م":"m","ن":"n","ه":"h","چ":"s"};
 var SK_LAT={b:"b",c:"k",d:"t",f:"f",g:"k",h:"h",j:"j",k:"k",l:"l",m:"m",n:"n",p:"b",q:"k",r:"r",s:"s",t:"t",v:"f",x:"s",z:"s"};
 
@@ -2698,6 +2647,7 @@ function cleanGram(s){
   return normAr(s).replace(/\./g,"").replace(/['’\-_]/g," ").replace(/\s+/g," ").trim();
 }
 
+/* ---------- الولايات الجزائرية بكل كتاباتها المحتملة ---------- */
 var WIL_DATA=[
  [1,"Adrar","أدرار"],
  [2,"Chlef","الشلف","شلف","chelef"],
@@ -2772,6 +2722,7 @@ function buildWilIndex(){
   });
 }
 
+/* يبحث في أي نص عن اسم ولاية (مهما كانت اللغة أو الكتابة) */
 function findWilayas(text){
   if(!WIL_INDEX) buildWilIndex();
   if(!text) return [];
@@ -2796,6 +2747,7 @@ function findWilayas(text){
   return found;
 }
 
+/* ---------- كلمات مفتاحية للحرف بالعربية والفرنسية والعامية ---------- */
 var CRAFT_KW={
 1:"سباك|سباكة|plombier|plomberie|plumber|sebbak|sabbak|fuite|تسرب|حنفية|robinet",
 2:"كهربائي|كهربجي|كهرباء|electricien|electrician|kahrabaji|kahraba",
@@ -2918,6 +2870,7 @@ function wordVariants(w){
   return v;
 }
 
+/* اكتشاف الحرفة من نص الزبون بأي لغة (مثال: "أريد حلاقة في sidi bel abbes" ← حلاقة رجال) */
 function detectCraft(text){
   if(!text) return 0;
   if(!CRAFT_KW_INDEX) buildCraftKwIndex();
@@ -2942,6 +2895,7 @@ function detectCraft(text){
   });
   if(best) return best;
 
+  /* احتياطي: مقارنة مع أسماء الحرف نفسها */
   var wordsL=words.filter(function(w){return w.length>=4;});
   for(var wi=0;wi<wordsL.length;wi++){
     var w=wordsL[wi];
@@ -2959,6 +2913,7 @@ function detectCraft(text){
   return 0;
 }
 
+/* ---------- مطابقة المنطقة بين الطلب والحرفي ---------- */
 function fieldMatch(a,b){
   var sa=skeleton(a),sb=skeleton(b);
   if(!sa||!sb) return false;
@@ -2976,6 +2931,7 @@ function unionIds(){
   return out;
 }
 
+/* req: {country,city,commune,text}   wk: {country,city,commune} */
 function areaMatch(req,wk){
   if(req.country && wk.country && normAr(req.country)!==normAr(wk.country)) return false;
   var rw=unionIds(findWilayas(req.city),findWilayas(req.commune),findWilayas(req.text));
@@ -2994,6 +2950,7 @@ function areaMatch(req,wk){
   return false;
 }
 
+/* ---------- شاشة طلب الخدمة ---------- */
 function buildRequestForm(){
   var met=$("rq-met");
   if(met){
@@ -3056,6 +3013,7 @@ function submitRequest(){
 
   if(text.length<5){showErr("e-req",t("rq_err_text"));return;}
 
+  /* إكمال ما ينقص من النص نفسه */
   if(!craftId) craftId=detectCraft(text);
   if(!city){
     var ids=findWilayas(text);
@@ -3112,6 +3070,8 @@ function submitRequest(){
   });
 }
 
+/* ---------- صندوق الطلبات ---------- */
+
 function isAdminUser(){
   return !!(currentUser && currentUser.email && currentUser.email.toLowerCase()===ADMIN_EMAIL.toLowerCase());
 }
@@ -3159,6 +3119,7 @@ function reqMillis(r){
   return r.createdAt?(r.createdAt.toMillis?r.createdAt.toMillis():r.createdAt):Date.now();
 }
 
+/* wk === "all" ← كل الطلبات (للمدير) ، وإلا ← الطلبات المناسبة لهذا الحرفي */
 function relevantRequests(list,wk){
   if(!wk) return [];
   var now=Date.now();
@@ -3215,6 +3176,7 @@ function updateInboxTitle(){
   set("inbox-sub",inboxTarget==="all"?"":t("inbox_sub"));
 }
 
+/* target: كائن حرفي (للمدير)، أو "all"، أو بدون وسيط ← صندوق الحرفي نفسه */
 function openInbox(target){
   var tgt=target||myWorker||(isAdminUser()?"all":null);
   if(!tgt) return;
@@ -3280,6 +3242,7 @@ function replyToRequest(clientId, clientName){
   startChat(clientId, clientName, currentUser.uid, false);
 }
 
+/* ---------- الإدخال الصوتي (المايك) ---------- */
 var MIC_LOCALE={fr:"fr-FR",ar:"ar-DZ",en:"en-US",es:"es-ES",it:"it-IT",tr:"tr-TR",nl:"nl-NL",zh:"zh-CN",hi:"hi-IN",de:"de-DE",pt:"pt-BR"};
 var micRec=null;
 
@@ -3296,6 +3259,7 @@ function updateMicLangButtons(){
   document.querySelectorAll(".mic-lang").forEach(function(b){b.textContent=lab;});
 }
 
+/* يبدّل لغة التعرف على الصوت بين العربية (الجزائر) والفرنسية */
 function toggleMicLang(){
   var list=["ar-DZ","fr-FR"];
   var i=list.indexOf(getMicLang());
@@ -3347,7 +3311,6 @@ function toggleMic(inputId,btnId){
 
 AUTH.onAuthStateChanged(function(user){
   currentUser=user;
-  checkAdminAccess(user);
   if(user){ loadMyWorkerProfile(user); }
   else { myWorker=null; inboxTarget=null; showInboxButton(false); stopInboxListener(); }
 });
@@ -3376,7 +3339,6 @@ document.addEventListener("DOMContentLoaded",function(){
   var bk5=$("bk5"); if(bk5) bk5.onclick=function(){goBack();};
   var bk6=$("bk6"); if(bk6) bk6.onclick=function(){goBack();};
   var bk7=$("bk7"); if(bk7) bk7.onclick=function(){goBack();};
-  var bkAdmin=$("bk-admin"); if(bkAdmin) bkAdmin.onclick=function(){goBack();};
 
   $("reg-btn").onclick=function(){goReg();};
   $("t-reg").onclick=function(){swTab("reg");};
