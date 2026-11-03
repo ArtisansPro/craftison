@@ -217,8 +217,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <div style="font-size:12px;opacity:.85;margin-top:2px;" id="h-sub"></div>
       </div>
       <div class="home-actions">
-        <button class="home-action" id="home-shops-btn" style="background:#00695C;border-color:#00695C;" onclick="openShopsScreen()">🏪 <span id="home-shops-t">المحلات</span></button>
-        <button class="home-action" id="home-admin-btn" style="display:none;background:#6A1B9A;border-color:#6A1B9A;" onclick="openAdminPanel()">👑 Admin</button>
         <button class="home-action" id="home-inbox-btn" style="display:none;background:#FF6F00;border-color:#FF6F00;" onclick="openInbox()">📥 <span id="home-inbox-t">Demandes</span><span class="inbox-badge" id="inbox-badge" style="display:none;">0</span></button>
         <button class="home-action" id="home-signup-btn" onclick="goSignupHome()">📝 <span id="home-signup-t">S'inscrire</span></button>
         <button class="home-action" id="home-login-btn" onclick="goLoginHome()">🔑 <span id="home-login-t">Se connecter</span></button>
@@ -236,7 +234,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="stats">
     <div class="stat"><div class="sn">100</div><div class="sl" id="sl-crafts"></div></div>
     <div class="stat"><div class="sn" id="sl-wnum">0</div><div class="sl" id="sl-workers"></div></div>
-    <div class="stat"><div class="sn" id="sl-snum">0</div><div class="sl" id="sl-shops">المحلات</div></div>
+    <div class="stat"><div class="sn" id="sl-cnum">0</div><div class="sl" id="sl-clients"></div></div>
     <div class="stat"><div class="sn">🌍</div><div class="sl" id="sl-country"></div></div>
   </div>
   <div class="sec"><span class="sec-t" id="sl-all"></span><span class="sec-c" id="sl-cnt"></span></div>
@@ -264,56 +262,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="hdr-t" id="wdet-t"></div>
   </div>
   <div class="scroll" id="wdet"></div>
-</div>
-
-<!-- شاشة المحلات والمتاجر والتنسيق مع الحرفيين -->
-<div id="s-shops" class="screen">
-  <div class="lb-bar" id="lb-shops"></div>
-  <div class="hdr" style="background:linear-gradient(135deg,#00695C,#004D40);">
-    <button class="back" id="bk-shops">رجوع</button>
-    <div class="hdr-t">🏪 المحلات وقطع الغيار (المتاجر الشريكة)</div>
-  </div>
-  <div class="sbar"><span>🔍</span><input id="inp-shops" oninput="filterShops()" placeholder="بحث باسم المحل أو المدينة..."></div>
-  <div class="li" id="shops-cnt">المحلات المسجلة</div>
-  <div class="scroll" id="shops-list"></div>
-  <div style="padding:12px 9px 16px;flex-shrink:0;background:#F0F4F8;border-top:3px solid #00695C;">
-    <button class="rb" style="margin:0;width:100%;padding:16px;font-size:15px;border-radius:14px;background:linear-gradient(135deg,#00695C,#004D40);" onclick="openShopReg()">🏪 تسجيل محل تجاري / قطع غيار</button>
-  </div>
-</div>
-
-<div id="s-shop-det" class="screen">
-  <div class="lb-bar" id="lb-shop-det"></div>
-  <div class="hdr" style="background:linear-gradient(135deg,#00695C,#004D40);">
-    <button class="back" id="bk-shop-det">رجوع</button>
-    <div class="hdr-t">تفاصيل المحل التجاري</div>
-  </div>
-  <div class="scroll" id="shop-det-content"></div>
-</div>
-
-<div id="s-shop-reg" class="screen">
-  <div class="lb-bar" id="lb-shop-reg"></div>
-  <div class="hdr" style="background:linear-gradient(135deg,#00695C,#004D40);">
-    <button class="back" id="bk-shop-reg">رجوع</button>
-    <div class="hdr-t">تسجيل محل / متجر قطع غيار</div>
-  </div>
-  <div class="fsc" style="padding-top:12px;">
-    <div id="e-shop-reg"></div>
-    <div class="aup">
-      <div class="apr" id="shop-apr">&#128247;</div>
-      <div class="ah2">صورة المحل أو الشعار</div>
-      <input type="file" id="shop-av-file" accept="image/*" style="display:none">
-    </div>
-    <div class="fg"><label class="fl">اسم المحل التجاري *</label><input class="fi" id="sr-name" placeholder="مثال: متجر قطع غيار السيارات أو محل مواد بناء"></div>
-    <div class="fg"><label class="fl">النشاط / التخصص *</label><select class="fsel" id="sr-craft"></select></div>
-    <div class="fg"><label class="fl">رقم الهاتف *</label><input class="fi" id="sr-tel" type="tel" placeholder="06XXXXXXXX"></div>
-    <div class="fg"><label class="fl">البلد *</label><select class="fsel" id="sr-pay"></select></div>
-    <div class="fg"><label class="fl">المدينة *</label><input class="fi" id="sr-vil"></div>
-    <div class="fg"><label class="fl">الحي / الشارع *</label><input class="fi" id="sr-com"></div>
-    <div class="fg"><label class="fl">أين تتواجد الأسعار والقطع (نبذة وخاصيات) *</label><textarea class="fi" id="sr-bio" rows="3" style="resize:none;" placeholder="مثال: نوفر قطع غيار أصلية، أسعار خاصة للحرفيين المسجلين في منصة كرافتيسون..."></textarea></div>
-    <div class="sbtn-wrap">
-      <button class="sbtn" style="background:linear-gradient(135deg,#00695C,#004D40);" onclick="submitShopRegistration()">حفظ ونشر المحل التجاري</button>
-    </div>
-  </div>
 </div>
 
 <div id="s-chat" class="screen">
@@ -422,42 +370,6 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   </div>
 </div>
 
-<!-- شاشة لوحة تحكم المدير (Admin Dashboard) الشاملة والمحدثة -->
-<div id="s-admin" class="screen">
-  <div class="lb-bar" id="lb-admin"></div>
-  <div class="hdr" style="background:linear-gradient(135deg,#6A1B9A,#4A148C);">
-    <button class="back" id="bk-admin">رجوع</button>
-    <div class="hdr-t">👑 لوحة تحكم المدير (Admin)</div>
-  </div>
-  <div class="scroll" style="padding:15px;">
-    <div style="background:white;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 2px 10px rgba(0,0,0,0.07);">
-      <h3 style="font-size:16px;margin-bottom:10px;color:#4A148C;">إحصائيات عامة</h3>
-      <div style="display:flex;gap:10px;">
-        <div style="flex:1;background:#F3E5F5;padding:10px;border-radius:8px;text-align:center;">
-          <div id="adm-total-workers" style="font-size:20px;font-weight:900;color:#6A1B9A;">0</div>
-          <div style="font-size:11px;color:#666;">إجمالي الحرفيين المسجلين</div>
-        </div>
-        <div style="flex:1;background:#E0F2F1;padding:10px;border-radius:8px;text-align:center;">
-          <div id="adm-total-shops" style="font-size:20px;font-weight:900;color:#00695C;">0</div>
-          <div style="font-size:11px;color:#666;">إجمالي المحلات المسجلة</div>
-        </div>
-      </div>
-    </div>
-    <div style="background:white;border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 2px 10px rgba(0,0,0,0.07);">
-      <h3 style="font-size:16px;margin-bottom:10px;color:#00695C;">إدارة المحلات التجارية</h3>
-      <div id="adm-shops-list">
-        <div class="spinner-wrap"><div class="spinner"></div></div>
-      </div>
-    </div>
-    <div style="background:white;border-radius:12px;padding:15px;box-shadow:0 2px 10px rgba(0,0,0,0.07);">
-      <h3 style="font-size:16px;margin-bottom:10px;color:#4A148C;">إدارة الحرفيين (كل التفاصيل)</h3>
-      <div id="adm-workers-list">
-        <div class="spinner-wrap"><div class="spinner"></div></div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- شاشة جديدة: إرسال طلب خدمة من الزبون -->
 <div id="s-req" class="screen">
   <div class="lb-bar" id="lb6"></div>
@@ -494,7 +406,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 
 </div>
 
-<!-- نافذة التبليغ المنبثقة الذكية -->
+<!-- نافذة التبليغ المنبثقة الذكية (مترجمة بالكامل تلقائياً حسب لغة التطبيق) -->
 <div class="mo" id="report-modal">
   <div class="md">
     <div class="mt4" id="rep-modal-title">🚨 إبلاغ عن الحرفي</div>
@@ -678,7 +590,7 @@ var T={
     rq_quick_ph: "Ex : coiffeur à Sidi Bel Abbès...",
     rq_quick_btn: "Envoyer",
     rq_title: "📢 Demande de service",
-    rq_hint: "Écrivez votre besoin comme vous voulez (arabe, français ou les deux) avec le nom de votre ville. Ex : coiffeur à Sidi Bel Abbès. Il será envoyé aux artisans du métier concerné dans votre zone.",
+    rq_hint: "Écrivez votre besoin comme vous voulez (arabe, français ou les deux) avec le nom de votre ville. Ex : coiffeur à Sidi Bel Abbès. Il sera envoyé aux artisans du métier concerné dans votre zone.",
     rq_l_text: "Votre demande *",
     rq_text_ph: "Ex : je cherche un plombier à Sidi Bel Abbès...",
     rq_l_craft: "Métier recherché *",
@@ -713,13 +625,13 @@ var T={
     mic_unsupported: "Dictée vocale non supportée : utilisez Chrome"
   },
   ar: {
-    sub: "ابحث عن أفضل الحرفيين والمحلات",
-    sh: "ابحث عن حرفة أو محل...",
+    sub: "ابحث عن أفضل الحرفيين",
+    sh: "ابحث عن حرفة...",
     sc: "حرفة",
     sw: "حرفي",
     scli: "الزبائن",
     sy: "عالمي",
-    sa: "جميع الحرف والمحلات",
+    sa: "جميع الحرف",
     art: "حرفي",
     av: "متاح",
     bk: "رجوع",
@@ -832,8 +744,8 @@ var T={
     mic_unsupported: "الإدخال الصوتي غير مدعوم: استعمل متصفح Chrome"
   },
   en: {
-    sub: "Find the best craftsmen and shops",
-    sh: "Search for a craft or shop...",
+    sub: "Find the best craftsmen near you",
+    sh: "Search for a craft...",
     sc: "Crafts",
     sw: "Craftsmen",
     scli: "Clients",
@@ -912,7 +824,707 @@ var T={
     rep_q4: "💰 Unjustified price increase",
     rep_q5: "🗣️ Inappropriate or rude behavior",
     rep_btn_cancel: "Cancel",
-    rep_btn_confirm: "Confirm Report"
+    rep_btn_confirm: "Confirm Report",
+    rq_quick_ph: "e.g. a barber in Oran...",
+    rq_quick_btn: "Send",
+    rq_title: "📢 Service Request",
+    rq_hint: "Write your request in any language (Arabic, French or mixed) with your city name. e.g. a barber in Sidi Bel Abbès. It will be sent to the matching craftsmen in your area.",
+    rq_l_text: "Your request *",
+    rq_text_ph: "e.g. I need a plumber in Sidi Bel Abbès...",
+    rq_l_craft: "Craft needed *",
+    rq_l_pay: "Country *",
+    rq_l_vil: "City",
+    rq_l_com: "District / Neighborhood",
+    rq_l_tel: "Your phone (optional, so they can call you)",
+    rq_btn: "📤 Send my request",
+    rq_err_text: "Write your request (5 characters minimum)",
+    rq_err_fields: "Specify the craft and the city (you can write them in your request)",
+    rq_wait: "Please wait before sending another request",
+    rq_sent: "✅ Request sent to craftsmen in your area",
+    rq_sent_n: "✅ Request sent to {n} craftsman(men) in your area",
+    rq_sent_0: "✅ Request posted. No craftsmen registered in your area yet",
+    inbox_btn: "Requests",
+    inbox_t: "📥 Client Requests",
+    inbox_sub: "Requests for your craft in your area",
+    inbox_empty: "No requests yet",
+    inbox_empty_s: "New requests from your area will appear here",
+    inbox_call: "📞 Call",
+    inbox_reply: "💬 Reply",
+    inbox_new: "NEW",
+    inbox_anon: "Client",
+    inbox_err: "Loading error",
+    inbox_all: "All requests (Admin)",
+    inbox_of: "Requests of",
+    mic_btn: "Speak",
+    mic_listening: "🎤 Listening… speak now",
+    mic_denied: "Microphone denied: allow it in browser settings",
+    mic_nospeech: "No speech detected, try again",
+    mic_error: "Microphone error, try again",
+    mic_unsupported: "Voice input not supported: use Chrome"
+  },
+  es: {
+    sub: "Encuentra al mejor artesano",
+    sh: "Buscar un oficio...",
+    sc: "Oficios",
+    sw: "Artesanos",
+    scli: "Clientes",
+    sy: "Mundial",
+    sa: "Todos los Oficios",
+    art: "artesanos",
+    av: "disponibles",
+    bk: "Volver",
+    sw2: "Nombre o ciudad...",
+    rb: "Registrarse",
+    nw: "Sin artesanos",
+    ns: "Se el primero!",
+    wt: "Perfil Artesano",
+    ph: "Telefono",
+    co: "Barrio",
+    ci: "Ciudad",
+    cy: "Pais",
+    ca: "Llamar",
+    cb: "Mensaje",
+    cg: "Galeria",
+    rt: "Registro",
+    tr2: "Registrarse",
+    tl: "Iniciar sesion",
+    ln: "Nombre *",
+    lp: "Contrasena *",
+    lc: "Confirmar *",
+    lt: "Telefono *",
+    lpa: "Pais *",
+    lv: "Ciudad",
+    lco: "Barrio",
+    lm: "Tu oficio *",
+    lg: "Fotos (Max 12)",
+    cp: "Seleccionar oficio",
+    cpay: "Seleccionar pais",
+    br2: "Registrarse",
+    bl: "Iniciar",
+    ef: "Rellenar campos",
+    ep: "Contrasenas no coinciden",
+    ee: "Email ya usado",
+    en2: "Email no encontrado",
+    ex: "Rellenar campos",
+    ah: "Toca para foto",
+    rat: "Valorar",
+    rep: "Reportar",
+    sup: "Apoyar",
+    rep_chat: "Reportar artesano",
+    rpt: "Reporte",
+    rpb: "Reportar artesano?",
+    rok: "Confirmar",
+    rnk: "Cancelar",
+    st: "Suspendido",
+    sm: "Suspendido 5 dias.",
+    cph: "Tu mensaje...",
+    ok: "Guardado!",
+    send: "Enviando...",
+    dir: "ltr",
+    guest: "Visitante anonimo",
+    bio_lbl: "Sobre mi y Horarios",
+    bio_empty: "Contacte directamente al artesano.",
+    tm_sub: "Bienvenido a nuestra plataforma",
+    tm_welcome: "Para garantizar la confianza, acepte nuestro Pacto Comunitario:",
+    tm_p1_t: "Respeto y Transparencia",
+    tm_p1_d: "Compromiso mutuo con precios justos y comunicación clara.",
+    tm_p2_t: "Citas Confiables",
+    tm_p2_d: "Respeto de horarios y trabajo de calidad.",
+    tm_p3_t: "Protección",
+    tm_p3_d: "Craftison conecta usuarios. Los acuerdos obligan a ambas partes.",
+    tm_note: "Al hacer clic en 'Acepto', confirma su acuerdo.",
+    tm_acc: "Acepto y Comienzo",
+    tm_dec: "Rechazar",
+    rep_modal_title: "🚨 Reportar Artesano",
+    rep_modal_desc: "Elija el motivo de la queja (se enviará una advertencia automática):",
+    rep_q1: "🛠️ Servicio no cualificado / Mal trabajo",
+    rep_q2: "⏰ Ausencia o retraso en la cita",
+    rep_q3: "📞 Número inalcanzable o apagado",
+    rep_q4: "💰 Aumento de precio injustificado",
+    rep_q5: "🗣️ Comportamiento inadecuado",
+    rep_btn_cancel: "Cancelar",
+    rep_btn_confirm: "Confirmar"
+  },
+  it: {
+    sub: "Trova il miglior artigiano",
+    sh: "Cerca un mestiere...",
+    sc: "Mestieri",
+    sw: "Artigiani",
+    scli: "Clienti",
+    sy: "Mondiale",
+    sa: "Tutti i Mestieri",
+    art: "artigiani",
+    av: "disponibili",
+    bk: "Indietro",
+    sw2: "Nome o citta...",
+    rb: "Registrati",
+    nw: "Nessun artigiano",
+    ns: "Sii il primo!",
+    wt: "Profilo Artigiano",
+    ph: "Telefono",
+    co: "Quartiere",
+    ci: "Citta",
+    cy: "Paese",
+    ca: "Chiama",
+    cb: "Messaggio",
+    cg: "Galleria",
+    rt: "Registrazione",
+    tr2: "Registrati",
+    tl: "Accedi",
+    ln: "Nome *",
+    lp: "Password *",
+    lc: "Conferma *",
+    lt: "Telefono *",
+    lpa: "Paese *",
+    lv: "Citta",
+    lco: "Quartiere",
+    lm: "Mestiere *",
+    lg: "Foto (Max 12)",
+    cp: "Seleziona mestiere",
+    cpay: "Seleziona paese",
+    br2: "Registrati",
+    bl: "Accedi",
+    ef: "Compila i campi",
+    ep: "Password diverse",
+    ee: "Email usata",
+    en2: "Email non trovata",
+    ex: "Compila i campi",
+    ah: "Tocca per foto",
+    rat: "Valuta",
+    rep: "Segnala",
+    sup: "Supporta",
+    rep_chat: "Segnala artigiano",
+    rpt: "Segnalazione",
+    rpb: "Segnalare?",
+    rok: "Conferma",
+    rnk: "Annulla",
+    st: "Sospeso",
+    sm: "Sospeso 5 giorni.",
+    cph: "Messaggio...",
+    ok: "Salvato!",
+    send: "Invio...",
+    dir: "ltr",
+    guest: "Visitatore anonimo",
+    bio_lbl: "Info e Orari di lavoro",
+    bio_empty: "Contatta direttamente l'artigiano.",
+    tm_sub: "Benvenuto sulla nostra piattaforma",
+    tm_welcome: "Per garantire fiducia e sicurezza, accetta il nostro Patto Comunitario:",
+    tm_p1_t: "Rispetto e Trasparenza",
+    tm_p1_d: "Impegno reciproco su prezzi giusti e comunicazione chiara.",
+    tm_p2_t: "Appuntamenti Affidabili",
+    tm_p2_d: "Rispettare gli orari e la qualita del lavoro.",
+    tm_p3_t: "Protezione",
+    tm_p3_d: "Craftison collega gli utenti. Gli accordi impegnano direttamente le parti.",
+    tm_note: "Cliccando su 'Accetto', confermi il tuo accordo.",
+    tm_acc: "Accetto e Inizio",
+    tm_dec: "Rifiuta",
+    rep_modal_title: "🚨 Segnala Artigiano",
+    rep_modal_desc: "Scegli il motivo del reclamo (verrà inviato un avviso automatico):",
+    rep_q1: "🛠️ Servizio non qualificato / Lavoro scarso",
+    rep_q2: "⏰ Assenza o ritardo all'appuntamento",
+    rep_q3: "📞 Numero irrangiungibile o spento",
+    rep_q4: "💰 Aumento di prezzo ingiustificato",
+    rep_q5: "🗣️ Comportamento inappropriato",
+    rep_btn_cancel: "Annulla",
+    rep_btn_confirm: "Conferma"
+  },
+  tr: {
+    sub: "Yakinindaki en iyi ustayi bul",
+    sh: "Meslek ara...",
+    sc: "Meslekler",
+    sw: "Ustalar",
+    scli: "Musteriler",
+    sy: "Dunya",
+    sa: "Tum Meslekler",
+    art: "usta",
+    av: "mevcut",
+    bk: "Geri",
+    sw2: "Isim veya sehir...",
+    rb: "Usta olarak kaydol",
+    nw: "Kayitli usta yok",
+    ns: "Ilk sen ol!",
+    wt: "Usta Profili",
+    ph: "Telefon",
+    co: "Mahalle",
+    ci: "Sehir",
+    cy: "Ulke",
+    ca: "Ara",
+    cb: "Mesaj",
+    cg: "Galeri",
+    rt: "Kayit",
+    tr2: "Kaydol",
+    tl: "Giris",
+    ln: "Tam ad *",
+    lp: "Sifre *",
+    lc: "Onayla *",
+    lt: "Telefon *",
+    lpa: "Ulke *",
+    lv: "Sehir",
+    lco: "Mahalle",
+    lm: "Meslegin *",
+    lg: "Foto (Max 12)",
+    cp: "Meslek sec",
+    cpay: "Ulke sec",
+    br2: "Kaydol",
+    bl: "Giris",
+    ef: "Tum alanlari doldur",
+    ep: "Sifreler uyusmuyor",
+    ee: "Email kullanimda",
+    en2: "Email bulunamadi",
+    ex: "Alanlari doldur",
+    ah: "Fotograf ekle",
+    rat: "Degerlendir",
+    rep: "Sikayet",
+    sup: "Destekle",
+    rep_chat: "Sikayet et",
+    rpt: "Sikayet",
+    rpb: "Sikayet etmek istiyor musun?",
+    rok: "Onayla",
+    rnk: "Iptal",
+    st: "Askiya alindi",
+    sm: "5 gun askiya alindi.",
+    cph: "Mesajin...",
+    ok: "Kaydedildi!",
+    send: "Gonderiliyor...",
+    dir: "ltr",
+    guest: "Anonim ziyaretci",
+    bio_lbl: "Hakkinda ve Calisma Saatleri",
+    bio_empty: "Calisma saatleri icin usta ile iletisime gecin.",
+    tm_sub: "Platformumuza hos geldiniz",
+    tm_welcome: "Guvenlik ve adalet icin Topluluk Sozlesmemizi kabul edin:",
+    tm_p1_t: "Saygi ve Seffaflik",
+    tm_p1_d: "Adil fiyatlandirma ve acik iletisim taahhudu.",
+    tm_p2_t: "Guvenilir Randevular",
+    tm_p2_d: "Zamaninda teslimat ve kaliteli is cikarilmasi.",
+    tm_p3_t: "Koruma",
+    tm_p3_d: "Craftison bir baglanti platformudur. Anlasmalar taraflari baglar.",
+    tm_note: "Kabul ediyorum'a tiklayarak sartlari onaylamis olursunuz.",
+    tm_acc: "Kabul Ediyorum",
+    tm_dec: "Reddet",
+    rep_modal_title: "🚨 Ustayı Bildir",
+    rep_modal_desc: "Şikayet nedenini seçin (otomatik uyarı gönderilecektir):",
+    rep_q1: "🛠️ Niteliksiz hizmet / Kötü iş",
+    rep_q2: "⏰ Randevuya gelmeme veya gecikme",
+    rep_q3: "📞 Numara ulaşılmaz veya kapalı",
+    rep_q4: "💰 Haksız fiyat artışı",
+    rep_q5: "🗣️ Uygunsuz veya kaba davranış",
+    rep_btn_cancel: "İptal",
+    rep_btn_confirm: "Onayla"
+  },
+  nl: {
+    sub: "Vind de beste vakman bij jou",
+    sh: "Zoek een vak...",
+    sc: "Vakken",
+    sw: "Vaklieden",
+    scli: "Klanten",
+    sy: "Wereldwijd",
+    sa: "Alle Vakken",
+    art: "vaklieden",
+    av: "beschikbaar",
+    bk: "Terug",
+    sw2: "Naam of stad...",
+    rb: "Registreer als vakman",
+    nw: "Geen vaklieden",
+    ns: "Wees de eerste!",
+    wt: "Vakman Profiel",
+    ph: "Telefoon",
+    co: "Wijk",
+    ci: "Stad",
+    cy: "Land",
+    ca: "Bellen",
+    cb: "Bericht",
+    cg: "Fotogalerij",
+    rt: "Registratie",
+    tr2: "Registreren",
+    tl: "Inloggen",
+    ln: "Naam *",
+    lp: "Wachtwoord *",
+    lc: "Bevestig *",
+    lt: "Telefoon *",
+    lpa: "Land *",
+    lv: "Stad",
+    lco: "Wijk",
+    lm: "Jouw vak *",
+    lg: "Foto's (Max 12)",
+    cp: "Kies een vak",
+    cpay: "Kies een land",
+    br2: "Registreren",
+    bl: "Inloggen",
+    ef: "Vul alle velden in",
+    ep: "Wachtwoorden komen niet overeen",
+    ee: "Email al in gebruik",
+    en2: "Email niet gefunden",
+    ex: "Vul de velden in",
+    ah: "Tik om foto toe te voegen",
+    rat: "Beoordeel",
+    rep: "Melden",
+    sup: "Steunen",
+    rep_chat: "Meld vakman",
+    rpt: "Melding",
+    rpb: "Wil je melden?",
+    rok: "Bevestigen",
+    rnk: "Annuleren",
+    st: "Geschorst",
+    sm: "5 dagen geschorst.",
+    cph: "Bericht...",
+    ok: "Opgeslagen!",
+    send: "Verzenden...",
+    dir: "ltr",
+    guest: "Anonieme bezoeker",
+    bio_lbl: "Over & Werktijden",
+    bio_empty: "Neem rechtstreeks contact op met de vakman.",
+    tm_sub: "Welkom op ons platform",
+    tm_welcome: "Accepteer ons Communitypact voor een veilige ervaring:",
+    tm_p1_t: "Respect & Transparantie",
+    tm_p1_d: "Eerlijke prijzen en duidelijke communicatie.",
+    tm_p2_t: "Betrouwbare Afspraken",
+    tm_p2_d: "Strikte naleving van afspraken en kwaliteitswerk.",
+    tm_p3_t: "Bescherming",
+    tm_p3_d: "Craftison verbindt partijen. Overeenkomsten binden direct.",
+    tm_note: "Door op 'Ik accepteer' te klikken gaat u akkoord.",
+    tm_acc: "Ik accepteer & Begin",
+    tm_dec: "Weigeren",
+    rep_modal_title: "🚨 Vakman Melden",
+    rep_modal_desc: "Kies de reden van de klacht (er wordt een automatische waarschuwing verzonden):",
+    rep_q1: "🛠️ Ongekwalificeerde service / Slecht werk",
+    rep_q2: "⏰ Afwezigheid of vertraging bij afspraak",
+    rep_q3: "📞 Nummer onbereikbaar of uit",
+    rep_q4: "💰 Onterechte prijsverhoging",
+    rep_q5: "🗣️ Ongepast of onbeleefd gedrag",
+    rep_btn_cancel: "Annuleren",
+    rep_btn_confirm: "Bevestigen"
+  },
+  zh: {
+    sub: "在您附近找到最好的工匠",
+    sh: "搜索职业...",
+    sc: "职业",
+    sw: "工匠",
+    scli: "客户",
+    sy: "全球",
+    sa: "所有职业",
+    art: "工匠",
+    av: "可用",
+    bk: "返回",
+    sw2: "姓名或城市...",
+    rb: "注册为工匠",
+    nw: "暂无工匠",
+    ns: "成为第一个",
+    wt: "工匠资料",
+    ph: "电话",
+    co: "街区",
+    ci: "城市",
+    cy: "国家",
+    ca: "致电",
+    cb: "消息",
+    cg: "图片库",
+    rt: "注册",
+    tr2: "注册",
+    tl: "登录",
+    ln: "全名 *",
+    lp: "密码 *",
+    lc: "确认 *",
+    lt: "电话 *",
+    lpa: "国家 *",
+    lv: "城市",
+    lco: "街区",
+    lm: "职业 *",
+    lg: "工作照片 (最多12)",
+    cp: "选择职业",
+    cpay: "选择国家",
+    br2: "注册",
+    bl: "登录",
+    ef: "填写所有字段",
+    ep: "密码不匹配",
+    ee: "邮箱已使用",
+    en2: "未找到邮箱",
+    ex: "填写字段",
+    ah: "点击添加照片",
+    rat: "评价",
+    rep: "举报",
+    sup: "支持",
+    rep_chat: "举报工匠",
+    rpt: "举报",
+    rpb: "举报此工匠？",
+    rok: "确认",
+    rnk: "取消",
+    st: "已暂停",
+    sm: "暂停5天。",
+    cph: "消息...",
+    ok: "已保存",
+    send: "发送中...",
+    dir: "ltr",
+    guest: "匿名访客",
+    bio_lbl: "关于与工作时间",
+    bio_empty: "请直接联系工匠了解工作时间。",
+    tm_sub: "欢迎来到我们的平台",
+    tm_welcome: "为确保信任与安全，请接受我们的社区公约：",
+    tm_p1_t: "尊重与透明",
+    tm_p1_d: "承诺合理价格与良好沟通。",
+    tm_p2_t: "准时可靠",
+    tm_p2_d: "严格遵守约定时间与质量保证。",
+    tm_p3_t: "安全与责任",
+    tm_p3_d: "Craftison 是撮合平台，最终协议约束双方。",
+    tm_note: "点击“接受”即表示同意条款。",
+    tm_acc: "接受并开始",
+    tm_dec: "拒绝",
+    rep_modal_title: "🚨 举报工匠",
+    rep_modal_desc: "选择投诉原因（将发送自动警告）：",
+    rep_q1: "🛠️ 服务不合格 / 做工差",
+    rep_q2: "⏰ 预约缺席或迟到",
+    rep_q3: "📞 号码无法接通或关机",
+    rep_q4: "💰 无理加价",
+    rep_q5: "🗣️ 不当或无礼行为",
+    rep_btn_cancel: "取消",
+    rep_btn_confirm: "确认"
+  },
+  hi: {
+    sub: "अपने पास का सबसे अच्छा कारीगर खोजें",
+    sh: "पेशा खोजें...",
+    sc: "पेशे",
+    sw: "कारीगर",
+    scli: "ग्राहक",
+    sy: "विश्वव्यापी",
+    sa: "सभी पेशे",
+    art: "कारीगर",
+    av: "उपलब्ध",
+    bk: "वापस",
+    sw2: "नाम या शहर...",
+    rb: "कारीगर के रूप में पंजीकरण",
+    nw: "कोई कारीगर नहीं",
+    ns: "पहले बनें!",
+    wt: "कारीगर प्रोफाइल",
+    ph: "फोन",
+    co: "मोहल्ला",
+    ci: "शहर",
+    cy: "देश",
+    ca: "कॉल करें",
+    cb: "संदेश",
+    cg: "गैलरी",
+    rt: "पंजीकरण",
+    tr2: "पंजीकरण",
+    tl: "लॉगिन",
+    ln: "पूरा नाम *",
+    lp: "पासवर्ड *",
+    lc: "पुष्टि *",
+    lt: "फोन *",
+    lpa: "देश *",
+    lv: "शहर",
+    lco: "मोहल्ला",
+    lm: "पेशा *",
+    lg: "तस्वीरें (अधिकतम 12)",
+    cp: "पेशा चुनें",
+    cpay: "देश चुनें",
+    br2: "पंजीकरण",
+    bl: "लॉगिन",
+    ef: "सभी फील्ड भरें",
+    ep: "पासवर्ड मेल नहीं",
+    ee: "ईमेल उपयोग में",
+    en2: "ईमेल नहीं मिला",
+    ex: "फील्ड भरें",
+    ah: "फोटो जोड़ें",
+    rat: "रेट करें",
+    rep: "रिपोर्ट",
+    sup: "समर्थन",
+    rep_chat: "रिपोर्ट करें",
+    rpt: "रिपोर्ट",
+    rpb: "रिपोर्ट करें?",
+    rok: "पुष्टि",
+    rnk: "रद्द",
+    st: "निलंबित",
+    sm: "5 दिन निलंबित।",
+    cph: "संदेश...",
+    ok: "सहेजा!",
+    send: "भेज रहे हैं...",
+    dir: "ltr",
+    guest: "अज्ञात आगंतुक",
+    bio_lbl: "के बारे में और कार्य समय",
+    bio_empty: "कार्य समय के लिए सीधे संपर्क करें।",
+    tm_sub: "हमारे प्लेटफॉर्म में आपका स्वागत है",
+    tm_welcome: "सुरक्षा और विश्वास के लिए सामुदायिक समझौते को स्वीकार करें:",
+    tm_p1_t: "सम्मान और पारदर्शिता",
+    tm_p1_d: "उचित मूल्य और स्पष्ट संचार के प्रति प्रतिबद्धता।",
+    tm_p2_t: "विश्वसनीय समय",
+    tm_p2_d: "समय सीमा और गुणवत्तापूर्ण कार्य का पालन।",
+    tm_p3_t: "सुरक्षा",
+    tm_p3_d: "Craftison एक कनेक्टिंग प्लेटफॉर्म है। अंतिम समझौते सीधे बाध्यकारी हैं।",
+    tm_note: "'स्वीकार करें' पर क्लिक करके आप सहमत होते हैं।",
+    tm_acc: "स्वीकार करें और शुरू करें",
+    tm_dec: "अस्वीकार करें",
+    rep_modal_title: "🚨 कारीगर की रिपोर्ट करें",
+    rep_modal_desc: "शिकायत का कारण चुनें (स्वचालित चेतावनी भेजी जाएगी):",
+    rep_q1: "🛠️ अयोग्य सेवा / खराब काम",
+    rep_q2: "⏰ नियुक्ति में अनुपस्थिति या देरी",
+    rep_q3: "📞 नंबर उपलब्ध नहीं है",
+    rep_q4: "💰 अनुचित मूल्य वृद्धि",
+    rep_q5: "🗣️ अनुचित या अशिष्ट व्यवहार",
+    rep_btn_cancel: "रद्द करें",
+    rep_btn_confirm: "पुष्टि करें"
+  },
+  de: {
+    sub: "Finden Sie den besten Handwerker in Ihrer Nahe",
+    sh: "Beruf suchen...",
+    sc: "Berufe",
+    sw: "Handwerker",
+    scli: "Kunden",
+    sy: "Weltweit",
+    sa: "Alle Berufe",
+    art: "Handwerker",
+    av: "verfugbar",
+    bk: "Zuruck",
+    sw2: "Name oder Stadt...",
+    rb: "Als Handwerker registrieren",
+    nw: "Keine Handwerker registriert",
+    ns: "Sei der Erste!",
+    wt: "Handwerkerprofil",
+    ph: "Telefon",
+    co: "Bezirk",
+    ci: "Stadt",
+    cy: "Land",
+    ca: "Anrufen",
+    cb: "Nachricht",
+    cg: "Fotogalerie",
+    rt: "Registrierung",
+    tr2: "Registrieren",
+    tl: "Anmelden",
+    ln: "Vollstandiger Name *",
+    lp: "Passwort *",
+    lc: "Bestatigen *",
+    lt: "Telefon *",
+    lpa: "Land *",
+    lv: "Stadt",
+    lco: "Bezirk",
+    lm: "Ihr Beruf *",
+    lg: "Bilder (Max 12)",
+    cp: "Beruf wahlen",
+    cpay: "Land wahlen",
+    br2: "Registrieren",
+    bl: "Anmelden",
+    ef: "Alle Felder ausfullen",
+    ep: "Passworter stimmen nicht uberein",
+    ee: "Email bereits verwendet",
+    en2: "Email nicht gefunden",
+    ex: "Felder ausfullen",
+    ah: "Foto hinzufugen",
+    rat: "Bewerten",
+    rep: "Melden",
+    sup: "Unterstutzen",
+    rep_chat: "Handwerker melden",
+    rpt: "Meldung",
+    rpb: "Diesen Handwerker melden?",
+    rok: "Bestatigen",
+    rnk: "Abbrechen",
+    st: "Handwerker gesperrt",
+    sm: "5 Tage gesperrt.",
+    cph: "Ihre Nachricht...",
+    ok: "Gespeichert!",
+    send: "Senden...",
+    dir: "ltr",
+    guest: "Anonymer Besucher",
+    bio_lbl: "Uber mich & Arbeitszeiten",
+    bio_empty: "Kontaktieren Sie den Handwerker direkt.",
+    tm_sub: "Willkommen auf unserer Plattform",
+    tm_welcome: "Bitte akzeptieren Sie unseren Gemeinschaftspakt:",
+    tm_p1_t: "Respekt & Transparenz",
+    tm_p1_d: "Faire Preise und klare Kommunikation.",
+    tm_p2_t: "Zuverlassigkeit",
+    tm_p2_d: "Einhaltung von Terminen und gute Arbeit.",
+    tm_p3_t: "Sicherheit",
+    tm_p3_d: "Craftison verbindet. Vereinbarungen binden direkt.",
+    tm_note: "Mit 'Akzeptieren' stimmen Sie zu.",
+    tm_acc: "Akzeptieren & Starten",
+    tm_dec: "Ablehnen",
+    rep_modal_title: "🚨 Handwerker melden",
+    rep_modal_desc: "Wählen Sie den Grund für die Beschwerde (eine automatische Warnung wird gesendet):",
+    rep_q1: "🛠️ Unqualifizierter Service / Schlechte Arbeit",
+    rep_q2: "⏰ Abwesenheit oder Verspätung",
+    rep_q3: "📞 Nummer nicht erreichbar oder ausgeschaltet",
+    rep_q4: "💰 Ungerechtfertigte Preiserhöhung",
+    rep_q5: "🗣️ Unangemessenes Verhalten",
+    rep_btn_cancel: "Abbrechen",
+    rep_btn_confirm: "Bestätigen"
+  },
+  pt: {
+    sub: "Encontre o melhor artesao perto de voce",
+    sh: "Pesquisar uma profissao...",
+    sc: "Profissoes",
+    sw: "Artesaos",
+    scli: "Clientes",
+    sy: "Mundial",
+    sa: "Todas as Profissoes",
+    art: "artesaos",
+    av: "disponiveis",
+    bk: "Voltar",
+    sw2: "Nome ou cidade...",
+    rb: "Registrar como artesao",
+    nw: "Nenhum artesao registrado",
+    ns: "Seja o primeiro!",
+    wt: "Perfil do Artesao",
+    ph: "Telefone",
+    co: "Bairro",
+    ci: "Cidade",
+    cy: "Pais",
+    ca: "Ligar",
+    cb: "Mensagem",
+    cg: "Galeria de Fotos",
+    rt: "Registro",
+    tr2: "Registrar",
+    tl: "Entrar",
+    ln: "Nome completo *",
+    lp: "Senha *",
+    lc: "Confirmar *",
+    lt: "Telefone *",
+    lpa: "Pais *",
+    lv: "Cidade",
+    lco: "Bairro",
+    lm: "Sua profissao *",
+    lg: "Fotos (Max 12)",
+    cp: "Escolher profissao",
+    cpay: "Escolher pais",
+    br2: "Registrar",
+    bl: "Entrar",
+    ef: "Preencher todos os campos",
+    ep: "Senhas nao coincidem",
+    ee: "Email ja utilizado",
+    en2: "Email nao encontrado",
+    ex: "Preencher os campos",
+    ah: "Toque para adicionar foto",
+    rat: "Avaliar",
+    rep: "Denunciar",
+    sup: "Apoiar",
+    rep_chat: "Denunciar artesao",
+    rpt: "Denuncia",
+    rpb: "Denunciar este artesao?",
+    rok: "Confirmar",
+    rnk: "Cancelar",
+    st: "Artesao suspenso",
+    sm: "Suspenso por 5 dias.",
+    cph: "Sua mensagem...",
+    ok: "Salvo!",
+    send: "Enviando...",
+    dir: "ltr",
+    guest: "Visitante anonimo",
+    bio_lbl: "Sobre & Horario de Trabalho",
+    bio_empty: "Entre em contato diretamente com o artesao.",
+    tm_sub: "Bem-vindo a nossa plataforma",
+    tm_welcome: "Para garantir confianca e seguranca, aceite nosso Pacto Comunitario:",
+    tm_p1_t: "Respeito e Transparencia",
+    tm_p1_d: "Precos justos e comunicacao clara.",
+    tm_p2_t: "Compromisso Com Prazos",
+    tm_p2_d: "Respeito aos horarios e trabalho de qualidade.",
+    tm_p3_t: "Protecao",
+    tm_p3_d: "Craftison e uma plataforma de conexao. Acordos vinculam as partes.",
+    tm_note: "Ao clicar em 'Aceitar', voce concorda com os termos.",
+    tm_acc: "Aceitar e Comecar",
+    tm_dec: "Recusar",
+    rep_modal_title: "🚨 Denunciar Artesão",
+    rep_modal_desc: "Escolha o motivo da reclamação (um aviso automático será enviado):",
+    rep_q1: "🛠️ Serviço não qualificado / Trabalho ruim",
+    rep_q2: "⏰ Ausência ou atraso no compromisso",
+    rep_q3: "📞 Número inalcançável ou desligado",
+    rep_q4: "💰 Aumento de preço injustificado",
+    rep_q5: "🗣️ Comportamiento inadequado",
+    rep_btn_cancel: "Cancelar",
+    rep_btn_confirm: "Confirmar"
   }
 };
 
@@ -1018,14 +1630,22 @@ var CRAFTS=[
 {id:87,fr:"Taxi",ar:"تاكسي",en:"Taxi",es:"Taxi",it:"Taxi",tr:"Taksi",nl:"Taxi",zh:"出租车",hi:"टैक्सी",de:"Taxi",pt:"Taxi",icon:"🚕",c:"#F9A825",bg:"#FFFDE7"},
 {id:88,fr:"Livreur",ar:"عامل توصيل",en:"Delivery Man",es:"Repartidor",it:"Fattorino",tr:"Kurye",nl:"Bezorger",zh:"快递员",hi:"डिलीवरी मैन",de:"Lieferant",pt:"Entregador",icon:"🛵",c:"#E65100",bg:"#FBE9E7"},
 {id:89,fr:"Medecin Generaliste",ar:"طبيب عام",en:"General Practitioner",es:"Medico General",it:"Medico di Base",tr:"Pratisyen Hekim",nl:"Huisarts",zh:"全科医生",hi:"सामान्य चिकित्सक",de:"Hausarzt",pt:"Medico Geral",icon:"🩺",c:"#1565C0",bg:"#E3F2FD"},
-{id:90,fr:"Livraison Express",ar:"توصيل سريع",en:"Express Delivery",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिलीवरी",de:"Expresslieferung",pt:"Expressa",icon:"📦",c:"#C62828",bg:"#FFEBEE"}
+{id:90,fr:"Livraison Express",ar:"توصيل سريع",en:"Express Delivery",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिलीवरी",de:"Expresslieferung",pt:"Entrega Expressa",icon:"📦",c:"#C62828",bg:"#FFEBEE"}
 ];
 
-var LANGS=[{c:"fr",f:"🇫🇷",l:"FR"},{c:"ar",f:"🇩🇿",l:"ع"},{c:"en",f:"🇬🇧",l:"EN"}];
+var LANGS=[{c:"fr",f:"🇫🇷",l:"FR"},{c:"ar",f:"🇩🇿",l:"ع"},{c:"en",f:"🇬🇧",l:"EN"},{c:"es",f:"🇪🇸",l:"ES"},{c:"it",f:"🇮🇹",l:"IT"},{c:"tr",f:"🇹🇷",l:"TR"},{c:"nl",f:"🇳🇱",l:"NL"},{c:"zh",f:"🇨🇳",l:"中"},{c:"hi",f:"🇮🇳",l:"हि"},{c:"de",f:"🇩🇪",l:"DE"},{c:"pt",f:"🇧🇷",l:"PT"}];
 var LANG_FLAG_SVG={
   fr:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#0055A4" d="M0 0h10v20H0z"/><path fill="#fff" d="M10 0h10v20H10z"/><path fill="#EF4135" d="M20 0h10v20H20z"/></svg>',
   ar:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#006233" d="M0 0h15v20H0z"/><path fill="#fff" d="M15 0h15v20H15z"/><circle cx="15.8" cy="10" r="5" fill="#D21034"/><circle cx="17.5" cy="8.8" r="4.2" fill="#fff"/><path fill="#D21034" d="m20.4 6.2.8 2.1 2.2.1-1.7 1.4.6 2.1-1.9-1.2-1.8 1.2.6-2.1-1.7-1.4 2.2-.1z"/></svg>',
-  en:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#012169" d="M0 0h30v20H0z"/><path d="M0 0 30 20M30 0 0 20" stroke="#fff" stroke-width="4"/><path d="M0 0 30 20M30 0 0 20" stroke="#C8102E" stroke-width="1.5"/><path d="M15 0v20M0 10h30" stroke="#fff" stroke-width="6"/><path d="M15 0v20M0 10h30" stroke="#C8102E" stroke-width="2.8"/></svg>'
+  en:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#012169" d="M0 0h30v20H0z"/><path d="M0 0 30 20M30 0 0 20" stroke="#fff" stroke-width="4"/><path d="M0 0 30 20M30 0 0 20" stroke="#C8102E" stroke-width="1.5"/><path d="M15 0v20M0 10h30" stroke="#fff" stroke-width="6"/><path d="M15 0v20M0 10h30" stroke="#C8102E" stroke-width="2.8"/></svg>',
+  es:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#AA151B" d="M0 0h30v5H0zM0 15h30v5H0z"/><path fill="#F1BF00" d="M0 5h30v10H0z"/></svg>',
+  it:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#009246" d="M0 0h10v20H0z"/><path fill="#fff" d="M10 0h10v20H10z"/><path fill="#CE2B37" d="M20 0h10v20H20z"/></svg>',
+  tr:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#E30A17" d="M0 0h30v20H0z"/><circle cx="12" cy="10" r="5" fill="#fff"/><circle cx="14" cy="9" r="4" fill="#E30A17"/><path fill="#fff" d="m19 6.2 1.1 2.5 2.7.2-2.1 1.7.7 2.6-2.4-1.4-2.3 1.4.7-2.6-2.1-1.7 2.7-.2z"/></svg>',
+  nl:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#AE1C28" d="M0 0h30v6.67H0z"/><path fill="#fff" d="M0 6.67h30v6.66H0z"/><path fill="#21468B" d="M0 13.33h30V20H0z"/></svg>',
+  zh:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#DE2910" d="M0 0h30v20H0z"/><path fill="#FFDE00" d="m6 3 1 2.5 2.7.2-2.1 1.7.7 2.6L6 8.6l-2.3 1.4.7-2.6-2.1-1.7L5 5.5z"/></svg>',
+  hi:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#FF9933" d="M0 0h30v6.67H0z"/><path fill="#fff" d="M0 6.67h30v6.66H0z"/><path fill="#138808" d="M0 13.33h30V20H0z"/><circle cx="15" cy="10" r="2.7" fill="none" stroke="#000080" stroke-width=".65"/><circle cx="15" cy="10" r=".45" fill="#000080"/></svg>',
+  de:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#000" d="M0 0h30v6.67H0z"/><path fill="#D00" d="M0 6.67h30v6.66H0z"/><path fill="#FFCE00" d="M0 13.33h30V20H0z"/></svg>',
+  pt:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#009739" d="M0 0h12v20H0z"/><path fill="#FEDD00" d="m12 2 15 8-15 8L3 10z"/><circle cx="15" cy="10" r="4.1" fill="#012169"/></svg>'
 };
 
 var lang="fr",craft=null,worker=null,currentUser=null,avFile=null,galFiles=[],chatId=null,chatUnsub=null,allCraftWorkers=[];
@@ -1042,6 +1662,7 @@ var editGalFiles = [];
 var editExistingGallery = [];
 var targetEditingWorkerId = null;
 
+/* ===== متغيرات نظام طلبات الزبائن ===== */
 var rqManualCraft = false;
 var rqManualLoc = false;
 var inboxTarget = null;
@@ -1050,10 +1671,6 @@ var inboxUnsub = null;
 var inboxRequests = [];
 var REQ_MAX_AGE_MS = 7*24*60*60*1000;
 var REQ_COOLDOWN_MS = 60*1000;
-
-var shopAvFile = null;
-var allShopsList = [];
-var currentShop = null;
 
 function checkFirstLaunchTerms(){
   var accepted = localStorage.getItem("craftison_terms_accepted");
@@ -1156,8 +1773,6 @@ function setLang(l){
   if(craft)loadWorkers(craft.id);
   if(worker)renderDet(worker);
   if(currentScreenName()==="inbox")renderInbox();
-  if(currentScreenName()==="shops")loadShops();
-  if(currentScreenName()==="admin")loadAdminPanelData();
 }
 
 function applyT(){
@@ -1175,7 +1790,6 @@ function applyT(){
   set("av-hint",t("ah"));
   var hlbt=$("home-login-t");if(hlbt)hlbt.textContent=t("tl");
   var hsbt=$("home-signup-t");if(hsbt)hsbt.textContent=t("tr2");
-  var hshbt=$("home-shops-t");if(hshbt)hshbt.textContent=lang==="ar"?"المحلات":"Shops";
 
   set("tm-sub",t("tm_sub"));set("tm-welcome",t("tm_welcome"));
   set("tm-p1-t",t("tm_p1_t"));set("tm-p1-d",t("tm_p1_d"));
@@ -1193,6 +1807,7 @@ function applyT(){
   set("rep-btn-cancel", t("rep_btn_cancel"));
   set("rep-btn-confirm", t("rep_btn_confirm"));
 
+  /* ترجمة عناصر نظام الطلبات */
   ph("inp-req-quick", t("rq_quick_ph"));
   set("btn-req-quick", t("rq_quick_btn"));
   updateInboxBtnLabel();
@@ -1224,10 +1839,6 @@ function applyT(){
 function loadTotalStats(){
   DB.collection("workers").get().then(function(snap){
     set("sl-wnum", snap.size);
-  }).catch(function(){});
-
-  DB.collection("shops").get().then(function(snap){
-    set("sl-snum", snap.size);
   }).catch(function(){});
 
   DB.collection("guests").get().then(function(snap){
@@ -1353,11 +1964,7 @@ function renderDet(w){
   var avg=w.ratingAvg?w.ratingAvg.toFixed(1):"—";
   var full=Math.round(w.ratingAvg||0);
   var sh="⭐".repeat(full)+"☆".repeat(5-full);
-  
-  var galList = (w.gallery && Array.isArray(w.gallery) && w.gallery.length) ? w.gallery : [];
-  var galH = galList.length 
-    ? galList.map(function(u){return'<div class="gi"><img src="'+u+'"></div>';}).join("")
-    : [1,2,3,4,5,6].map(function(){return'<div class="gi">🖼️</div>';}).join("");
+  var galH=w.gallery&&w.gallery.length?w.gallery.map(function(u){return'<div class="gi"><img src="'+u+'"></div>';}).join(""):[1,2,3,4,5,6].map(function(){return'<div class="gi">🖼️</div>';}).join("");
 
   if(susp){
     $("wdet").innerHTML='<div class="ssc"><div class="si">⛔</div><div class="st2">'+t("st")+'</div><div class="ss2">'+t("sm")+"</div></div>";
@@ -1419,6 +2026,33 @@ function renderDet(w){
     dc.appendChild(bEdit);
   }
 
+  if(isAdmin){
+    var bReqs=document.createElement("button");
+    bReqs.className="btn-b";
+    bReqs.style.background="linear-gradient(135deg, #6A1B9A, #4A148C)";
+    bReqs.textContent = "📥 " + (lang==="ar"?"طلبات هذا الحرفي (Admin)":"Demandes de cet artisan (Admin)");
+    bReqs.onclick=function(){openInbox(w);};
+    dc.appendChild(bReqs);
+
+    var bDel=document.createElement("button");
+    bDel.className="btn-r";
+    bDel.style.marginTop="10px";
+    bDel.style.fontWeight="950";
+    bDel.textContent = lang==="ar" ? "🗑️ حذف هذا الحرفي نهائياً (خاص بالمدير)" : "🗑️ Supprimer cet artisan (Admin)";
+    bDel.onclick = function(){
+      if(confirm(lang==="ar" ? "هل أنت متأكد من حذف هذا الحرفي نهائياً من التطبيق؟" : "Voulez-vous vraiment supprimer cet artisan ?")){
+        DB.collection("workers").doc(w.id).delete().then(function(){
+          showToast(lang==="ar" ? "تم الحذف بنجاح" : "Supprimé avec succès");
+          goBack();
+          if(craft) loadWorkers(craft.id);
+        }).catch(function(err){
+          showToast("Erreur: " + err.message);
+        });
+      }
+    };
+    dc.appendChild(bDel);
+  }
+
   el.appendChild(dc);
 
   var rs=document.createElement("div");rs.className="rs";
@@ -1434,183 +2068,11 @@ function renderDet(w){
   var gc=document.createElement("div");gc.className="gc";
   gc.innerHTML='<div class="gt">🖼️ '+t("cg")+'</div><div class="gg">'+galH+"</div>";
   
+  var galList = w.gallery && w.gallery.length ? w.gallery : [];
   gc.querySelectorAll(".gi img").forEach(function(img, idx){
     bindZoomImage(img, galList, idx);
   });
   el.appendChild(gc);
-}
-
-/* دوال شاشة المحلات والمتاجر الشريكة */
-function openShopsScreen(){
-  go("shops");
-  loadShops();
-}
-
-function loadShops(){
-  var listEl = $("shops-list");
-  listEl.innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
-  
-  DB.collection("shops").get().then(function(snap){
-    var list = [];
-    snap.forEach(function(d){ list.push(Object.assign({id:d.id}, d.data())); });
-    allShopsList = list;
-    renderShopsList(list);
-  }).catch(function(){
-    listEl.innerHTML = '<div class="empty"><div class="ei">⚠️</div><div class="et">Erreur connexion</div></div>';
-  });
-}
-
-function filterShops(){
-  var q = normalizeSearchText($("inp-shops").value);
-  if(!q){
-    renderShopsList(allShopsList);
-    return;
-  }
-  var filtered = allShopsList.filter(function(s){
-    var name = normalizeSearchText(s.name);
-    var city = normalizeSearchText(s.city);
-    return name.includes(q) || city.includes(q);
-  });
-  renderShopsList(filtered);
-}
-
-function renderShopsList(list){
-  var el = $("shops-list");
-  el.innerHTML = "";
-  set("shops-cnt", list.length + (lang==="ar"?" متجر / محل متاح":" shops disponibles"));
-  
-  if(!list.length){
-    el.innerHTML = '<div class="empty"><div class="ei">🏪</div><div class="et">'+(lang==="ar"?"لا توجد محلات مسجلة حالياً":"Aucun magasin inscrit")+'</div><div class="es">'+(lang==="ar"?"كن أول من يسجل محلك أو متجر قطع الغيار!":"Soyez le premier à inscrire votre magasin !")+'</div></div>';
-    return;
-  }
-
-  list.forEach(function(s){
-    var c = CRAFTS.find(function(x){return x.id===s.craftId;})||CRAFTS[0];
-    var d = document.createElement("div");
-    d.className = "wc";
-    d.innerHTML = 
-      '<div class="av" style="background:#00695C;">'+(s.photoURL?'<img src="'+s.photoURL+'">':"🏪")+'</div>'+
-      '<div style="flex:1;min-width:0">'+
-        '<div class="wn">'+esc(s.name)+'</div>'+
-        '<div class="wl">📍 '+esc(s.commune||"")+", "+esc(s.city||"")+", "+esc(s.country||"")+'</div>'+
-        '<div class="wp">📞 '+esc(s.phone||"")+'</div>'+
-        '<div style="font-size:11px;color:#00695C;margin-top:2px;font-weight:700;">'+c.icon+' '+cn(c)+'</div>'+
-      '</div>'+
-      '<div style="font-size:20px;color:#CCC">›</div>';
-    d.onclick = function(){ openShopDetail(s.id); };
-    el.appendChild(d);
-  });
-}
-
-function openShopDetail(id){
-  $("shop-det-content").innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
-  go("shop-det");
-  DB.collection("shops").doc(id).get().then(function(snap){
-    if(!snap.exists) return;
-    currentShop = Object.assign({id:snap.id}, snap.data());
-    renderShopDet(currentShop);
-  }).catch(function(){});
-}
-
-function renderShopDet(s){
-  var c = CRAFTS.find(function(x){return x.id===s.craftId;})||CRAFTS[0];
-  var el = $("shop-det-content");
-  el.innerHTML = "";
-  
-  var dc = document.createElement("div");
-  dc.className = "dc";
-  dc.innerHTML = 
-    '<div class="dav" style="background:#00695C;">'+(s.photoURL?'<img src="'+s.photoURL+'">':"🏪")+'</div>'+
-    '<div class="dn">'+esc(s.name)+'</div>'+
-    '<div class="dbw"><span class="dbg" style="background:#E0F7FA;color:#00695C;">'+c.icon+' '+cn(c)+'</span></div>'+
-    '<div class="ir"><div class="iri">📍</div><div><div class="irl">'+t("co")+'</div><div class="irv">'+esc(s.commune||"")+'</div></div></div>'+
-    '<div class="ir"><div class="iri">🏙️</div><div><div class="irl">'+t("ci")+'</div><div class="irv">'+esc(s.city||"")+'</div></div></div>'+
-    '<div class="ir"><div class="iri">🌍</div><div><div class="irl">'+t("cy")+'</div><div class="irv">'+esc(s.country||"")+'</div></div></div>'+
-    '<div class="ir"><div class="iri">📞</div><div><div class="irl">'+t("ph")+'</div><div class="irv">'+esc(s.phone||"")+'</div></div></div>'+
-    '<div class="bio-box"><div class="bio-title">📝 الأسعار والقطع المتوفرة للحرفيين</div>'+esc(s.bio||'-')+'</div>';
-  
-  var bCall = document.createElement("button");
-  bCall.className = "btn-g";
-  bCall.textContent = "📞 " + t("ca");
-  bCall.onclick = function(){ window.open("tel:" + s.phone); };
-  dc.appendChild(bCall);
-
-  var bMsg = document.createElement("button");
-  bMsg.className = "btn-b";
-  bMsg.textContent = "💬 " + t("cb");
-  bMsg.onclick = function(){ openChat(s.id, s.name); };
-  dc.appendChild(bMsg);
-
-  el.appendChild(dc);
-}
-
-function openShopReg(){
-  var met = $("sr-craft");
-  if(met){
-    met.innerHTML = '<option value="">'+t("cp")+'</option>' + CRAFTS.map(function(c){return'<option value="'+c.id+'">'+c.icon+' '+cn(c)+'</option>';}).join("");
-  }
-  var pay = $("sr-pay");
-  if(pay){
-    pay.innerHTML = '<option value="">'+t("cpay")+'</option>' + COUNTRIES.map(function(c){return'<option value="'+c+'">'+c+'</option>';}).join("");
-  }
-  $("sr-name").value = "";
-  $("sr-tel").value = "";
-  $("sr-vil").value = "";
-  $("sr-com").value = "";
-  $("sr-bio").value = "";
-  shopAvFile = null;
-  $("shop-apr").innerHTML = '&#128247;';
-  $("e-shop-reg").innerHTML = "";
-  
-  var apr=$("shop-apr");
-  if(apr) apr.onclick = function(){ $("shop-av-file").click(); };
-  var avFileInp=$("shop-av-file");
-  if(avFileInp) avFileInp.onchange = function(){
-    if(!this.files[0]) return;
-    shopAvFile = this.files[0];
-    var r = new FileReader();
-    r.onload = function(e){ $("shop-apr").innerHTML = '<img src="'+e.target.result+'">'; };
-    r.readAsDataURL(shopAvFile);
-  };
-  
-  go("shop-reg");
-}
-
-function submitShopRegistration(){
-  var name = $("sr-name").value.trim();
-  var craftId = parseInt($("sr-craft").value)||0;
-  var phone = $("sr-tel").value.trim();
-  var country = $("sr-pay").value;
-  var city = $("sr-vil").value.trim();
-  var commune = $("sr-com").value.trim();
-  var bio = $("sr-bio").value.trim();
-
-  if(!name || !phone || !country || !city || !craftId){
-    showErr("e-shop-reg", t("ef"));
-    return;
-  }
-
-  shopAvFile ? fileToBase64(shopAvFile, 400, 0.5) : Promise.resolve("")
-  .then(function(photoURL){
-    return DB.collection("shops").add({
-      name: name,
-      craftId: craftId,
-      phone: phone,
-      country: country,
-      city: city,
-      commune: commune,
-      bio: bio,
-      photoURL: photoURL,
-      createdAt: firebase.firestore.FieldValue.serverTimestamp()
-    });
-  }).then(function(){
-    showToast(t("ok"));
-    goBack();
-    loadShops();
-    loadTotalStats();
-  }).catch(function(err){
-    showErr("e-shop-reg", "Erreur: " + err.message);
-  });
 }
 
 function bindZoomImage(img, imagesArray, index){
@@ -2046,6 +2508,7 @@ function saveProfileChanges(){
       worker = Object.assign({id:snap.id}, snap.data());
       renderDet(worker);
       goBack();
+      /* تحديث بيانات الحرفي الحالي (المنطقة/الحرفة) لصندوق الطلبات */
       if(currentUser && snap.id===currentUser.uid){ loadMyWorkerProfile(currentUser); }
     }
   }).catch(function(e){
@@ -2147,125 +2610,13 @@ function doLog(){
   }).finally(function(){$("btn-log").textContent=t("bl");});
 }
 
-function checkAdminAccess(user){
-  var btn = $("home-admin-btn");
-  if(user && user.email && user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()){
-    if(btn) btn.style.display = "inline-block";
-  } else {
-    if(btn) btn.style.display = "none";
-  }
-}
-
-function openAdminPanel(){
-  if(!currentUser || currentUser.email.toLowerCase() !== ADMIN_EMAIL.toLowerCase()) return;
-  go("admin");
-  loadAdminPanelData();
-}
-
-function loadAdminPanelData(){
-  var listEl = $("adm-workers-list");
-  var shopsListEl = $("adm-shops-list");
-  listEl.innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
-  shopsListEl.innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
-  
-  DB.collection("workers").get().then(function(snap){
-    set("adm-total-workers", snap.size);
-    listEl.innerHTML = "";
-    if(snap.empty){
-      listEl.innerHTML = '<div style="text-align:center;color:#888;padding:20px;">لا يوجد حرفيون مسجلون بعد</div>';
-      return;
-    }
-    
-    snap.forEach(function(d){
-      var w = Object.assign({id:d.id}, d.data());
-      var c = CRAFTS.find(function(x){return x.id===w.craftId;})||CRAFTS[0];
-      
-      var item = document.createElement("div");
-      item.style.cssText = "display:flex;flex-direction:column;padding:12px 0;border-bottom:1px solid #eee;gap:6px;";
-      item.innerHTML = 
-        '<div style="display:flex;justify-content:space-between;align-items:flex-start;">'+
-          '<div>'+
-            '<div style="font-weight:900;font-size:14px;color:#1A1A2E;">'+esc(w.name||'')+'</div>'+
-            '<div style="font-size:12px;color:#1565C0;margin-top:2px;">'+(c?c.icon+' '+cn(c):'')+'</div>'+
-          '</div>'+
-          '<div style="font-size:11px;background:#E3F2FD;color:#0D47A1;padding:2px 8px;border-radius:6px;font-weight:700;">⭐ '+(w.ratingAvg?w.ratingAvg.toFixed(1):'0.0')+'</div>'+
-        '</div>'+
-        '<div style="font-size:12px;color:#555;display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:4px;">'+
-          '<div>📍 المدينة: <b>'+esc(w.city||'-')+'</b></div>'+
-          '<div>📞 الهاتف: <b>'+esc(w.phone||'-')+'</b></div>'+
-          '<div style="grid-column:span 2;color:#777;">✉️ الإيميل: '+esc(w.email||'-')+'</div>'+
-        '</div>'+
-        '<div style="display:flex;gap:8px;margin-top:8px;">'+
-          '<button style="flex:1;background:#1565C0;color:#fff;border:none;border-radius:8px;padding:8px;font-size:12px;font-weight:700;cursor:pointer;" onclick="openW(\''+w.id+'\')">👁️ عرض الملف</button>'+
-          '<button style="flex:1;background:#FF6F00;color:#fff;border:none;border-radius:8px;padding:8px;font-size:12px;font-weight:700;cursor:pointer;" onclick="openEditProfileFromAdmin(\''+w.id+'\')">✏️ تعديل</button>'+
-          '<button style="background:#C62828;color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;" onclick="adminDeleteWorker(\''+w.id+'\')">🗑️ حذف</button>'+
-        '</div>';
-      listEl.appendChild(item);
-    });
-  }).catch(function(){});
-
-  DB.collection("shops").get().then(function(snap){
-    set("adm-total-shops", snap.size);
-    shopsListEl.innerHTML = "";
-    if(snap.empty){
-      shopsListEl.innerHTML = '<div style="text-align:center;color:#888;padding:20px;">لا توجد محلات مسجلة بعد</div>';
-      return;
-    }
-    snap.forEach(function(d){
-      var s = Object.assign({id:d.id}, d.data());
-      var c = CRAFTS.find(function(x){return x.id===s.craftId;})||CRAFTS[0];
-      var item = document.createElement("div");
-      item.style.cssText = "display:flex;flex-direction:column;padding:12px 0;border-bottom:1px solid #eee;gap:6px;";
-      item.innerHTML = 
-        '<div style="display:flex;justify-content:space-between;align-items:flex-start;">'+
-          '<div>'+
-            '<div style="font-weight:900;font-size:14px;color:#00695C;">'+esc(s.name)+'</div>'+
-            '<div style="font-size:12px;color:#00838F;margin-top:2px;">'+(c?c.icon+' '+cn(c):'')+'</div>'+
-          '</div>'+
-        '</div>'+
-        '<div style="font-size:12px;color:#555;margin-top:4px;">'+
-          '<div>📍 المدينة: <b>'+esc(s.city)+'</b> | 📞 الهاتف: <b>'+esc(s.phone)+'</b></div>'+
-        '</div>'+
-        '<div style="display:flex;gap:8px;margin-top:8px;">'+
-          '<button style="flex:1;background:#00695C;color:#fff;border:none;border-radius:8px;padding:8px;font-size:12px;font-weight:700;cursor:pointer;" onclick="openShopDetail(\''+s.id+'\')">👁️ عرض المحل</button>'+
-          '<button style="background:#C62828;color:#fff;border:none;border-radius:8px;padding:8px 12px;font-size:12px;font-weight:700;cursor:pointer;" onclick="adminDeleteShop(\''+s.id+'\')">🗑️ حذف</button>'+
-        '</div>';
-      shopsListEl.appendChild(item);
-    });
-  }).catch(function(){});
-}
-
-function openEditProfileFromAdmin(wid){
-  DB.collection("workers").doc(wid).get().then(function(snap){
-    if(snap.exists){
-      var w = Object.assign({id:snap.id}, snap.data());
-      openEditProfile(w);
-    }
-  });
-}
-
-function adminDeleteWorker(wid){
-  if(confirm("هل أنت متأكد من حذف هذا الحرفي نهائياً؟")){
-    DB.collection("workers").doc(wid).delete().then(function(){
-      showToast("تم الحذف بنجاح");
-      loadAdminPanelData();
-    }).catch(function(err){
-      showToast("خطأ: "+err.message);
-    });
-  }
-}
-
-function adminDeleteShop(sid){
-  if(confirm("هل أنت متأكد من حذف هذا المحل التجاري نهائياً؟")){
-    DB.collection("shops").doc(sid).delete().then(function(){
-      showToast("تم الحذف بنجاح");
-      loadAdminPanelData();
-      loadTotalStats();
-    }).catch(function(err){
-      showToast("خطأ: "+err.message);
-    });
-  }
-}
+/* ==========================================================
+   نظام طلبات الزبائن (Demandes de service)
+   - الزبون يكتب طلبه بأي لغة (عربية / فرنسية / مزيج / Arabizi)
+   - التطبيق يستخرج الحرفة والمدينة من النص تلقائياً
+   - الحرفي (نفس الحرفة + نفس الولاية/المدينة) يرى الطلب في صندوقه
+   - المدير (Admin) يستطيع رؤية طلبات أي حرفي أو كل الطلبات
+   ========================================================== */
 
 function normAr(s){
   return normalizeSearchText(s)
@@ -2275,6 +2626,7 @@ function normAr(s){
     .replace(/ى/g,"ي");
 }
 
+/* ---------- بصمة صوتية: تجعل "بلعباس" و "bel abbes" و "Bel Abbès" متقاربة ---------- */
 var SK_AR={"ب":"b","پ":"b","ت":"t","ث":"t","ج":"j","ح":"h","خ":"k","د":"t","ذ":"t","ر":"r","ز":"s","س":"s","ش":"s","ص":"s","ض":"t","ط":"t","ظ":"t","غ":"k","ف":"f","ڤ":"f","ق":"k","ك":"k","گ":"k","ل":"l","م":"m","ن":"n","ه":"h","چ":"s"};
 var SK_LAT={b:"b",c:"k",d:"t",f:"f",g:"k",h:"h",j:"j",k:"k",l:"l",m:"m",n:"n",p:"b",q:"k",r:"r",s:"s",t:"t",v:"f",x:"s",z:"s"};
 
@@ -2295,6 +2647,7 @@ function cleanGram(s){
   return normAr(s).replace(/\./g,"").replace(/['’\-_]/g," ").replace(/\s+/g," ").trim();
 }
 
+/* ---------- الولايات الجزائرية بكل كتاباتها المحتملة ---------- */
 var WIL_DATA=[
  [1,"Adrar","أدرار"],
  [2,"Chlef","الشلف","شلف","chelef"],
@@ -2369,6 +2722,7 @@ function buildWilIndex(){
   });
 }
 
+/* يبحث في أي نص عن اسم ولاية (مهما كانت اللغة أو الكتابة) */
 function findWilayas(text){
   if(!WIL_INDEX) buildWilIndex();
   if(!text) return [];
@@ -2393,6 +2747,7 @@ function findWilayas(text){
   return found;
 }
 
+/* ---------- كلمات مفتاحية للحرف بالعربية والفرنسية والعامية ---------- */
 var CRAFT_KW={
 1:"سباك|سباكة|plombier|plomberie|plumber|sebbak|sabbak|fuite|تسرب|حنفية|robinet",
 2:"كهربائي|كهربجي|كهرباء|electricien|electrician|kahrabaji|kahraba",
@@ -2515,6 +2870,7 @@ function wordVariants(w){
   return v;
 }
 
+/* اكتشاف الحرفة من نص الزبون بأي لغة (مثال: "أريد حلاقة في sidi bel abbes" ← حلاقة رجال) */
 function detectCraft(text){
   if(!text) return 0;
   if(!CRAFT_KW_INDEX) buildCraftKwIndex();
@@ -2539,6 +2895,7 @@ function detectCraft(text){
   });
   if(best) return best;
 
+  /* احتياطي: مقارنة مع أسماء الحرف نفسها */
   var wordsL=words.filter(function(w){return w.length>=4;});
   for(var wi=0;wi<wordsL.length;wi++){
     var w=wordsL[wi];
@@ -2556,6 +2913,7 @@ function detectCraft(text){
   return 0;
 }
 
+/* ---------- مطابقة المنطقة بين الطلب والحرفي ---------- */
 function fieldMatch(a,b){
   var sa=skeleton(a),sb=skeleton(b);
   if(!sa||!sb) return false;
@@ -2573,6 +2931,7 @@ function unionIds(){
   return out;
 }
 
+/* req: {country,city,commune,text}   wk: {country,city,commune} */
 function areaMatch(req,wk){
   if(req.country && wk.country && normAr(req.country)!==normAr(wk.country)) return false;
   var rw=unionIds(findWilayas(req.city),findWilayas(req.commune),findWilayas(req.text));
@@ -2591,6 +2950,7 @@ function areaMatch(req,wk){
   return false;
 }
 
+/* ---------- شاشة طلب الخدمة ---------- */
 function buildRequestForm(){
   var met=$("rq-met");
   if(met){
@@ -2653,6 +3013,7 @@ function submitRequest(){
 
   if(text.length<5){showErr("e-req",t("rq_err_text"));return;}
 
+  /* إكمال ما ينقص من النص نفسه */
   if(!craftId) craftId=detectCraft(text);
   if(!city){
     var ids=findWilayas(text);
@@ -2709,6 +3070,8 @@ function submitRequest(){
   });
 }
 
+/* ---------- صندوق الطلبات ---------- */
+
 function isAdminUser(){
   return !!(currentUser && currentUser.email && currentUser.email.toLowerCase()===ADMIN_EMAIL.toLowerCase());
 }
@@ -2756,6 +3119,7 @@ function reqMillis(r){
   return r.createdAt?(r.createdAt.toMillis?r.createdAt.toMillis():r.createdAt):Date.now();
 }
 
+/* wk === "all" ← كل الطلبات (للمدير) ، وإلا ← الطلبات المناسبة لهذا الحرفي */
 function relevantRequests(list,wk){
   if(!wk) return [];
   var now=Date.now();
@@ -2812,6 +3176,7 @@ function updateInboxTitle(){
   set("inbox-sub",inboxTarget==="all"?"":t("inbox_sub"));
 }
 
+/* target: كائن حرفي (للمدير)، أو "all"، أو بدون وسيط ← صندوق الحرفي نفسه */
 function openInbox(target){
   var tgt=target||myWorker||(isAdminUser()?"all":null);
   if(!tgt) return;
@@ -2877,7 +3242,8 @@ function replyToRequest(clientId, clientName){
   startChat(clientId, clientName, currentUser.uid, false);
 }
 
-var MIC_LOCALE={fr:"fr-FR",ar:"ar-DZ",en:"en-US"};
+/* ---------- الإدخال الصوتي (المايك) ---------- */
+var MIC_LOCALE={fr:"fr-FR",ar:"ar-DZ",en:"en-US",es:"es-ES",it:"it-IT",tr:"tr-TR",nl:"nl-NL",zh:"zh-CN",hi:"hi-IN",de:"de-DE",pt:"pt-BR"};
 var micRec=null;
 
 function getMicLang(){
@@ -2893,6 +3259,7 @@ function updateMicLangButtons(){
   document.querySelectorAll(".mic-lang").forEach(function(b){b.textContent=lab;});
 }
 
+/* يبدّل لغة التعرف على الصوت بين العربية (الجزائر) والفرنسية */
 function toggleMicLang(){
   var list=["ar-DZ","fr-FR"];
   var i=list.indexOf(getMicLang());
@@ -2944,7 +3311,6 @@ function toggleMic(inputId,btnId){
 
 AUTH.onAuthStateChanged(function(user){
   currentUser=user;
-  checkAdminAccess(user);
   if(user){ loadMyWorkerProfile(user); }
   else { myWorker=null; inboxTarget=null; showInboxButton(false); stopInboxListener(); }
 });
@@ -2973,10 +3339,6 @@ document.addEventListener("DOMContentLoaded",function(){
   var bk5=$("bk5"); if(bk5) bk5.onclick=function(){goBack();};
   var bk6=$("bk6"); if(bk6) bk6.onclick=function(){goBack();};
   var bk7=$("bk7"); if(bk7) bk7.onclick=function(){goBack();};
-  var bkShops=$("bk-shops"); if(bkShops) bkShops.onclick=function(){goBack();};
-  var bkShopDet=$("bk-shop-det"); if(bkShopDet) bkShopDet.onclick=function(){goBack();};
-  var bkShopReg=$("bk-shop-reg"); if(bkShopReg) bkShopReg.onclick=function(){goBack();};
-  var bkAdmin=$("bk-admin"); if(bkAdmin) bkAdmin.onclick=function(){goBack();};
 
   $("reg-btn").onclick=function(){goReg();};
   $("t-reg").onclick=function(){swTab("reg");};
