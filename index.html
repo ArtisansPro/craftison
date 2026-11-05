@@ -1658,6 +1658,7 @@ var touchStartX = 0;
 var touchEndX = 0;
 
 var editAvFile = null;
+var editCurrentPhoto = "";
 var editGalFiles = []; 
 var editExistingGallery = [];
 var targetEditingWorkerId = null;
@@ -1934,10 +1935,10 @@ function renderW(list){
     var stars="⭐".repeat(Math.round(w.ratingAvg||0));
     var d=document.createElement("div");d.className="wc";
     d.innerHTML=
-      '<div class="av" style="background:'+ac(w.id)+'">'+(w.photoURL?'<img src="'+w.photoURL+'">':"")+(w.photoURL?"":ini(w.name||""))+"</div>"+
-      '<div style="flex:1;min-width:0"><div class="wn">'+(w.name||"")+"</div>"+
-      '<div class="wl">📍 '+(w.commune||"")+", "+(w.city||"")+", "+(w.country||"")+"</div>"+
-      '<div class="wp">📞 '+(w.phone||"")+"</div>"+
+      '<div class="av" style="background:'+ac(w.id)+'">'+(w.photoURL?'<img src="'+esc(w.photoURL)+'">':"")+(w.photoURL?"":ini(w.name||""))+"</div>"+
+      '<div style="flex:1;min-width:0"><div class="wn">'+esc(w.name||"")+"</div>"+
+      '<div class="wl">📍 '+esc(w.commune||"")+", "+esc(w.city||"")+", "+esc(w.country||"")+"</div>"+
+      '<div class="wp">📞 '+esc(w.phone||"")+"</div>"+
       '<div class="ws">'+stars+" "+avg+" ("+(w.ratingCount||0)+")</div></div>"+
       '<div style="font-size:20px;color:#CCC">›</div>'+
       (susp?'<span class="stag">⛔</span>':"");
@@ -1964,7 +1965,7 @@ function renderDet(w){
   var avg=w.ratingAvg?w.ratingAvg.toFixed(1):"—";
   var full=Math.round(w.ratingAvg||0);
   var sh="⭐".repeat(full)+"☆".repeat(5-full);
-  var galH=w.gallery&&w.gallery.length?w.gallery.map(function(u){return'<div class="gi"><img src="'+u+'"></div>';}).join(""):[1,2,3,4,5,6].map(function(){return'<div class="gi">🖼️</div>';}).join("");
+  var galH=w.gallery&&w.gallery.length?w.gallery.map(function(u){return'<div class="gi"><img src="'+esc(u)+'"></div>';}).join(""):[1,2,3,4,5,6].map(function(){return'<div class="gi">🖼️</div>';}).join("");
 
   if(susp){
     $("wdet").innerHTML='<div class="ssc"><div class="si">⛔</div><div class="st2">'+t("st")+'</div><div class="ss2">'+t("sm")+"</div></div>";
@@ -1974,25 +1975,25 @@ function renderDet(w){
   var el=$("wdet");el.innerHTML="";
   var dc=document.createElement("div");dc.className="dc";
   
-  var bioText = w.bio ? w.bio : (t("bio_empty") || "Contactez l'artisan directement pour les horaires.");
+  var bioText = w.bio ? esc(w.bio) : (t("bio_empty") || "Contactez l'artisan directement pour les horaires.");
   var bioHtml = '<div class="bio-box"><div class="bio-title">📝 '+(t("bio_lbl")||"A propos & Horaires")+'</div>'+bioText+'</div>';
 
   var warningHtml = "";
   if(currentUser && currentUser.uid === w.id && w.lastWarning){
-    warningHtml = '<div style="background:#FFF3E0;border:1px solid #FFE082;border-radius:10px;padding:10px;margin-bottom:10px;font-size:12px;color:#E65100;">⚠️ <b>تنبيه إداري تلقائي:</b> '+w.lastWarning+'</div>';
+    warningHtml = '<div style="background:#FFF3E0;border:1px solid #FFE082;border-radius:10px;padding:10px;margin-bottom:10px;font-size:12px;color:#E65100;">⚠️ <b>تنبيه إداري تلقائي:</b> '+esc(w.lastWarning)+'</div>';
   }
 
   dc.innerHTML=
     warningHtml +
-    '<div class="dav" style="background:'+ac(w.id)+'">'+(w.photoURL?'<img src="'+w.photoURL+'">':"")+(w.photoURL?"":ini(w.name||""))+"</div>"+
-    '<div class="dn">'+(w.name||"")+"</div>"+
+    '<div class="dav" style="background:'+ac(w.id)+'">'+(w.photoURL?'<img src="'+esc(w.photoURL)+'">':"")+(w.photoURL?"":ini(w.name||""))+"</div>"+
+    '<div class="dn">'+esc(w.name||"")+"</div>"+
     '<div class="dbw"><span class="dbg" style="background:'+c.bg+";color:"+c.c+'">'+c.icon+" "+cn(c)+"</span></div>"+
     '<div class="ar"><span class="an">'+avg+'</span><span class="as2">'+sh+'</span><span class="ac2">('+(w.ratingCount||0)+")</span></div>"+
-    '<div class="ir"><div class="iri">📍</div><div><div class="irl">'+t("co")+'</div><div class="irv">'+(w.commune||"")+"</div></div></div>"+
-    '<div class="ir"><div class="iri">🏙️</div><div><div class="irl">'+t("ci")+'</div><div class="irv">'+(w.city||"")+"</div></div></div>"+
-    '<div class="ir"><div class="iri">🌍</div><div><div class="irl">'+t("cy")+'</div><div class="irv">'+(w.country||"")+"</div></div></div>"+
-    '<div class="ir"><div class="iri">✉️</div><div><div class="irl">Email</div><div class="irv">'+(w.email||"")+"</div></div></div>"+
-    '<div class="ir"><div class="iri">📞</div><div><div class="irl">'+t("ph")+'</div><div class="irv">'+(w.phone||"")+"</div></div></div>"+
+    '<div class="ir"><div class="iri">📍</div><div><div class="irl">'+t("co")+'</div><div class="irv">'+esc(w.commune||"")+"</div></div></div>"+
+    '<div class="ir"><div class="iri">🏙️</div><div><div class="irl">'+t("ci")+'</div><div class="irv">'+esc(w.city||"")+"</div></div></div>"+
+    '<div class="ir"><div class="iri">🌍</div><div><div class="irl">'+t("cy")+'</div><div class="irv">'+esc(w.country||"")+"</div></div></div>"+
+    '<div class="ir"><div class="iri">✉️</div><div><div class="irl">Email</div><div class="irv">'+esc(w.email||"")+"</div></div></div>"+
+    '<div class="ir"><div class="iri">📞</div><div><div class="irl">'+t("ph")+'</div><div class="irv">'+esc(w.phone||"")+"</div></div></div>"+
     bioHtml;
   
   var profileImage=dc.querySelector(".dav img");
@@ -2270,9 +2271,9 @@ function renderMsgs(msgs, senderId){
     d.className="msg "+(me?"mme":"mth");
     var senderLabel = m.senderName || t("guest");
     if(!me){
-      d.innerHTML='<div class="msender">'+senderLabel+'</div>'+m.text+'<div class="mt3">'+time+"</div>";
+      d.innerHTML='<div class="msender">'+esc(senderLabel)+'</div>'+esc(m.text)+'<div class="mt3">'+time+"</div>";
     } else {
-      d.innerHTML=m.text+'<div class="mt3">'+time+"</div>";
+      d.innerHTML=esc(m.text)+'<div class="mt3">'+time+"</div>";
     }
     el.appendChild(d);
   });
@@ -2382,6 +2383,7 @@ function prevGal(inp){
 
 function openEditProfile(w){
   targetEditingWorkerId = w.id;
+  editCurrentPhoto = w.photoURL || "";
   var metSel=$("ed-met");
   if(metSel){
     metSel.innerHTML='<option value="">'+t("cp")+"</option>"+CRAFTS.map(function(cr){return'<option value="'+cr.id+'"'+(cr.id===w.craftId?" selected":"")+'>'+cr.icon+" "+cn(cr)+"</option>";}).join("");
@@ -2395,7 +2397,7 @@ function openEditProfile(w){
   $("ed-bio").value = w.bio || "";
   
   if(w.photoURL){
-    $("ed-apr").innerHTML='<img src="'+w.photoURL+'">';
+    $("ed-apr").innerHTML='<img src="'+esc(w.photoURL)+'">';
   } else {
     $("ed-apr").innerHTML='&#128247;';
   }
@@ -2482,7 +2484,7 @@ function saveProfileChanges(){
   $("btn-save-edit").textContent=t("send");
   
   Promise.all([
-    editAvFile ? fileToBase64(editAvFile,400,0.5) : Promise.resolve(worker.photoURL || ""),
+    editAvFile ? fileToBase64(editAvFile,400,0.5) : Promise.resolve(editCurrentPhoto),
     Promise.all(editGalFiles.map(function(f){return fileToBase64(f,600,0.5);}))
   ]).then(function(results){
     var newPhotoURL = results[0];
@@ -3373,6 +3375,859 @@ document.addEventListener("DOMContentLoaded",function(){
   buildLB();applyT();renderCrafts(CRAFTS);
   checkFirstLaunchTerms();
 });
+</script>
+<script>
+/* shops-module:begin */
+/* ==========================================================
+   shops.js (v2) — المحلات المتخصصة والربط الذكي بالحرفيين
+   تُدمج هذه الوحدة تلقائياً داخل index.html بواسطة أداة الدمج.
+   ========================================================== */
+(function () {
+  "use strict";
+
+  /* k = أرقام الحرف المرتبطة بهذا الصنف (للربط الذكي بين المحلات والحرفيين) */
+  var SH_CATS = [
+    { id: 1, i: "🧱", ar: "مواد البناء", fr: "Matériaux de construction", en: "Building materials", k: [3, 4, 8, 12, 13, 14, 60, 61, 62, 67, 68, 72] },
+    { id: 2, i: "🔩", ar: "قطع غيار السيارات", fr: "Pièces détachées auto", en: "Car spare parts", k: [19, 20, 22, 24, 25, 26, 93, 99] },
+    { id: 3, i: "🚛", ar: "قطع غيار الشاحنات", fr: "Pièces poids lourds", en: "Truck spare parts", k: [47, 94, 95, 96] },
+    { id: 4, i: "🚰", ar: "أدوات السباكة والحمامات", fr: "Plomberie & sanitaire", en: "Plumbing & sanitary", k: [1, 63, 64, 71, 80, 98, 100] },
+    { id: 5, i: "💡", ar: "مواد كهربائية", fr: "Matériel électrique", en: "Electrical supplies", k: [2, 15, 16, 17, 18, 31, 70, 84] },
+    { id: 6, i: "🎨", ar: "دهانات وأصباغ", fr: "Peintures", en: "Paints", k: [3, 22, 65, 73] },
+    { id: 7, i: "🛠️", ar: "أدوات وعتاد (كوينكاليري)", fr: "Quincaillerie & outillage", en: "Hardware & tools", k: [5, 6, 7, 11, 21, 27, 81, 82, 97] },
+    { id: 8, i: "🪟", ar: "زجاج وألمنيوم", fr: "Vitrerie & aluminium", en: "Glass & aluminium", k: [6, 7, 23, 81] },
+    { id: 9, i: "🏗️", ar: "بلاط وسيراميك", fr: "Carrelage & céramique", en: "Tiles & ceramics", k: [8, 60, 61, 63, 64] },
+    { id: 10, i: "🪵", ar: "خشب ونجارة", fr: "Bois & menuiserie", en: "Wood & carpentry", k: [5, 40, 63, 65, 81, 82, 97] },
+    { id: 11, i: "❄️", ar: "تبريد وتكييف", fr: "Froid & climatisation", en: "Cooling & AC", k: [9, 10, 28] },
+    { id: 12, i: "📱", ar: "إلكترونيات وهواتف", fr: "Électronique & téléphonie", en: "Electronics & phones", k: [16, 17, 28, 29, 30, 31, 84] },
+    { id: 13, i: "🌾", ar: "عتاد فلاحي وسقي", fr: "Matériel agricole & irrigation", en: "Farm & irrigation supplies", k: [66, 68, 70, 80, 98] },
+    { id: 14, i: "🏪", ar: "أخرى", fr: "Autres", en: "Other", k: [] }
+  ];
+
+  var SHT = {
+    ar: {
+      stat_lbl: "المحلات", title: "🏪 المحلات المتخصصة",
+      search_ph: "ابحث باسم المحل أو المدينة...",
+      all_cats: "كل الأصناف", count: "محل",
+      empty: "لا توجد محلات مسجلة بعد", empty_s: "كن أول من يسجل محله!",
+      open: "🟢 مفتوح", closed: "🔴 مغلق", delivery_yes: "🚚 التوصيل متوفر",
+      call: "📞 اتصل بالمحل", hours: "أوقات العمل", location: "العنوان", phone: "الهاتف",
+      about: "نبذة عن المحل", gallery: "معرض السلع",
+      workers_same: "👷 حرفيون من نفس التخصص في منطقة المحل",
+      no_workers: "لا يوجد حرفيون مسجلون في هذه المنطقة بعد",
+      shops_for_you: "🏪 محلات تناسب تخصصه في منطقته",
+      no_shops: "لا توجد محلات مناسبة في هذه المنطقة بعد",
+      craft_bar: "🏪 محلات تبيع أدوات هذا التخصص", craft_chip: "التخصص:",
+      reg_btn: "➕ سجّل محلك مجاناً", login_btn: "🔑 دخول", manage_btn: "⚙️ إدارة محلي",
+      tab_reg: "تسجيل", tab_log: "دخول",
+      reg_title: "تسجيل محل", edit_title: "تعديل المحل",
+      f_photo: "اضغط لإضافة شعار / صورة المحل", f_name: "اسم المحل *", f_cat: "نوع النشاط *",
+      f_pass: "كلمة المرور *", f_conf: "تأكيد كلمة المرور *", f_country: "البلد *", f_phone: "الهاتف *",
+      f_city: "المدينة *", f_com: "الحي / البلدية", f_hours: "أوقات العمل (مثال: 08:00 - 18:00 ما عدا الجمعة)",
+      f_delivery: "التوصيل متوفر", f_open: "المحل مفتوح الآن", f_bio: "نبذة عن المحل والسلع المتوفرة",
+      f_gal: "معرض صور السلعة (6 كحد أقصى)", choose_cat: "اختر نوع النشاط", choose_country: "اختر البلد",
+      save_reg: "تسجيل المحل", save_edit: "حفظ التعديلات", sending: "جارٍ الحفظ...",
+      err_fields: "يرجى ملء الحقول الإجبارية", err_pass: "كلمتا المرور غير متطابقتين",
+      err_email: "هذا البريد مسجل مسبقاً — استعمل تبويب «دخول»",
+      err_login: "بيانات الدخول غير صحيحة", no_shop_acc: "لا يوجد محل مرتبط بهذا الحساب — سجّل محلك الآن",
+      saved: "✅ تم الحفظ", toggle_open: "🔓 فتح المحل الآن", toggle_close: "🔒 غلق المحل الآن",
+      del_admin: "🗑️ حذف المحل (Admin)", del_confirm: "حذف هذا المحل نهائياً؟"
+    },
+    fr: {
+      stat_lbl: "Magasins", title: "🏪 Magasins spécialisés",
+      search_ph: "Nom du magasin ou ville...",
+      all_cats: "Toutes les catégories", count: "magasins",
+      empty: "Aucun magasin inscrit", empty_s: "Soyez le premier à inscrire votre magasin !",
+      open: "🟢 Ouvert", closed: "🔴 Fermé", delivery_yes: "🚚 Livraison disponible",
+      call: "📞 Appeler le magasin", hours: "Horaires", location: "Adresse", phone: "Téléphone",
+      about: "À propos du magasin", gallery: "Galerie des produits",
+      workers_same: "👷 Artisans du même métier dans la zone",
+      no_workers: "Aucun artisan inscrit dans cette zone pour le moment",
+      shops_for_you: "🏪 Magasins adaptés à son métier dans sa zone",
+      no_shops: "Aucun magasin adapté dans cette zone pour le moment",
+      craft_bar: "🏪 Magasins qui vendent le matériel de ce métier", craft_chip: "Métier :",
+      reg_btn: "➕ Inscrire mon magasin (gratuit)", login_btn: "🔑 Connexion", manage_btn: "⚙️ Gérer mon magasin",
+      tab_reg: "Inscription", tab_log: "Connexion",
+      reg_title: "Inscription magasin", edit_title: "Modifier le magasin",
+      f_photo: "Appuyez pour ajouter le logo / la photo", f_name: "Nom du magasin *", f_cat: "Type d'activité *",
+      f_pass: "Mot de passe *", f_conf: "Confirmer le mot de passe *", f_country: "Pays *", f_phone: "Téléphone *",
+      f_city: "Ville *", f_com: "Commune / Quartier", f_hours: "Horaires (ex : 08:00 - 18:00 sauf vendredi)",
+      f_delivery: "Livraison disponible", f_open: "Magasin ouvert actuellement", f_bio: "Description et produits disponibles",
+      f_gal: "Galerie photos des produits (6 max)", choose_cat: "Choisir le type d'activité", choose_country: "Choisir un pays",
+      save_reg: "Inscrire le magasin", save_edit: "Enregistrer", sending: "Enregistrement...",
+      err_fields: "Remplissez les champs obligatoires", err_pass: "Les mots de passe sont différents",
+      err_email: "Cet email est déjà utilisé — utilisez l'onglet « Connexion »",
+      err_login: "Identifiants incorrects", no_shop_acc: "Aucun magasin lié à ce compte — inscrivez votre magasin",
+      saved: "✅ Enregistré", toggle_open: "🔓 Ouvrir le magasin", toggle_close: "🔒 Fermer le magasin",
+      del_admin: "🗑️ Supprimer (Admin)", del_confirm: "Supprimer définitivement ce magasin ?"
+    },
+    en: {
+      stat_lbl: "Shops", title: "🏪 Specialized shops",
+      search_ph: "Shop name or city...",
+      all_cats: "All categories", count: "shops",
+      empty: "No shops registered yet", empty_s: "Be the first to register your shop!",
+      open: "🟢 Open", closed: "🔴 Closed", delivery_yes: "🚚 Delivery available",
+      call: "📞 Call the shop", hours: "Opening hours", location: "Address", phone: "Phone",
+      about: "About the shop", gallery: "Products gallery",
+      workers_same: "👷 Craftsmen of the same trade in the area",
+      no_workers: "No craftsmen registered in this area yet",
+      shops_for_you: "🏪 Shops suited to his trade in his area",
+      no_shops: "No suitable shops in this area yet",
+      craft_bar: "🏪 Shops selling supplies for this trade", craft_chip: "Trade:",
+      reg_btn: "➕ Register my shop (free)", login_btn: "🔑 Login", manage_btn: "⚙️ Manage my shop",
+      tab_reg: "Register", tab_log: "Login",
+      reg_title: "Shop registration", edit_title: "Edit shop",
+      f_photo: "Tap to add a logo / photo", f_name: "Shop name *", f_cat: "Type of business *",
+      f_pass: "Password *", f_conf: "Confirm password *", f_country: "Country *", f_phone: "Phone *",
+      f_city: "City *", f_com: "District", f_hours: "Opening hours (e.g. 08:00 - 18:00 except Friday)",
+      f_delivery: "Delivery available", f_open: "Shop is open now", f_bio: "Description and available products",
+      f_gal: "Product photo gallery (max 6)", choose_cat: "Choose the type of business", choose_country: "Select a country",
+      save_reg: "Register the shop", save_edit: "Save changes", sending: "Saving...",
+      err_fields: "Fill in the required fields", err_pass: "Passwords do not match",
+      err_email: "This email is already used — use the Login tab",
+      err_login: "Wrong email or password", no_shop_acc: "No shop linked to this account — register your shop",
+      saved: "✅ Saved", toggle_open: "🔓 Open the shop now", toggle_close: "🔒 Close the shop now",
+      del_admin: "🗑️ Delete shop (Admin)", del_confirm: "Delete this shop permanently?"
+    }
+  };
+
+  var MAX_GAL = 6;
+  var shAll = [], shCur = null, shAvFile = null, shNewGal = [], shOldGal = [];
+  var shEditing = null, myShop = null, shSeq = 0, shCraftFilter = 0, shBarCraft = 0, homeStat = false;
+
+  var LABELS = [
+    ["shx-title", "title"], ["shx-reg", "reg_btn"], ["shx-login-go", "login_btn"], ["shx-ah", "f_photo"],
+    ["shx-t-reg", "tab_reg"], ["shx-t-log", "tab_log"], ["shx-login", "login_btn"], ["shx-l-lpass", "f_pass"],
+    ["shx-l-name", "f_name"], ["shx-l-cat", "f_cat"], ["shx-l-pass", "f_pass"], ["shx-l-conf", "f_conf"],
+    ["shx-l-country", "f_country"], ["shx-l-phone", "f_phone"], ["shx-l-city", "f_city"], ["shx-l-com", "f_com"],
+    ["shx-l-hours", "f_hours"], ["shx-l-delivery", "f_delivery"], ["shx-l-open", "f_open"],
+    ["shx-l-bio", "f_bio"], ["shx-l-gal", "f_gal"]
+  ];
+
+  /* ---------- أدوات مساعدة ---------- */
+  function $s(id) { return document.getElementById(id); }
+  function H(s) {
+    return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function LG() { return window.lang || "fr"; }
+  function st(k) {
+    var d = SHT[LG()] || SHT.en;
+    var v = d[k];
+    if (v == null) v = SHT.en[k];
+    return v == null ? k : v;
+  }
+  function catById(id) {
+    for (var i = 0; i < SH_CATS.length; i++) { if (SH_CATS[i].id === id) return SH_CATS[i]; }
+    return null;
+  }
+  function catName(id) { var c = catById(id); return c ? c.i + " " + (c[LG()] || c.en) : ""; }
+  function catsForCraft(craftId) {
+    var out = [];
+    SH_CATS.forEach(function (c) { if (c.k.indexOf(craftId) > -1) out.push(c.id); });
+    return out;
+  }
+  function craftById(id) {
+    var a = window.CRAFTS || [];
+    for (var i = 0; i < a.length; i++) { if (a[i].id === id) return a[i]; }
+    return null;
+  }
+  function craftName(id) {
+    var c = craftById(id);
+    return c ? c.icon + " " + (typeof window.cn === "function" ? window.cn(c) : c.fr) : "";
+  }
+  function norm(v) {
+    return typeof window.normalizeSearchText === "function" ? window.normalizeSearchText(v) : (v || "").toString().toLowerCase();
+  }
+  function suspended(w) {
+    var u = w && w.suspUntil;
+    var ms = u ? (u.toMillis ? u.toMillis() : Number(u)) : 0;
+    return ms > Date.now();
+  }
+  function nearArea(a, b) {
+    try { return typeof window.areaMatch === "function" ? !!window.areaMatch(a, b) : false; } catch (e) { return false; }
+  }
+  function onScreen(name) {
+    var a = document.querySelector(".screen.active");
+    return !!a && a.id === "s-" + name;
+  }
+  function v(id) { var e = $s(id); return e ? String(e.value || "").trim() : ""; }
+  function put(id, val) { var e = $s(id); if (e) e.value = val; }
+  function shErr(m) {
+    var e = $s("shx-err");
+    if (e) e.innerHTML = m ? '<div class="errmsg">' + H(m) + "</div>" : "";
+  }
+  function lErr(m) {
+    var e = $s("shx-lerr");
+    if (e) e.innerHTML = m ? '<div class="errmsg">' + H(m) + "</div>" : "";
+  }
+
+  /* ---------- الواجهة (تُحقن تلقائياً) ---------- */
+  var GREEN = "background:linear-gradient(135deg,#2E7D32,#1B5E20);";
+
+  var CSS = [
+    ".shx-stat{cursor:pointer;border:2px solid #2E7D32 !important}",
+    ".shx-stat .sl{color:#2E7D32;font-weight:800}",
+    ".shx-card{background:#fff;border-radius:13px;margin:0 9px 8px;padding:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);display:flex;gap:10px;align-items:center;cursor:pointer}",
+    ".shx-card:active{transform:scale(.98)}",
+    ".shx-av{width:52px;height:52px;border-radius:13px;background:#2E7D32;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;overflow:hidden;flex-shrink:0}",
+    ".shx-av img{width:100%;height:100%;object-fit:cover}",
+    ".shx-n{font-size:14px;font-weight:800}",
+    ".shx-s{font-size:11px;color:#666;margin-top:2px}",
+    ".shx-b{display:inline-block;border-radius:8px;padding:2px 7px;font-size:10px;font-weight:800;margin-inline-end:4px;margin-top:4px}",
+    ".shx-on{background:#E8F5E9;color:#2E7D32}.shx-off{background:#FFEBEE;color:#C62828}.shx-dl{background:#E3F2FD;color:#1565C0}"
+  ].join("\n");
+
+  var SCREENS =
+    '<div id="s-shops" class="screen"><div class="lb-bar"></div>' +
+    '<div class="hdr" style="' + GREEN + '"><button class="back" id="shx-bk1"></button><div class="hdr-t" id="shx-title"></div></div>' +
+    '<div style="padding:9px 9px 0;flex-shrink:0"><select class="fsel" id="shx-cat"></select><div id="shx-chip" style="display:none"></div></div>' +
+    '<div class="sbar"><span>🔍</span><input id="shx-q"></div>' +
+    '<div class="li" id="shx-cnt"></div><div class="scroll" id="shx-list"></div>' +
+    '<div style="padding:12px 9px 16px;flex-shrink:0;background:#F0F4F8;border-top:3px solid #2E7D32;display:flex;gap:8px">' +
+    '<button class="rb" id="shx-reg" style="margin:0;width:auto;flex:2;' + GREEN + '"></button>' +
+    '<button class="rb" id="shx-login-go" style="margin:0;width:auto;flex:1;background:#E3F2FD;color:#1565C0;box-shadow:none"></button></div></div>' +
+
+    '<div id="s-shop" class="screen"><div class="lb-bar"></div>' +
+    '<div class="hdr" style="' + GREEN + '"><button class="back" id="shx-bk2"></button><div class="hdr-t" id="shx-dt"></div></div>' +
+    '<div class="scroll" id="shx-det"></div></div>' +
+
+    '<div id="s-shopreg" class="screen"><div class="lb-bar"></div>' +
+    '<div class="hdr" style="' + GREEN + '"><button class="back" id="shx-bk3"></button><div class="hdr-t" id="shx-rt"></div></div>' +
+    '<div class="tabs" id="shx-tabs"><button class="tab on" id="shx-t-reg"></button><button class="tab" id="shx-t-log"></button></div>' +
+
+    '<div id="shx-f-reg" class="fsc" style="padding-top:4px"><div id="shx-err"></div>' +
+    '<div class="aup"><div class="apr" id="shx-apr">🏪</div><div class="ah2" id="shx-ah"></div>' +
+    '<input type="file" id="shx-av" accept="image/*" style="display:none"></div>' +
+    '<div class="fg"><label class="fl" id="shx-l-name"></label><input class="fi" id="shx-name"></div>' +
+    '<div class="fg"><label class="fl" id="shx-l-cat"></label><select class="fsel" id="shx-fcat"></select></div>' +
+    '<div id="shx-auth-box">' +
+    '<div class="fg"><label class="fl">Email *</label><input class="fi" id="shx-email" type="email" dir="ltr"></div>' +
+    '<div class="fg"><label class="fl" id="shx-l-pass"></label><input class="fi" id="shx-pass" type="password" dir="ltr"></div>' +
+    '<div class="fg"><label class="fl" id="shx-l-conf"></label><input class="fi" id="shx-conf" type="password" dir="ltr"></div></div>' +
+    '<div class="fg"><label class="fl" id="shx-l-country"></label><select class="fsel" id="shx-country"></select></div>' +
+    '<div class="fg"><label class="fl" id="shx-l-phone"></label><input class="fi" id="shx-phone" type="tel" placeholder="06XXXXXXXX"></div>' +
+    '<div class="fg"><label class="fl" id="shx-l-city"></label><input class="fi" id="shx-city"></div>' +
+    '<div class="fg"><label class="fl" id="shx-l-com"></label><input class="fi" id="shx-com"></div>' +
+    '<div class="fg"><label class="fl" id="shx-l-hours"></label><input class="fi" id="shx-hours"></div>' +
+    '<div class="fg"><label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700"><input type="checkbox" id="shx-delivery" style="width:20px;height:20px"><span id="shx-l-delivery"></span></label></div>' +
+    '<div class="fg"><label style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700"><input type="checkbox" id="shx-open" checked style="width:20px;height:20px"><span id="shx-l-open"></span></label></div>' +
+    '<div class="fg"><label class="fl" id="shx-l-bio"></label><textarea class="fi" id="shx-bio" rows="3" style="resize:none"></textarea></div>' +
+    '<div class="fg"><label class="fl" id="shx-l-gal"></label><div class="gg" id="shx-gal"></div>' +
+    '<input type="file" id="shx-galfile" accept="image/*" multiple style="display:none"></div>' +
+    '<button class="sbtn" id="shx-save"></button></div>' +
+
+    '<div id="shx-f-log" class="fsc" style="display:none;padding-top:4px"><div id="shx-lerr"></div>' +
+    '<div class="fg"><label class="fl">Email</label><input class="fi" id="shx-lemail" type="email" dir="ltr"></div>' +
+    '<div class="fg"><label class="fl" id="shx-l-lpass"></label><input class="fi" id="shx-lpass" type="password" dir="ltr"></div>' +
+    '<button class="sbtn" id="shx-login"></button></div></div>';
+
+  function injectUI() {
+    var sty = document.createElement("style");
+    sty.textContent = CSS;
+    document.head.appendChild(sty);
+
+    var app = document.querySelector(".app");
+    if (!app) throw new Error("لم أجد عنصر .app");
+    app.insertAdjacentHTML("beforeend", SCREENS);
+
+    /* المدخل: يحل محل خانة «Mondial» في شريط الإحصائيات */
+    var lbl = $s("sl-country");
+    var stat = lbl ? lbl.parentNode : null;
+    if (stat && String(stat.className || "").indexOf("stat") > -1) {
+      stat.classList.add("shx-stat");
+      stat.innerHTML = '<div class="sn">🏪</div><div class="sl" id="sl-country"></div>';
+      stat.onclick = openShopsHome;
+      homeStat = true;
+    } else {
+      var home = $s("s-home");
+      var sec = home ? home.querySelector(".sec") : null;
+      if (home && sec) {
+        var bar = document.createElement("div");
+        bar.style.cssText = "padding:10px 10px 0;flex-shrink:0";
+        bar.innerHTML = '<button id="shx-home-btn" style="width:100%;border:none;border-radius:12px;padding:12px;font-size:14px;font-weight:800;color:#fff;cursor:pointer;' + GREEN + '"></button>';
+        home.insertBefore(bar, sec);
+        $s("shx-home-btn").onclick = openShopsHome;
+      }
+    }
+
+    /* شريط «محلات هذا التخصص» داخل صفحة قائمة الحرفيين */
+    var anchor = $s("w-cnt");
+    if (anchor && anchor.parentNode) {
+      var cb = document.createElement("div");
+      cb.id = "shx-craftbar";
+      cb.style.cssText = "padding:0 9px 6px;flex-shrink:0;display:none";
+      cb.innerHTML = '<button id="shx-craftbtn" style="width:100%;border:none;border-radius:10px;padding:9px;font-size:12px;font-weight:800;color:#fff;cursor:pointer;' + GREEN + '"></button>';
+      anchor.parentNode.insertBefore(cb, anchor);
+      $s("shx-craftbtn").onclick = function () {
+        shCraftFilter = shBarCraft;
+        var f = $s("shx-cat"); if (f) f.value = "0";
+        window.go("shops");
+        loadShops();
+      };
+    }
+  }
+
+  function openShopsHome() {
+    shCraftFilter = 0;
+    var f = $s("shx-cat"); if (f) f.value = "0";
+    window.go("shops");
+    loadShops();
+  }
+
+  function updateCraftBar(craftId) {
+    shBarCraft = craftId;
+    var bar = $s("shx-craftbar");
+    if (!bar) return;
+    bar.style.display = catsForCraft(craftId).length ? "block" : "none";
+    var b = $s("shx-craftbtn");
+    if (b) b.textContent = st("craft_bar");
+  }
+
+  function buildCatOptions() {
+    var opts = SH_CATS.map(function (c) {
+      return '<option value="' + c.id + '">' + H(c.i + " " + (c[LG()] || c.en)) + "</option>";
+    }).join("");
+    var f = $s("shx-cat"), g = $s("shx-fcat"), c = $s("shx-country");
+    if (f) { var a = f.value; f.innerHTML = '<option value="0">' + H(st("all_cats")) + "</option>" + opts; f.value = a || "0"; }
+    if (g) { var b = g.value; g.innerHTML = '<option value="">' + H(st("choose_cat")) + "</option>" + opts; g.value = b || ""; }
+    if (c) {
+      var d = c.value, list = window.COUNTRIES || [];
+      c.innerHTML = '<option value="">' + H(st("choose_country")) + "</option>" +
+        list.map(function (x) { return '<option value="' + H(x) + '">' + H(x) + "</option>"; }).join("");
+      c.value = d || "";
+    }
+  }
+
+  function refreshOwnerUI() {
+    var b = $s("shx-reg");
+    if (b) b.textContent = myShop ? st("manage_btn") : st("reg_btn");
+    var l = $s("shx-login-go");
+    if (l) l.style.display = myShop ? "none" : "block";
+  }
+
+  function applyShopsT() {
+    LABELS.forEach(function (p) { var el = $s(p[0]); if (el) el.textContent = st(p[1]); });
+    if (homeStat) { var sl = $s("sl-country"); if (sl) sl.textContent = st("stat_lbl"); }
+    var hb = $s("shx-home-btn"); if (hb) hb.textContent = "🏪 " + st("title");
+    var q = $s("shx-q"); if (q) q.placeholder = st("search_ph");
+    ["shx-bk1", "shx-bk2", "shx-bk3"].forEach(function (id) {
+      var b = $s(id);
+      if (b && typeof window.t === "function") b.textContent = window.t("bk");
+    });
+    buildCatOptions();
+    refreshOwnerUI();
+    updateCraftBar(shBarCraft);
+    var rt = $s("shx-rt"); if (rt) rt.textContent = shEditing ? st("edit_title") : st("reg_title");
+    var sv = $s("shx-save"); if (sv && !sv.disabled) sv.textContent = shEditing ? st("save_edit") : st("save_reg");
+    if (onScreen("shops")) renderShops();
+    if (onScreen("shop") && shCur) renderShop();
+  }
+
+  /* ---------- قائمة المحلات ---------- */
+  function badges(s) {
+    var open = s.isOpen !== false;
+    return '<span class="shx-b ' + (open ? "shx-on" : "shx-off") + '">' + H(open ? st("open") : st("closed")) + "</span>" +
+      (s.delivery ? '<span class="shx-b shx-dl">' + H(st("delivery_yes")) + "</span>" : "");
+  }
+
+  function shopCard(s) {
+    var d = document.createElement("div");
+    d.className = "shx-card";
+    d.innerHTML = '<div class="shx-av">' + (s.photoURL ? '<img src="' + H(s.photoURL) + '">' : "🏪") + "</div>" +
+      '<div style="flex:1;min-width:0"><div class="shx-n">' + H(s.name) + "</div>" +
+      '<div class="shx-s">' + H(catName(s.cat)) + "</div>" +
+      '<div class="shx-s">📍 ' + H(s.commune ? s.commune + ", " : "") + H(s.city) + "</div>" +
+      '<div class="shx-s" style="color:#2E7D32;font-weight:700">📞 ' + H(s.phone) + "</div>" +
+      "<div>" + badges(s) + "</div></div>" +
+      '<div style="font-size:20px;color:#CCC">›</div>';
+    d.onclick = function () { openShop(s); };
+    return d;
+  }
+
+  function loadShops() {
+    var box = $s("shx-list");
+    if (!box) return;
+    box.innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
+    updateChip();
+    window.DB.collection("shops").get().then(function (snap) {
+      shAll = [];
+      snap.forEach(function (d) { shAll.push(Object.assign({ id: d.id }, d.data())); });
+      renderShops();
+    }).catch(function (e) {
+      box.innerHTML = '<div class="empty"><div class="ei">⚠️</div><div class="et">' + H(e && e.message ? e.message : "Error") + "</div></div>";
+    });
+  }
+
+  function updateChip() {
+    var chip = $s("shx-chip");
+    if (!chip) return;
+    if (!shCraftFilter) { chip.style.cssText = "display:none"; chip.innerHTML = ""; return; }
+    chip.style.cssText = "display:flex;align-items:center;justify-content:space-between;gap:8px;background:#E8F5E9;color:#1B5E20;border-radius:10px;padding:7px 10px;margin-top:8px;font-size:12px;font-weight:800";
+    chip.innerHTML = "<span>" + H(st("craft_chip") + " " + craftName(shCraftFilter)) + '</span><button id="shx-chip-x" style="border:none;background:#fff;border-radius:50%;width:24px;height:24px;cursor:pointer;font-weight:900;color:#C62828">✕</button>';
+    $s("shx-chip-x").onclick = function () { shCraftFilter = 0; renderShops(); };
+  }
+
+  function renderShops() {
+    var box = $s("shx-list");
+    if (!box) return;
+    updateChip();
+    var cat = parseInt(v("shx-cat"), 10) || 0;
+    var q = norm($s("shx-q") ? $s("shx-q").value : "");
+    var allowed = shCraftFilter ? catsForCraft(shCraftFilter) : null;
+    var loc = null;
+    try { loc = JSON.parse(localStorage.getItem("craftison_req_loc") || "null"); } catch (e) { loc = null; }
+    var near = function (s) {
+      return !!(loc && loc.city && nearArea({ country: loc.country, city: loc.city, commune: loc.commune, text: "" }, s));
+    };
+    var list = shAll.filter(function (s) {
+      if (cat && s.cat !== cat) return false;
+      if (allowed && allowed.indexOf(s.cat) === -1) return false;
+      if (!q) return true;
+      return norm(s.name).indexOf(q) > -1 || norm(s.city).indexOf(q) > -1 || norm(s.commune).indexOf(q) > -1;
+    });
+    list.sort(function (a, b) {
+      var d = (near(b) ? 1 : 0) - (near(a) ? 1 : 0);
+      if (d) return d;
+      d = (b.isOpen !== false ? 1 : 0) - (a.isOpen !== false ? 1 : 0);
+      if (d) return d;
+      return String(a.name || "").localeCompare(String(b.name || ""));
+    });
+    var cnt = $s("shx-cnt");
+    if (cnt) cnt.textContent = list.length + " " + st("count");
+    box.innerHTML = "";
+    if (!list.length) {
+      box.innerHTML = '<div class="empty"><div class="ei">🏪</div><div class="et">' + H(st("empty")) +
+        '</div><div class="es">' + H(st("empty_s")) + "</div></div>";
+      return;
+    }
+    list.forEach(function (s) { box.appendChild(shopCard(s)); });
+  }
+
+  /* ---------- صفحة المحل ---------- */
+  function infoRow(icon, label, val) {
+    return '<div class="ir"><div class="iri">' + icon + '</div><div><div class="irl">' + H(label) +
+      '</div><div class="irv">' + H(val) + "</div></div></div>";
+  }
+
+  function openShop(s) {
+    shCur = s;
+    window.go("shop");
+    var t = $s("shx-dt"); if (t) t.textContent = s.name || "";
+    renderShop();
+  }
+
+  function regClick() { openReg(myShop || null); }
+
+  function toggleOpen(s) {
+    var nv = s.isOpen === false;
+    window.DB.collection("shops").doc(s.id).update({ isOpen: nv }).then(function () {
+      s.isOpen = nv;
+      if (myShop && myShop.id === s.id) myShop.isOpen = nv;
+      renderShop();
+      renderShops();
+    }).catch(function (e) { window.showToast("Error: " + (e && e.message ? e.message : "")); });
+  }
+
+  function renderShop() {
+    var s = shCur, el = $s("shx-det");
+    if (!el || !s) return;
+    var owner = !!(myShop && myShop.id === s.id);
+    var admin = typeof window.isAdminUser === "function" && window.isAdminUser();
+    el.innerHTML = "";
+
+    var dc = document.createElement("div");
+    dc.className = "dc";
+    dc.innerHTML =
+      '<div class="dav" style="background:#2E7D32;font-size:38px">' + (s.photoURL ? '<img src="' + H(s.photoURL) + '">' : "🏪") + "</div>" +
+      '<div class="dn">' + H(s.name) + "</div>" +
+      '<div class="dbw"><span class="dbg" style="background:#E8F5E9;color:#2E7D32">' + H(catName(s.cat)) + "</span></div>" +
+      '<div style="text-align:center;margin-bottom:6px">' + badges(s) + "</div>" +
+      infoRow("📍", st("location"), [s.commune, s.city, s.country].filter(Boolean).join(", ")) +
+      infoRow("📞", st("phone"), s.phone || "") +
+      (s.hours ? infoRow("🕘", st("hours"), s.hours) : "") +
+      (s.bio ? '<div class="bio-box"><div class="bio-title">📝 ' + H(st("about")) + "</div>" + H(s.bio) + "</div>" : "");
+
+    var pi = dc.querySelector(".dav img");
+    if (pi && typeof window.bindZoomImage === "function") window.bindZoomImage(pi, [s.photoURL], 0);
+
+    var call = document.createElement("button");
+    call.className = "btn-g"; call.textContent = st("call");
+    call.onclick = function () { window.open("tel:" + (s.phone || "")); };
+    dc.appendChild(call);
+
+    if (owner) {
+      var tg = document.createElement("button");
+      tg.className = "btn-s";
+      tg.textContent = s.isOpen !== false ? st("toggle_close") : st("toggle_open");
+      tg.onclick = function () { toggleOpen(s); };
+      dc.appendChild(tg);
+      var mg = document.createElement("button");
+      mg.className = "btn-b"; mg.textContent = st("manage_btn");
+      mg.onclick = function () { openReg(s); };
+      dc.appendChild(mg);
+    }
+    if (admin) {
+      var dl = document.createElement("button");
+      dl.className = "btn-r"; dl.textContent = st("del_admin");
+      dl.onclick = function () {
+        if (!window.confirm(st("del_confirm"))) return;
+        window.DB.collection("shops").doc(s.id).delete().then(function () {
+          window.showToast("✅"); window.goBack(); loadShops();
+        }).catch(function (e) { window.showToast("Error: " + (e && e.message ? e.message : "")); });
+      };
+      dc.appendChild(dl);
+    }
+    el.appendChild(dc);
+
+    /* الربط الذكي: حرفيون من نفس تخصص هذا الصنف في منطقة المحل */
+    var wb = document.createElement("div");
+    wb.className = "gc";
+    wb.innerHTML = '<div class="gt">' + H(st("workers_same")) + '</div><div class="shx-body"><div class="spinner-wrap" style="padding:14px"><div class="spinner"></div></div></div>';
+    el.appendChild(wb);
+    loadNearbyWorkers(s, wb.querySelector(".shx-body"), wb);
+
+    var gal = (s.gallery || []).filter(Boolean);
+    if (gal.length) {
+      var gc = document.createElement("div");
+      gc.className = "gc";
+      gc.innerHTML = '<div class="gt">🖼️ ' + H(st("gallery")) + '</div><div class="gg">' +
+        gal.map(function (u) { return '<div class="gi"><img src="' + H(u) + '"></div>'; }).join("") + "</div>";
+      gc.querySelectorAll(".gi img").forEach(function (img, i) {
+        if (typeof window.bindZoomImage === "function") window.bindZoomImage(img, gal, i);
+      });
+      el.appendChild(gc);
+    }
+
+    var rb = document.createElement("button");
+    rb.className = "btn-b";
+    rb.style.cssText = GREEN + "margin:0 10px 20px;width:calc(100% - 20px);display:block";
+    rb.textContent = myShop ? st("manage_btn") : st("reg_btn");
+    rb.onclick = regClick;
+    el.appendChild(rb);
+  }
+
+  function workerRow(w) {
+    var cr = craftById(w.craftId);
+    var cname = cr ? cr.icon + " " + (typeof window.cn === "function" ? window.cn(cr) : cr.fr) : "";
+    var inner = w.photoURL ? '<img src="' + H(w.photoURL) + '" style="width:100%;height:100%;object-fit:cover">'
+      : H(typeof window.ini === "function" ? window.ini(w.name || "") : "?");
+    var bg = typeof window.ac === "function" ? window.ac(w.id) : "#1565C0";
+    var d = document.createElement("div");
+    d.style.cssText = "display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F5F5F5;cursor:pointer";
+    d.innerHTML = '<div class="av" style="background:' + H(bg) + ';width:42px;height:42px;font-size:14px">' + inner + "</div>" +
+      '<div style="flex:1;min-width:0"><div class="wn">' + H(w.name) + '</div><div class="wl">' + H(cname) + "</div></div>" +
+      '<div class="ws">⭐ ' + (w.ratingAvg ? Number(w.ratingAvg).toFixed(1) : "—") + "</div>";
+    d.onclick = function () { if (typeof window.openW === "function") window.openW(w.id); };
+    return d;
+  }
+
+  function loadNearbyWorkers(s, body, wrap) {
+    var cat = catById(s.cat);
+    var crafts = cat ? cat.k : [];
+    window.DB.collection("workers").where("country", "==", s.country || "").get().then(function (snap) {
+      if (!wrap.isConnected) return;
+      var req = { country: s.country, city: s.city, commune: s.commune, text: "" };
+      var list = [];
+      snap.forEach(function (d) {
+        var w = d.data(); w.id = d.id;
+        if (suspended(w)) return;
+        if (crafts.length && crafts.indexOf(w.craftId) === -1) return;
+        if (nearArea(req, w)) list.push(w);
+      });
+      list.sort(function (a, b) { return ((b.supports || 0) - (a.supports || 0)) || ((b.ratingAvg || 0) - (a.ratingAvg || 0)); });
+      list = list.slice(0, 20);
+      body.innerHTML = "";
+      if (!list.length) {
+        body.innerHTML = '<div class="es" style="text-align:center;padding:10px">' + H(st("no_workers")) + "</div>";
+        return;
+      }
+      list.forEach(function (w) { body.appendChild(workerRow(w)); });
+    }).catch(function () { if (wrap.isConnected) body.innerHTML = ""; });
+  }
+
+  /* ---------- المحلات المناسبة داخل صفحة الحرفي ---------- */
+  function shopRow(s) {
+    var d = document.createElement("div");
+    d.style.cssText = "display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid #F5F5F5;cursor:pointer";
+    d.innerHTML = '<div class="shx-av" style="width:42px;height:42px;font-size:18px">' + (s.photoURL ? '<img src="' + H(s.photoURL) + '">' : "🏪") + "</div>" +
+      '<div style="flex:1;min-width:0"><div class="wn">' + H(s.name) + '</div><div class="wl">' + H(catName(s.cat)) + "</div><div>" + badges(s) + "</div></div>" +
+      '<div style="font-size:20px;color:#CCC">›</div>';
+    d.onclick = function () { openShop(s); };
+    return d;
+  }
+
+  function appendShopsToWorker(w) {
+    var el = $s("wdet");
+    if (!el || !el.firstChild || !w || suspended(w)) return;
+    var cats = catsForCraft(w.craftId);
+    if (!cats.length) return;
+    var box = document.createElement("div");
+    box.className = "gc";
+    box.innerHTML = '<div class="gt">' + H(st("shops_for_you")) + '</div><div class="shx-body"><div class="spinner-wrap" style="padding:14px"><div class="spinner"></div></div></div>';
+    el.appendChild(box);
+    var body = box.querySelector(".shx-body");
+    window.DB.collection("shops").where("country", "==", w.country || "").get().then(function (snap) {
+      if (!box.isConnected) return;
+      var req = { country: w.country, city: w.city, commune: w.commune, text: "" };
+      var list = [];
+      snap.forEach(function (d) {
+        var s = d.data(); s.id = d.id;
+        if (cats.indexOf(s.cat) > -1 && nearArea(req, s)) list.push(s);
+      });
+      list.sort(function (a, b) {
+        var o = (b.isOpen !== false ? 1 : 0) - (a.isOpen !== false ? 1 : 0);
+        return o || String(a.name || "").localeCompare(String(b.name || ""));
+      });
+      list = list.slice(0, 15);
+      body.innerHTML = "";
+      if (!list.length) {
+        body.innerHTML = '<div class="es" style="text-align:center;padding:10px">' + H(st("no_shops")) + "</div>";
+        return;
+      }
+      list.forEach(function (s) { body.appendChild(shopRow(s)); });
+    }).catch(function () { if (box.isConnected) body.innerHTML = ""; });
+  }
+
+  /* ---------- التسجيل / الدخول / التعديل ---------- */
+  function galCell(url, file, onDel) {
+    var d = document.createElement("div");
+    d.className = "gi"; d.style.position = "relative";
+    var img = document.createElement("img");
+    img.style.cssText = "width:100%;height:100%;object-fit:cover;border-radius:9px";
+    if (url) { img.src = url; }
+    else {
+      var r = new FileReader();
+      r.onload = function (ev) { img.src = ev.target.result; };
+      r.readAsDataURL(file);
+    }
+    var b = document.createElement("button");
+    b.textContent = "×";
+    b.style.cssText = "position:absolute;top:3px;right:3px;background:#C62828;color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:14px;cursor:pointer;z-index:10;font-weight:900;line-height:1";
+    b.onclick = function (ev) { ev.stopPropagation(); onDel(); };
+    d.appendChild(img); d.appendChild(b);
+    return d;
+  }
+
+  function buildRegGal() {
+    var g = $s("shx-gal");
+    if (!g) return;
+    g.innerHTML = "";
+    shOldGal.forEach(function (u, i) {
+      g.appendChild(galCell(u, null, function () { shOldGal.splice(i, 1); buildRegGal(); }));
+    });
+    shNewGal.forEach(function (f, i) {
+      g.appendChild(galCell(null, f, function () { shNewGal.splice(i, 1); buildRegGal(); }));
+    });
+    if (shOldGal.length + shNewGal.length < MAX_GAL) {
+      var add = document.createElement("div");
+      add.className = "gi gia"; add.textContent = "➕";
+      add.onclick = function () { $s("shx-galfile").click(); };
+      g.appendChild(add);
+    }
+  }
+
+  function syncAuthBox() {
+    var u = window.AUTH ? window.AUTH.currentUser : null;
+    var box = $s("shx-auth-box");
+    if (box) box.style.display = (!u && !shEditing) ? "block" : "none";
+  }
+
+  function setTab(tab) {
+    $s("shx-t-reg").classList.toggle("on", tab === "reg");
+    $s("shx-t-log").classList.toggle("on", tab === "log");
+    $s("shx-f-reg").style.display = tab === "reg" ? "block" : "none";
+    $s("shx-f-log").style.display = tab === "log" ? "block" : "none";
+    if (tab === "reg") syncAuthBox();
+  }
+
+  function openReg(edit) {
+    shEditing = edit || null;
+    shAvFile = null; shNewGal = [];
+    shOldGal = edit && edit.gallery ? edit.gallery.slice() : [];
+    buildCatOptions();
+    put("shx-name", edit ? edit.name || "" : "");
+    put("shx-fcat", edit && edit.cat ? String(edit.cat) : "");
+    put("shx-country", edit ? edit.country || "" : "");
+    put("shx-phone", edit ? edit.phone || "" : "");
+    put("shx-city", edit ? edit.city || "" : "");
+    put("shx-com", edit ? edit.commune || "" : "");
+    put("shx-hours", edit ? edit.hours || "" : "");
+    put("shx-bio", edit ? edit.bio || "" : "");
+    put("shx-email", ""); put("shx-pass", ""); put("shx-conf", "");
+    put("shx-lemail", ""); put("shx-lpass", "");
+    $s("shx-delivery").checked = !!(edit && edit.delivery);
+    $s("shx-open").checked = edit ? edit.isOpen !== false : true;
+    $s("shx-apr").innerHTML = edit && edit.photoURL ? '<img src="' + H(edit.photoURL) + '">' : "🏪";
+    $s("shx-tabs").style.display = edit ? "none" : "flex";
+    $s("shx-rt").textContent = edit ? st("edit_title") : st("reg_title");
+    var sv = $s("shx-save");
+    sv.disabled = false; sv.textContent = edit ? st("save_edit") : st("save_reg");
+    shErr(""); lErr("");
+    buildRegGal();
+    setTab("reg");
+    window.go("shopreg");
+  }
+
+  function saveShop() {
+    var name = v("shx-name"), cat = parseInt(v("shx-fcat"), 10) || 0, country = v("shx-country"),
+      phone = v("shx-phone"), city = v("shx-city");
+    var u = window.AUTH.currentUser, creating = !shEditing, needAuth = creating && !u;
+    var email = "", pass = "";
+    if (!name || !cat || !country || !phone || !city) { shErr(st("err_fields")); return; }
+    if (needAuth) {
+      email = v("shx-email"); pass = $s("shx-pass").value;
+      if (!email || !pass) { shErr(st("err_fields")); return; }
+      if (pass !== $s("shx-conf").value) { shErr(st("err_pass")); return; }
+    }
+    var btn = $s("shx-save");
+    btn.disabled = true; btn.textContent = st("sending"); shErr("");
+
+    var photoP = shAvFile ? window.fileToBase64(shAvFile, 400, 0.5) : Promise.resolve(shEditing ? (shEditing.photoURL || "") : "");
+    var galP = Promise.all(shNewGal.map(function (f) { return window.fileToBase64(f, 600, 0.5); }));
+
+    Promise.all([photoP, galP]).then(function (r) {
+      var data = {
+        name: name, cat: cat, country: country, phone: phone, city: city,
+        commune: v("shx-com"), hours: v("shx-hours"), bio: v("shx-bio"),
+        delivery: $s("shx-delivery").checked, isOpen: $s("shx-open").checked,
+        photoURL: r[0], gallery: shOldGal.concat(r[1])
+      };
+      if (shEditing) {
+        var id0 = shEditing.id;
+        return window.DB.collection("shops").doc(id0).update(data).then(function () { return id0; });
+      }
+      var userP = needAuth
+        ? window.AUTH.createUserWithEmailAndPassword(email, pass).then(function (c) { return c.user; })
+        : Promise.resolve(u);
+      return userP.then(function (user) {
+        data.ownerId = user.uid;
+        data.createdAt = window.firebase.firestore.FieldValue.serverTimestamp();
+        return window.DB.collection("shops").doc(user.uid).set(data).then(function () { return user.uid; });
+      });
+    }).then(function (id) {
+      return window.DB.collection("shops").doc(id).get();
+    }).then(function (snap) {
+      var d = Object.assign({ id: snap.id }, snap.data());
+      var wasEditing = !!shEditing;
+      shSeq++; myShop = d; shEditing = null;
+      window.showToast(st("saved"));
+      window.goBack();
+      refreshOwnerUI();
+      loadShops();
+      if (wasEditing) {
+        if (shCur && shCur.id === d.id) {
+          shCur = d;
+          if (onScreen("shop")) { var t = $s("shx-dt"); if (t) t.textContent = d.name || ""; renderShop(); }
+        }
+      } else {
+        openShop(d);
+      }
+    }).catch(function (e) {
+      shErr(e && e.code === "auth/email-already-in-use" ? st("err_email") : ((e && e.message) || "Error"));
+    }).then(function () {
+      btn.disabled = false;
+      btn.textContent = shEditing ? st("save_edit") : st("save_reg");
+    });
+  }
+
+  function loginShop() {
+    var em = v("shx-lemail"), pw = $s("shx-lpass").value;
+    if (!em || !pw) { lErr(st("err_fields")); return; }
+    var btn = $s("shx-login");
+    btn.disabled = true; lErr("");
+    window.AUTH.signInWithEmailAndPassword(em, pw).then(function (c) {
+      return window.DB.collection("shops").doc(c.user.uid).get();
+    }).then(function (s) {
+      if (!s.exists) { lErr(st("no_shop_acc")); setTab("reg"); return; }
+      shSeq++; myShop = Object.assign({ id: s.id }, s.data());
+      refreshOwnerUI();
+      window.showToast(st("saved"));
+      window.goBack();
+      loadShops();
+      openShop(myShop);
+    }).catch(function (e) {
+      lErr(e && e.code && e.code.indexOf("auth/") === 0 ? st("err_login") : ((e && e.message) || "Error"));
+    }).then(function () { btn.disabled = false; });
+  }
+
+  /* ---------- حساب صاحب المحل ---------- */
+  function loadMyShop(u) {
+    var my = ++shSeq;
+    if (!u) { myShop = null; refreshOwnerUI(); return; }
+    window.DB.collection("shops").doc(u.uid).get().then(function (s) {
+      if (my !== shSeq) return;
+      myShop = s.exists ? Object.assign({ id: s.id }, s.data()) : null;
+      refreshOwnerUI();
+    }).catch(function () {});
+  }
+
+  /* ---------- ربط الأحداث والتركيب ---------- */
+  function wire() {
+    ["shx-bk1", "shx-bk2", "shx-bk3"].forEach(function (id) {
+      var b = $s(id); if (b) b.onclick = function () { window.goBack(); };
+    });
+    $s("shx-cat").onchange = renderShops;
+    $s("shx-q").oninput = renderShops;
+    $s("shx-reg").onclick = regClick;
+    $s("shx-login-go").onclick = function () { openReg(null); setTab("log"); };
+    $s("shx-t-reg").onclick = function () { setTab("reg"); };
+    $s("shx-t-log").onclick = function () { setTab("log"); };
+    $s("shx-login").onclick = loginShop;
+    $s("shx-apr").onclick = function () { $s("shx-av").click(); };
+    $s("shx-av").onchange = function () {
+      var f = this.files && this.files[0];
+      if (!f) return;
+      shAvFile = f;
+      var r = new FileReader();
+      r.onload = function (ev) { $s("shx-apr").innerHTML = '<img src="' + ev.target.result + '">'; };
+      r.readAsDataURL(f);
+    };
+    $s("shx-galfile").onchange = function () {
+      Array.prototype.forEach.call(this.files || [], function (f) {
+        if (shOldGal.length + shNewGal.length < MAX_GAL) shNewGal.push(f);
+      });
+      this.value = "";
+      buildRegGal();
+    };
+    $s("shx-save").onclick = saveShop;
+  }
+
+  function init() {
+    injectUI();
+    wire();
+
+    var origRenderDet = window.renderDet;
+    if (typeof origRenderDet === "function") {
+      window.renderDet = function (w) {
+        try { origRenderDet(w); }
+        finally { try { appendShopsToWorker(w); } catch (e) {} }
+      };
+    }
+    var origOpenCraft = window.openCraft;
+    if (typeof origOpenCraft === "function") {
+      window.openCraft = function (id) {
+        origOpenCraft(id);
+        try { updateCraftBar(id); } catch (e) {}
+      };
+    }
+    var origApplyT = window.applyT;
+    if (typeof origApplyT === "function") {
+      window.applyT = function () {
+        origApplyT();
+        try { applyShopsT(); } catch (e) {}
+      };
+    }
+    if (window.AUTH && typeof window.AUTH.onAuthStateChanged === "function") {
+      window.AUTH.onAuthStateChanged(loadMyShop);
+    }
+    if (typeof window.buildLB === "function") window.buildLB();
+    applyShopsT();
+  }
+
+  try { init(); } catch (err) { if (window.console) console.error("shops.js:", err); }
+})();
+
+/* shops-module:end */
 </script>
 </body>
 </html>
