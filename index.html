@@ -3379,35 +3379,35 @@ document.addEventListener("DOMContentLoaded",function(){
 <script>
 /* shops-module:begin */
 /* ==========================================================
-   shops.js (v2) — المحلات المتخصصة والربط الذكي بالحرفيين
+   shops.js (v3) — المحلات المتخصصة وربطها الذكي بالحرفيين
    تُدمج هذه الوحدة تلقائياً داخل index.html بواسطة أداة الدمج.
    ========================================================== */
 (function () {
   "use strict";
 
-  /* k = أرقام الحرف المرتبطة بهذا الصنف (للربط الذكي بين المحلات والحرفيين) */
+  /* k = أرقام الحرف المرتبطة بالصنف (الربط الذكي) — c / bg = ألوان البطاقة */
   var SH_CATS = [
-    { id: 1, i: "🧱", ar: "مواد البناء", fr: "Matériaux de construction", en: "Building materials", k: [3, 4, 8, 12, 13, 14, 60, 61, 62, 67, 68, 72] },
-    { id: 2, i: "🔩", ar: "قطع غيار السيارات", fr: "Pièces détachées auto", en: "Car spare parts", k: [19, 20, 22, 24, 25, 26, 93, 99] },
-    { id: 3, i: "🚛", ar: "قطع غيار الشاحنات", fr: "Pièces poids lourds", en: "Truck spare parts", k: [47, 94, 95, 96] },
-    { id: 4, i: "🚰", ar: "أدوات السباكة والحمامات", fr: "Plomberie & sanitaire", en: "Plumbing & sanitary", k: [1, 63, 64, 71, 80, 98, 100] },
-    { id: 5, i: "💡", ar: "مواد كهربائية", fr: "Matériel électrique", en: "Electrical supplies", k: [2, 15, 16, 17, 18, 31, 70, 84] },
-    { id: 6, i: "🎨", ar: "دهانات وأصباغ", fr: "Peintures", en: "Paints", k: [3, 22, 65, 73] },
-    { id: 7, i: "🛠️", ar: "أدوات وعتاد (كوينكاليري)", fr: "Quincaillerie & outillage", en: "Hardware & tools", k: [5, 6, 7, 11, 21, 27, 81, 82, 97] },
-    { id: 8, i: "🪟", ar: "زجاج وألمنيوم", fr: "Vitrerie & aluminium", en: "Glass & aluminium", k: [6, 7, 23, 81] },
-    { id: 9, i: "🏗️", ar: "بلاط وسيراميك", fr: "Carrelage & céramique", en: "Tiles & ceramics", k: [8, 60, 61, 63, 64] },
-    { id: 10, i: "🪵", ar: "خشب ونجارة", fr: "Bois & menuiserie", en: "Wood & carpentry", k: [5, 40, 63, 65, 81, 82, 97] },
-    { id: 11, i: "❄️", ar: "تبريد وتكييف", fr: "Froid & climatisation", en: "Cooling & AC", k: [9, 10, 28] },
-    { id: 12, i: "📱", ar: "إلكترونيات وهواتف", fr: "Électronique & téléphonie", en: "Electronics & phones", k: [16, 17, 28, 29, 30, 31, 84] },
-    { id: 13, i: "🌾", ar: "عتاد فلاحي وسقي", fr: "Matériel agricole & irrigation", en: "Farm & irrigation supplies", k: [66, 68, 70, 80, 98] },
-    { id: 14, i: "🏪", ar: "أخرى", fr: "Autres", en: "Other", k: [] }
+    { id: 1, i: "🧱", c: "#455A64", bg: "#ECEFF1", ar: "مواد البناء", fr: "Matériaux de construction", en: "Building materials", k: [3, 4, 8, 12, 13, 14, 60, 61, 62, 67, 68, 72] },
+    { id: 2, i: "🔩", c: "#BF360C", bg: "#FBE9E7", ar: "قطع غيار السيارات", fr: "Pièces détachées auto", en: "Car spare parts", k: [19, 20, 22, 24, 25, 26, 93, 99] },
+    { id: 3, i: "🚛", c: "#1565C0", bg: "#E3F2FD", ar: "قطع غيار الشاحنات", fr: "Pièces poids lourds", en: "Truck spare parts", k: [47, 94, 95, 96] },
+    { id: 4, i: "🚰", c: "#0288D1", bg: "#E1F5FE", ar: "أدوات السباكة والحمامات", fr: "Plomberie & sanitaire", en: "Plumbing & sanitary", k: [1, 63, 64, 71, 80, 98, 100] },
+    { id: 5, i: "💡", c: "#F57C00", bg: "#FFF3E0", ar: "مواد كهربائية", fr: "Matériel électrique", en: "Electrical supplies", k: [2, 15, 16, 17, 18, 31, 70, 84] },
+    { id: 6, i: "🎨", c: "#6A1B9A", bg: "#F3E5F5", ar: "دهانات وأصباغ", fr: "Peintures", en: "Paints", k: [3, 22, 65, 73] },
+    { id: 7, i: "🛠️", c: "#37474F", bg: "#ECEFF1", ar: "أدوات وعتاد (كوينكاليري)", fr: "Quincaillerie & outillage", en: "Hardware & tools", k: [5, 6, 7, 11, 21, 27, 81, 82, 97] },
+    { id: 8, i: "🪟", c: "#00838F", bg: "#E0F7FA", ar: "زجاج وألمنيوم", fr: "Vitrerie & aluminium", en: "Glass & aluminium", k: [6, 7, 23, 81] },
+    { id: 9, i: "🏗️", c: "#00695C", bg: "#E0F2F1", ar: "بلاط وسيراميك", fr: "Carrelage & céramique", en: "Tiles & ceramics", k: [8, 60, 61, 63, 64] },
+    { id: 10, i: "🪵", c: "#4E342E", bg: "#EFEBE9", ar: "خشب ونجارة", fr: "Bois & menuiserie", en: "Wood & carpentry", k: [5, 40, 63, 65, 81, 82, 97] },
+    { id: 11, i: "❄️", c: "#0277BD", bg: "#E1F5FE", ar: "تبريد وتكييف", fr: "Froid & climatisation", en: "Cooling & AC", k: [9, 10, 28] },
+    { id: 12, i: "📱", c: "#283593", bg: "#E8EAF6", ar: "إلكترونيات وهواتف", fr: "Électronique & téléphonie", en: "Electronics & phones", k: [16, 17, 28, 29, 30, 31, 84] },
+    { id: 13, i: "🌾", c: "#558B2F", bg: "#F1F8E9", ar: "عتاد فلاحي وسقي", fr: "Matériel agricole & irrigation", en: "Farm & irrigation supplies", k: [66, 68, 70, 80, 98] },
+    { id: 14, i: "🏪", c: "#2E7D32", bg: "#E8F5E9", ar: "أخرى", fr: "Autres", en: "Other", k: [] }
   ];
 
   var SHT = {
     ar: {
-      stat_lbl: "المحلات", title: "🏪 المحلات المتخصصة",
-      search_ph: "ابحث باسم المحل أو المدينة...",
-      all_cats: "كل الأصناف", count: "محل",
+      stat_lbl: "المحلات", title: "🏪 المحلات المتخصصة", sub_shops: "ابحث عن المحل المناسب لأدواتك ومواد عملك",
+      search_cat: "ابحث عن صنف...", search_ph: "ابحث باسم المحل أو المدينة...",
+      stat_cats: "أصناف", stat_shops: "محلات", all_cats: "كل الأصناف", count: "محل",
       empty: "لا توجد محلات مسجلة بعد", empty_s: "كن أول من يسجل محله!",
       open: "🟢 مفتوح", closed: "🔴 مغلق", delivery_yes: "🚚 التوصيل متوفر",
       call: "📞 اتصل بالمحل", hours: "أوقات العمل", location: "العنوان", phone: "الهاتف",
@@ -3416,10 +3416,12 @@ document.addEventListener("DOMContentLoaded",function(){
       no_workers: "لا يوجد حرفيون مسجلون في هذه المنطقة بعد",
       shops_for_you: "🏪 محلات تناسب تخصصه في منطقته",
       no_shops: "لا توجد محلات مناسبة في هذه المنطقة بعد",
-      craft_bar: "🏪 محلات تبيع أدوات هذا التخصص", craft_chip: "التخصص:",
-      reg_btn: "➕ سجّل محلك مجاناً", login_btn: "🔑 دخول", manage_btn: "⚙️ إدارة محلي",
-      tab_reg: "تسجيل", tab_log: "دخول",
-      reg_title: "تسجيل محل", edit_title: "تعديل المحل",
+      craft_bar: "🏪 محلات تبيع أدوات هذا التخصص", craft_chip: "محلات التخصص:",
+      reg_btn: "➕ سجّل محلك مجاناً", reg_short: "📝 سجّل محلك", login_btn: "🔑 دخول",
+      manage_btn: "⚙️ إدارة محلي", manage_short: "⚙️ محلي",
+      type_q: "ما نوع حسابك؟", type_w: "حرفي", type_w_d: "أقدّم خدماتي للزبائن",
+      type_s: "صاحب محل", type_s_d: "أبيع أدوات ومواد للحرفيين",
+      edit_title: "تعديل المحل",
       f_photo: "اضغط لإضافة شعار / صورة المحل", f_name: "اسم المحل *", f_cat: "نوع النشاط *",
       f_pass: "كلمة المرور *", f_conf: "تأكيد كلمة المرور *", f_country: "البلد *", f_phone: "الهاتف *",
       f_city: "المدينة *", f_com: "الحي / البلدية", f_hours: "أوقات العمل (مثال: 08:00 - 18:00 ما عدا الجمعة)",
@@ -3428,14 +3430,13 @@ document.addEventListener("DOMContentLoaded",function(){
       save_reg: "تسجيل المحل", save_edit: "حفظ التعديلات", sending: "جارٍ الحفظ...",
       err_fields: "يرجى ملء الحقول الإجبارية", err_pass: "كلمتا المرور غير متطابقتين",
       err_email: "هذا البريد مسجل مسبقاً — استعمل تبويب «دخول»",
-      err_login: "بيانات الدخول غير صحيحة", no_shop_acc: "لا يوجد محل مرتبط بهذا الحساب — سجّل محلك الآن",
       saved: "✅ تم الحفظ", toggle_open: "🔓 فتح المحل الآن", toggle_close: "🔒 غلق المحل الآن",
       del_admin: "🗑️ حذف المحل (Admin)", del_confirm: "حذف هذا المحل نهائياً؟"
     },
     fr: {
-      stat_lbl: "Magasins", title: "🏪 Magasins spécialisés",
-      search_ph: "Nom du magasin ou ville...",
-      all_cats: "Toutes les catégories", count: "magasins",
+      stat_lbl: "Magasins", title: "🏪 Magasins spécialisés", sub_shops: "Trouvez le magasin adapté à vos outils et matériaux",
+      search_cat: "Rechercher une catégorie...", search_ph: "Nom du magasin ou ville...",
+      stat_cats: "Catégories", stat_shops: "Magasins", all_cats: "Toutes les catégories", count: "magasins",
       empty: "Aucun magasin inscrit", empty_s: "Soyez le premier à inscrire votre magasin !",
       open: "🟢 Ouvert", closed: "🔴 Fermé", delivery_yes: "🚚 Livraison disponible",
       call: "📞 Appeler le magasin", hours: "Horaires", location: "Adresse", phone: "Téléphone",
@@ -3444,10 +3445,12 @@ document.addEventListener("DOMContentLoaded",function(){
       no_workers: "Aucun artisan inscrit dans cette zone pour le moment",
       shops_for_you: "🏪 Magasins adaptés à son métier dans sa zone",
       no_shops: "Aucun magasin adapté dans cette zone pour le moment",
-      craft_bar: "🏪 Magasins qui vendent le matériel de ce métier", craft_chip: "Métier :",
-      reg_btn: "➕ Inscrire mon magasin (gratuit)", login_btn: "🔑 Connexion", manage_btn: "⚙️ Gérer mon magasin",
-      tab_reg: "Inscription", tab_log: "Connexion",
-      reg_title: "Inscription magasin", edit_title: "Modifier le magasin",
+      craft_bar: "🏪 Magasins qui vendent le matériel de ce métier", craft_chip: "Magasins du métier :",
+      reg_btn: "➕ Inscrire mon magasin (gratuit)", reg_short: "📝 Inscrire", login_btn: "🔑 Connexion",
+      manage_btn: "⚙️ Gérer mon magasin", manage_short: "⚙️ Mon magasin",
+      type_q: "Vous êtes ?", type_w: "Artisan", type_w_d: "Je propose mes services",
+      type_s: "Propriétaire de magasin", type_s_d: "Je vends outils et matériaux",
+      edit_title: "Modifier le magasin",
       f_photo: "Appuyez pour ajouter le logo / la photo", f_name: "Nom du magasin *", f_cat: "Type d'activité *",
       f_pass: "Mot de passe *", f_conf: "Confirmer le mot de passe *", f_country: "Pays *", f_phone: "Téléphone *",
       f_city: "Ville *", f_com: "Commune / Quartier", f_hours: "Horaires (ex : 08:00 - 18:00 sauf vendredi)",
@@ -3456,14 +3459,13 @@ document.addEventListener("DOMContentLoaded",function(){
       save_reg: "Inscrire le magasin", save_edit: "Enregistrer", sending: "Enregistrement...",
       err_fields: "Remplissez les champs obligatoires", err_pass: "Les mots de passe sont différents",
       err_email: "Cet email est déjà utilisé — utilisez l'onglet « Connexion »",
-      err_login: "Identifiants incorrects", no_shop_acc: "Aucun magasin lié à ce compte — inscrivez votre magasin",
       saved: "✅ Enregistré", toggle_open: "🔓 Ouvrir le magasin", toggle_close: "🔒 Fermer le magasin",
       del_admin: "🗑️ Supprimer (Admin)", del_confirm: "Supprimer définitivement ce magasin ?"
     },
     en: {
-      stat_lbl: "Shops", title: "🏪 Specialized shops",
-      search_ph: "Shop name or city...",
-      all_cats: "All categories", count: "shops",
+      stat_lbl: "Shops", title: "🏪 Specialized shops", sub_shops: "Find the right shop for your tools and materials",
+      search_cat: "Search a category...", search_ph: "Shop name or city...",
+      stat_cats: "Categories", stat_shops: "Shops", all_cats: "All categories", count: "shops",
       empty: "No shops registered yet", empty_s: "Be the first to register your shop!",
       open: "🟢 Open", closed: "🔴 Closed", delivery_yes: "🚚 Delivery available",
       call: "📞 Call the shop", hours: "Opening hours", location: "Address", phone: "Phone",
@@ -3472,10 +3474,12 @@ document.addEventListener("DOMContentLoaded",function(){
       no_workers: "No craftsmen registered in this area yet",
       shops_for_you: "🏪 Shops suited to his trade in his area",
       no_shops: "No suitable shops in this area yet",
-      craft_bar: "🏪 Shops selling supplies for this trade", craft_chip: "Trade:",
-      reg_btn: "➕ Register my shop (free)", login_btn: "🔑 Login", manage_btn: "⚙️ Manage my shop",
-      tab_reg: "Register", tab_log: "Login",
-      reg_title: "Shop registration", edit_title: "Edit shop",
+      craft_bar: "🏪 Shops selling supplies for this trade", craft_chip: "Shops for trade:",
+      reg_btn: "➕ Register my shop (free)", reg_short: "📝 Register", login_btn: "🔑 Login",
+      manage_btn: "⚙️ Manage my shop", manage_short: "⚙️ My shop",
+      type_q: "Your account type?", type_w: "Craftsman", type_w_d: "I offer services",
+      type_s: "Shop owner", type_s_d: "I sell tools & materials",
+      edit_title: "Edit shop",
       f_photo: "Tap to add a logo / photo", f_name: "Shop name *", f_cat: "Type of business *",
       f_pass: "Password *", f_conf: "Confirm password *", f_country: "Country *", f_phone: "Phone *",
       f_city: "City *", f_com: "District", f_hours: "Opening hours (e.g. 08:00 - 18:00 except Friday)",
@@ -3484,20 +3488,22 @@ document.addEventListener("DOMContentLoaded",function(){
       save_reg: "Register the shop", save_edit: "Save changes", sending: "Saving...",
       err_fields: "Fill in the required fields", err_pass: "Passwords do not match",
       err_email: "This email is already used — use the Login tab",
-      err_login: "Wrong email or password", no_shop_acc: "No shop linked to this account — register your shop",
       saved: "✅ Saved", toggle_open: "🔓 Open the shop now", toggle_close: "🔒 Close the shop now",
       del_admin: "🗑️ Delete shop (Admin)", del_confirm: "Delete this shop permanently?"
     }
   };
 
   var MAX_GAL = 6;
-  var shAll = [], shCur = null, shAvFile = null, shNewGal = [], shOldGal = [];
-  var shEditing = null, myShop = null, shSeq = 0, shCraftFilter = 0, shBarCraft = 0, homeStat = false;
+  var shAll = [], shLoaded = false, shCur = null, shAvFile = null, shNewGal = [], shOldGal = [];
+  var shEditing = null, myShop = null, shSeq = 0, shCat = 0, shCraftFilter = 0, shBarCraft = 0;
+  var shType = "worker", homeStat = false;
 
   var LABELS = [
-    ["shx-title", "title"], ["shx-reg", "reg_btn"], ["shx-login-go", "login_btn"], ["shx-ah", "f_photo"],
-    ["shx-t-reg", "tab_reg"], ["shx-t-log", "tab_log"], ["shx-login", "login_btn"], ["shx-l-lpass", "f_pass"],
-    ["shx-l-name", "f_name"], ["shx-l-cat", "f_cat"], ["shx-l-pass", "f_pass"], ["shx-l-conf", "f_conf"],
+    ["shx-title", "title"], ["shx-sub", "sub_shops"], ["shx-l-cats", "stat_cats"], ["shx-l-shops", "stat_shops"],
+    ["shx-all", "all_cats"], ["shx-login-go", "login_btn"],
+    ["shx-type-q", "type_q"], ["shx-type-w-t", "type_w"], ["shx-type-w-d", "type_w_d"],
+    ["shx-type-s-t", "type_s"], ["shx-type-s-d", "type_s_d"],
+    ["shx-ah", "f_photo"], ["shx-l-name", "f_name"], ["shx-l-cat", "f_cat"], ["shx-l-pass", "f_pass"], ["shx-l-conf", "f_conf"],
     ["shx-l-country", "f_country"], ["shx-l-phone", "f_phone"], ["shx-l-city", "f_city"], ["shx-l-com", "f_com"],
     ["shx-l-hours", "f_hours"], ["shx-l-delivery", "f_delivery"], ["shx-l-open", "f_open"],
     ["shx-l-bio", "f_bio"], ["shx-l-gal", "f_gal"]
@@ -3556,10 +3562,6 @@ document.addEventListener("DOMContentLoaded",function(){
     var e = $s("shx-err");
     if (e) e.innerHTML = m ? '<div class="errmsg">' + H(m) + "</div>" : "";
   }
-  function lErr(m) {
-    var e = $s("shx-lerr");
-    if (e) e.innerHTML = m ? '<div class="errmsg">' + H(m) + "</div>" : "";
-  }
 
   /* ---------- الواجهة (تُحقن تلقائياً) ---------- */
   var GREEN = "background:linear-gradient(135deg,#2E7D32,#1B5E20);";
@@ -3574,28 +3576,50 @@ document.addEventListener("DOMContentLoaded",function(){
     ".shx-n{font-size:14px;font-weight:800}",
     ".shx-s{font-size:11px;color:#666;margin-top:2px}",
     ".shx-b{display:inline-block;border-radius:8px;padding:2px 7px;font-size:10px;font-weight:800;margin-inline-end:4px;margin-top:4px}",
-    ".shx-on{background:#E8F5E9;color:#2E7D32}.shx-off{background:#FFEBEE;color:#C62828}.shx-dl{background:#E3F2FD;color:#1565C0}"
+    ".shx-on{background:#E8F5E9;color:#2E7D32}.shx-off{background:#FFEBEE;color:#C62828}.shx-dl{background:#E3F2FD;color:#1565C0}",
+    ".shx-type{flex:1;border:2px solid #E3E8F0;background:#fff;border-radius:12px;padding:9px 6px;cursor:pointer;color:#555;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:13px}",
+    ".shx-type b{font-weight:800}.shx-type small{font-size:10px;color:#888;line-height:1.3;text-align:center}",
+    ".shx-ti{font-size:22px}",
+    ".shx-type.on{border-color:#1565C0;background:#E3F2FD;color:#0D47A1}",
+    ".shx-type.on.sh{border-color:#2E7D32;background:#E8F5E9;color:#1B5E20}"
   ].join("\n");
 
+  /* الشاشات الثلاث: شبكة الأصناف ← قائمة المحلات ← صفحة المحل (مثل: الحرف ← الحرفيون ← الحرفي) */
   var SCREENS =
     '<div id="s-shops" class="screen"><div class="lb-bar"></div>' +
-    '<div class="hdr" style="' + GREEN + '"><button class="back" id="shx-bk1"></button><div class="hdr-t" id="shx-title"></div></div>' +
-    '<div style="padding:9px 9px 0;flex-shrink:0"><select class="fsel" id="shx-cat"></select><div id="shx-chip" style="display:none"></div></div>' +
-    '<div class="sbar"><span>🔍</span><input id="shx-q"></div>' +
-    '<div class="li" id="shx-cnt"></div><div class="scroll" id="shx-list"></div>' +
-    '<div style="padding:12px 9px 16px;flex-shrink:0;background:#F0F4F8;border-top:3px solid #2E7D32;display:flex;gap:8px">' +
-    '<button class="rb" id="shx-reg" style="margin:0;width:auto;flex:2;' + GREEN + '"></button>' +
-    '<button class="rb" id="shx-login-go" style="margin:0;width:auto;flex:1;background:#E3F2FD;color:#1565C0;box-shadow:none"></button></div></div>' +
+    '<div class="hero" style="background:linear-gradient(160deg,#2E7D32 0%,#43A047 100%)">' +
+    '<div style="display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:10px">' +
+    '<div style="display:flex;align-items:center;gap:8px"><button class="back" id="shx-bk1"></button>' +
+    '<div><div class="app-name" id="shx-title" style="font-size:20px"></div><div id="shx-sub" style="font-size:11px;opacity:.9;margin-top:2px"></div></div></div>' +
+    '<div class="home-actions"><button class="home-action" id="shx-reg"></button><button class="home-action" id="shx-login-go"></button></div></div>' +
+    '<div class="hero-sh"><span>🔍</span><input id="shx-q"></div></div>' +
+    '<div class="stats"><div class="stat"><div class="sn" id="shx-n-cats">0</div><div class="sl" id="shx-l-cats"></div></div>' +
+    '<div class="stat"><div class="sn" id="shx-n-shops">0</div><div class="sl" id="shx-l-shops"></div></div></div>' +
+    '<div class="sec"><span class="sec-t" id="shx-all"></span><span class="sec-c" id="shx-cnt"></span></div>' +
+    '<div class="scroll"><div class="grid" id="shx-grid"></div></div></div>' +
+
+    '<div id="s-shoplist" class="screen"><div class="lb-bar"></div>' +
+    '<div class="hdr" id="shx-lh" style="' + GREEN + '"><button class="back" id="shx-bk2"></button><div class="hdr-t" id="shx-lt"></div></div>' +
+    '<div class="sbar"><span>🔍</span><input id="shx-lq"></div>' +
+    '<div class="li" id="shx-lcnt"></div><div class="scroll" id="shx-list"></div>' +
+    '<div style="padding:12px 9px 16px;flex-shrink:0;background:#F0F4F8;border-top:3px solid #2E7D32;box-shadow:0 -6px 16px rgba(0,0,0,0.15)">' +
+    '<button class="rb" id="shx-lreg" style="margin:0;width:100%;padding:18px;font-size:16px;border-radius:16px;' + GREEN + '"></button></div></div>' +
 
     '<div id="s-shop" class="screen"><div class="lb-bar"></div>' +
-    '<div class="hdr" style="' + GREEN + '"><button class="back" id="shx-bk2"></button><div class="hdr-t" id="shx-dt"></div></div>' +
-    '<div class="scroll" id="shx-det"></div></div>' +
+    '<div class="hdr" style="' + GREEN + '"><button class="back" id="shx-bk3"></button><div class="hdr-t" id="shx-dt"></div></div>' +
+    '<div class="scroll" id="shx-det"></div></div>';
 
-    '<div id="s-shopreg" class="screen"><div class="lb-bar"></div>' +
-    '<div class="hdr" style="' + GREEN + '"><button class="back" id="shx-bk3"></button><div class="hdr-t" id="shx-rt"></div></div>' +
-    '<div class="tabs" id="shx-tabs"><button class="tab on" id="shx-t-reg"></button><button class="tab" id="shx-t-log"></button></div>' +
+  /* خانة اختيار نوع الحساب داخل صفحة التسجيل الأصلية */
+  var TYPEBOX =
+    '<div id="shx-typebox" style="padding:0 9px 8px;flex-shrink:0"><div class="fl" id="shx-type-q" style="font-size:12px"></div>' +
+    '<div style="display:flex;gap:8px">' +
+    '<button type="button" class="shx-type on" id="shx-type-w"><div class="shx-ti">🔧</div><b id="shx-type-w-t"></b><small id="shx-type-w-d"></small></button>' +
+    '<button type="button" class="shx-type sh" id="shx-type-s"><div class="shx-ti">🏪</div><b id="shx-type-s-t"></b><small id="shx-type-s-d"></small></button>' +
+    "</div></div>";
 
-    '<div id="shx-f-reg" class="fsc" style="padding-top:4px"><div id="shx-err"></div>' +
+  /* نموذج تسجيل / تعديل المحل (يظهر داخل صفحة التسجيل نفسها) */
+  var SHOPFORM =
+    '<div id="shx-f-shop" class="fsc" style="display:none;padding-top:4px"><div id="shx-err"></div>' +
     '<div class="aup"><div class="apr" id="shx-apr">🏪</div><div class="ah2" id="shx-ah"></div>' +
     '<input type="file" id="shx-av" accept="image/*" style="display:none"></div>' +
     '<div class="fg"><label class="fl" id="shx-l-name"></label><input class="fi" id="shx-name"></div>' +
@@ -3614,12 +3638,7 @@ document.addEventListener("DOMContentLoaded",function(){
     '<div class="fg"><label class="fl" id="shx-l-bio"></label><textarea class="fi" id="shx-bio" rows="3" style="resize:none"></textarea></div>' +
     '<div class="fg"><label class="fl" id="shx-l-gal"></label><div class="gg" id="shx-gal"></div>' +
     '<input type="file" id="shx-galfile" accept="image/*" multiple style="display:none"></div>' +
-    '<button class="sbtn" id="shx-save"></button></div>' +
-
-    '<div id="shx-f-log" class="fsc" style="display:none;padding-top:4px"><div id="shx-lerr"></div>' +
-    '<div class="fg"><label class="fl">Email</label><input class="fi" id="shx-lemail" type="email" dir="ltr"></div>' +
-    '<div class="fg"><label class="fl" id="shx-l-lpass"></label><input class="fi" id="shx-lpass" type="password" dir="ltr"></div>' +
-    '<button class="sbtn" id="shx-login"></button></div></div>';
+    '<button class="sbtn" id="shx-save"></button></div>';
 
   function injectUI() {
     var sty = document.createElement("style");
@@ -3658,18 +3677,58 @@ document.addEventListener("DOMContentLoaded",function(){
       cb.style.cssText = "padding:0 9px 6px;flex-shrink:0;display:none";
       cb.innerHTML = '<button id="shx-craftbtn" style="width:100%;border:none;border-radius:10px;padding:9px;font-size:12px;font-weight:800;color:#fff;cursor:pointer;' + GREEN + '"></button>';
       anchor.parentNode.insertBefore(cb, anchor);
-      $s("shx-craftbtn").onclick = function () {
-        shCraftFilter = shBarCraft;
-        var f = $s("shx-cat"); if (f) f.value = "0";
-        window.go("shops");
-        loadShops();
-      };
+      $s("shx-craftbtn").onclick = function () { openCraftShops(shBarCraft); };
+    }
+
+    /* اقتراح نوع الحساب + نموذج المحل داخل صفحة التسجيل الأصلية */
+    var fr = $s("f-reg");
+    if (fr && fr.parentNode) {
+      var t1 = document.createElement("div");
+      t1.innerHTML = TYPEBOX;
+      fr.parentNode.insertBefore(t1.firstElementChild, fr);
+      var t2 = document.createElement("div");
+      t2.innerHTML = SHOPFORM;
+      fr.parentNode.insertBefore(t2.firstElementChild, fr.nextSibling);
     }
   }
 
+  function syncAuthBox() {
+    var u = window.AUTH ? window.AUTH.currentUser : null;
+    var box = $s("shx-auth-box");
+    if (box) box.style.display = (!u && !shEditing) ? "block" : "none";
+  }
+
+  /* يضبط الظاهر في صفحة التسجيل: الاقتراح + نموذج الحرفي أو نموذج المحل */
+  function syncTypeUI() {
+    var tr = $s("t-reg");
+    var regTab = tr && tr.classList ? tr.classList.contains("on") : true;
+    var isShop = shType === "shop";
+    var box = $s("shx-typebox"), fw = $s("f-reg"), fs = $s("shx-f-shop"), fl = $s("f-log");
+    var tabs = document.querySelector("#s-reg .tabs");
+    if (box) box.style.display = (regTab && !shEditing) ? "block" : "none";
+    if (tabs) tabs.style.display = shEditing ? "none" : "flex";
+    if (fw) fw.style.display = (regTab && !isShop && !shEditing) ? "block" : "none";
+    if (fs) fs.style.display = (regTab && (isShop || shEditing)) ? "block" : "none";
+    if (fl && shEditing) fl.style.display = "none";
+    var bw = $s("shx-type-w"), bs = $s("shx-type-s");
+    if (bw) bw.classList.toggle("on", !isShop);
+    if (bs) bs.classList.toggle("on", isShop);
+    var rt = $s("reg-t");
+    if (rt) rt.textContent = shEditing ? st("edit_title") : (typeof window.t === "function" ? window.t("rt") : rt.textContent);
+    var sv = $s("shx-save");
+    if (sv && !sv.disabled) sv.textContent = shEditing ? st("save_edit") : st("save_reg");
+    syncAuthBox();
+  }
+
+  function setType(type) {
+    if (type === "shop" && myShop && !shEditing) { openShopEdit(myShop); return; }
+    shType = type;
+    if (typeof window.swTab === "function") window.swTab("reg"); else syncTypeUI();
+  }
+
   function openShopsHome() {
-    shCraftFilter = 0;
-    var f = $s("shx-cat"); if (f) f.value = "0";
+    shCat = 0; shCraftFilter = 0;
+    put("shx-q", "");
     window.go("shops");
     loadShops();
   }
@@ -3687,8 +3746,7 @@ document.addEventListener("DOMContentLoaded",function(){
     var opts = SH_CATS.map(function (c) {
       return '<option value="' + c.id + '">' + H(c.i + " " + (c[LG()] || c.en)) + "</option>";
     }).join("");
-    var f = $s("shx-cat"), g = $s("shx-fcat"), c = $s("shx-country");
-    if (f) { var a = f.value; f.innerHTML = '<option value="0">' + H(st("all_cats")) + "</option>" + opts; f.value = a || "0"; }
+    var g = $s("shx-fcat"), c = $s("shx-country");
     if (g) { var b = g.value; g.innerHTML = '<option value="">' + H(st("choose_cat")) + "</option>" + opts; g.value = b || ""; }
     if (c) {
       var d = c.value, list = window.COUNTRIES || [];
@@ -3699,17 +3757,18 @@ document.addEventListener("DOMContentLoaded",function(){
   }
 
   function refreshOwnerUI() {
-    var b = $s("shx-reg");
-    if (b) b.textContent = myShop ? st("manage_btn") : st("reg_btn");
-    var l = $s("shx-login-go");
-    if (l) l.style.display = myShop ? "none" : "block";
+    var rg = $s("shx-reg"), lg = $s("shx-login-go"), lr = $s("shx-lreg");
+    if (rg) rg.textContent = myShop ? st("manage_short") : st("reg_short");
+    if (lr) lr.textContent = myShop ? st("manage_btn") : st("reg_btn");
+    if (lg) lg.style.display = myShop ? "none" : "inline-block";
   }
 
   function applyShopsT() {
     LABELS.forEach(function (p) { var el = $s(p[0]); if (el) el.textContent = st(p[1]); });
     if (homeStat) { var sl = $s("sl-country"); if (sl) sl.textContent = st("stat_lbl"); }
-    var hb = $s("shx-home-btn"); if (hb) hb.textContent = "🏪 " + st("title");
-    var q = $s("shx-q"); if (q) q.placeholder = st("search_ph");
+    var hb = $s("shx-home-btn"); if (hb) hb.textContent = st("title");
+    var q = $s("shx-q"); if (q) q.placeholder = st("search_cat");
+    var lq = $s("shx-lq"); if (lq) lq.placeholder = st("search_ph");
     ["shx-bk1", "shx-bk2", "shx-bk3"].forEach(function (id) {
       var b = $s(id);
       if (b && typeof window.t === "function") b.textContent = window.t("bk");
@@ -3717,13 +3776,90 @@ document.addEventListener("DOMContentLoaded",function(){
     buildCatOptions();
     refreshOwnerUI();
     updateCraftBar(shBarCraft);
-    var rt = $s("shx-rt"); if (rt) rt.textContent = shEditing ? st("edit_title") : st("reg_title");
-    var sv = $s("shx-save"); if (sv && !sv.disabled) sv.textContent = shEditing ? st("save_edit") : st("save_reg");
-    if (onScreen("shops")) renderShops();
+    syncTypeUI();
+    if (onScreen("shops")) renderCats();
+    if (onScreen("shoplist")) { styleListHeader(); renderList(); }
     if (onScreen("shop") && shCur) renderShop();
   }
 
-  /* ---------- قائمة المحلات ---------- */
+  /* ---------- الصفحة الأولى: شبكة الأصناف (مثل شبكة الحرف) ---------- */
+  function fetchShops() {
+    return window.DB.collection("shops").get().then(function (snap) {
+      shAll = [];
+      snap.forEach(function (d) { shAll.push(Object.assign({ id: d.id }, d.data())); });
+      shLoaded = true;
+    });
+  }
+
+  function loadShops() {
+    var grid = $s("shx-grid");
+    if (grid && !shLoaded) grid.innerHTML = '<div class="spinner-wrap" style="grid-column:1/-1"><div class="spinner"></div></div>';
+    renderCats();
+    return fetchShops().then(function () {
+      renderCats();
+      if (onScreen("shoplist")) renderList();
+    }).catch(function (e) {
+      if (grid) grid.innerHTML = '<div class="empty" style="grid-column:1/-1"><div class="ei">⚠️</div><div class="et">' + H(e && e.message ? e.message : "Error") + "</div></div>";
+    });
+  }
+
+  function renderCats() {
+    var grid = $s("shx-grid");
+    if (!grid) return;
+    var q = norm($s("shx-q") ? $s("shx-q").value : "");
+    var counts = {};
+    shAll.forEach(function (s) { counts[s.cat] = (counts[s.cat] || 0) + 1; });
+    var list = SH_CATS.filter(function (c) {
+      return !q || norm(c.ar).indexOf(q) > -1 || norm(c.fr).indexOf(q) > -1 || norm(c.en).indexOf(q) > -1;
+    });
+    var n1 = $s("shx-n-cats"), n2 = $s("shx-n-shops"), cnt = $s("shx-cnt");
+    if (n1) n1.textContent = SH_CATS.length;
+    if (n2) n2.textContent = shAll.length;
+    if (cnt) cnt.textContent = list.length;
+    if (!shLoaded && !shAll.length && grid.innerHTML.indexOf("spinner") > -1) return;
+    grid.innerHTML = "";
+    list.forEach(function (c) {
+      var d = document.createElement("div");
+      d.className = "cc"; d.style.borderColor = c.bg;
+      d.innerHTML = '<div class="cc-ic" style="background:' + c.bg + '">' + c.i + "</div>" +
+        '<div class="cc-n" style="color:' + c.c + '">' + H(c[LG()] || c.en) + "</div>" +
+        '<div class="cc-b">' + (counts[c.id] || 0) + " " + H(st("count")) + "</div>";
+      d.onclick = function () { openCat(c.id); };
+      grid.appendChild(d);
+    });
+  }
+
+  /* ---------- الصفحة الثانية: قائمة محلات الصنف (مثل قائمة الحرفيين) ---------- */
+  function styleListHeader() {
+    var h = $s("shx-lh"), t = $s("shx-lt");
+    if (!h || !t) return;
+    if (shCat) {
+      var c = catById(shCat);
+      h.style.background = "linear-gradient(135deg," + c.c + "DD," + c.c + ")";
+      t.textContent = c.i + " " + (c[LG()] || c.en);
+    } else {
+      h.style.background = "linear-gradient(135deg,#2E7D32,#1B5E20)";
+      t.textContent = st("craft_chip") + " " + craftName(shCraftFilter);
+    }
+  }
+
+  function openCat(id) {
+    shCat = id; shCraftFilter = 0;
+    put("shx-lq", "");
+    window.go("shoplist");
+    styleListHeader();
+    renderList();
+  }
+
+  function openCraftShops(craftId) {
+    shCat = 0; shCraftFilter = craftId;
+    put("shx-lq", "");
+    window.go("shoplist");
+    styleListHeader();
+    renderList();
+    fetchShops().then(function () { renderList(); }).catch(function () {});
+  }
+
   function badges(s) {
     var open = s.isOpen !== false;
     return '<span class="shx-b ' + (open ? "shx-on" : "shx-off") + '">' + H(open ? st("open") : st("closed")) + "</span>" +
@@ -3744,35 +3880,10 @@ document.addEventListener("DOMContentLoaded",function(){
     return d;
   }
 
-  function loadShops() {
+  function renderList() {
     var box = $s("shx-list");
     if (!box) return;
-    box.innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
-    updateChip();
-    window.DB.collection("shops").get().then(function (snap) {
-      shAll = [];
-      snap.forEach(function (d) { shAll.push(Object.assign({ id: d.id }, d.data())); });
-      renderShops();
-    }).catch(function (e) {
-      box.innerHTML = '<div class="empty"><div class="ei">⚠️</div><div class="et">' + H(e && e.message ? e.message : "Error") + "</div></div>";
-    });
-  }
-
-  function updateChip() {
-    var chip = $s("shx-chip");
-    if (!chip) return;
-    if (!shCraftFilter) { chip.style.cssText = "display:none"; chip.innerHTML = ""; return; }
-    chip.style.cssText = "display:flex;align-items:center;justify-content:space-between;gap:8px;background:#E8F5E9;color:#1B5E20;border-radius:10px;padding:7px 10px;margin-top:8px;font-size:12px;font-weight:800";
-    chip.innerHTML = "<span>" + H(st("craft_chip") + " " + craftName(shCraftFilter)) + '</span><button id="shx-chip-x" style="border:none;background:#fff;border-radius:50%;width:24px;height:24px;cursor:pointer;font-weight:900;color:#C62828">✕</button>';
-    $s("shx-chip-x").onclick = function () { shCraftFilter = 0; renderShops(); };
-  }
-
-  function renderShops() {
-    var box = $s("shx-list");
-    if (!box) return;
-    updateChip();
-    var cat = parseInt(v("shx-cat"), 10) || 0;
-    var q = norm($s("shx-q") ? $s("shx-q").value : "");
+    var q = norm($s("shx-lq") ? $s("shx-lq").value : "");
     var allowed = shCraftFilter ? catsForCraft(shCraftFilter) : null;
     var loc = null;
     try { loc = JSON.parse(localStorage.getItem("craftison_req_loc") || "null"); } catch (e) { loc = null; }
@@ -3780,7 +3891,7 @@ document.addEventListener("DOMContentLoaded",function(){
       return !!(loc && loc.city && nearArea({ country: loc.country, city: loc.city, commune: loc.commune, text: "" }, s));
     };
     var list = shAll.filter(function (s) {
-      if (cat && s.cat !== cat) return false;
+      if (shCat && s.cat !== shCat) return false;
       if (allowed && allowed.indexOf(s.cat) === -1) return false;
       if (!q) return true;
       return norm(s.name).indexOf(q) > -1 || norm(s.city).indexOf(q) > -1 || norm(s.commune).indexOf(q) > -1;
@@ -3792,7 +3903,7 @@ document.addEventListener("DOMContentLoaded",function(){
       if (d) return d;
       return String(a.name || "").localeCompare(String(b.name || ""));
     });
-    var cnt = $s("shx-cnt");
+    var cnt = $s("shx-lcnt");
     if (cnt) cnt.textContent = list.length + " " + st("count");
     box.innerHTML = "";
     if (!list.length) {
@@ -3803,7 +3914,7 @@ document.addEventListener("DOMContentLoaded",function(){
     list.forEach(function (s) { box.appendChild(shopCard(s)); });
   }
 
-  /* ---------- صفحة المحل ---------- */
+  /* ---------- الصفحة الثالثة: صفحة المحل ---------- */
   function infoRow(icon, label, val) {
     return '<div class="ir"><div class="iri">' + icon + '</div><div><div class="irl">' + H(label) +
       '</div><div class="irv">' + H(val) + "</div></div></div>";
@@ -3816,15 +3927,13 @@ document.addEventListener("DOMContentLoaded",function(){
     renderShop();
   }
 
-  function regClick() { openReg(myShop || null); }
-
   function toggleOpen(s) {
     var nv = s.isOpen === false;
     window.DB.collection("shops").doc(s.id).update({ isOpen: nv }).then(function () {
       s.isOpen = nv;
       if (myShop && myShop.id === s.id) myShop.isOpen = nv;
       renderShop();
-      renderShops();
+      if (onScreen("shoplist")) renderList();
     }).catch(function (e) { window.showToast("Error: " + (e && e.message ? e.message : "")); });
   }
 
@@ -3863,7 +3972,7 @@ document.addEventListener("DOMContentLoaded",function(){
       dc.appendChild(tg);
       var mg = document.createElement("button");
       mg.className = "btn-b"; mg.textContent = st("manage_btn");
-      mg.onclick = function () { openReg(s); };
+      mg.onclick = function () { openShopEdit(s); };
       dc.appendChild(mg);
     }
     if (admin) {
@@ -3902,7 +4011,7 @@ document.addEventListener("DOMContentLoaded",function(){
     rb.className = "btn-b";
     rb.style.cssText = GREEN + "margin:0 10px 20px;width:calc(100% - 20px);display:block";
     rb.textContent = myShop ? st("manage_btn") : st("reg_btn");
-    rb.onclick = regClick;
+    rb.onclick = openShopRegister;
     el.appendChild(rb);
   }
 
@@ -3988,7 +4097,7 @@ document.addEventListener("DOMContentLoaded",function(){
     }).catch(function () { if (box.isConnected) body.innerHTML = ""; });
   }
 
-  /* ---------- التسجيل / الدخول / التعديل ---------- */
+  /* ---------- التسجيل / التعديل (داخل صفحة التسجيل الأصلية) ---------- */
   function galCell(url, file, onDel) {
     var d = document.createElement("div");
     d.className = "gi"; d.style.position = "relative";
@@ -4026,22 +4135,7 @@ document.addEventListener("DOMContentLoaded",function(){
     }
   }
 
-  function syncAuthBox() {
-    var u = window.AUTH ? window.AUTH.currentUser : null;
-    var box = $s("shx-auth-box");
-    if (box) box.style.display = (!u && !shEditing) ? "block" : "none";
-  }
-
-  function setTab(tab) {
-    $s("shx-t-reg").classList.toggle("on", tab === "reg");
-    $s("shx-t-log").classList.toggle("on", tab === "log");
-    $s("shx-f-reg").style.display = tab === "reg" ? "block" : "none";
-    $s("shx-f-log").style.display = tab === "log" ? "block" : "none";
-    if (tab === "reg") syncAuthBox();
-  }
-
-  function openReg(edit) {
-    shEditing = edit || null;
+  function fillShopForm(edit) {
     shAvFile = null; shNewGal = [];
     shOldGal = edit && edit.gallery ? edit.gallery.slice() : [];
     buildCatOptions();
@@ -4054,24 +4148,36 @@ document.addEventListener("DOMContentLoaded",function(){
     put("shx-hours", edit ? edit.hours || "" : "");
     put("shx-bio", edit ? edit.bio || "" : "");
     put("shx-email", ""); put("shx-pass", ""); put("shx-conf", "");
-    put("shx-lemail", ""); put("shx-lpass", "");
-    $s("shx-delivery").checked = !!(edit && edit.delivery);
-    $s("shx-open").checked = edit ? edit.isOpen !== false : true;
-    $s("shx-apr").innerHTML = edit && edit.photoURL ? '<img src="' + H(edit.photoURL) + '">' : "🏪";
-    $s("shx-tabs").style.display = edit ? "none" : "flex";
-    $s("shx-rt").textContent = edit ? st("edit_title") : st("reg_title");
+    var dl = $s("shx-delivery"), op = $s("shx-open");
+    if (dl) dl.checked = !!(edit && edit.delivery);
+    if (op) op.checked = edit ? edit.isOpen !== false : true;
+    var apr = $s("shx-apr");
+    if (apr) apr.innerHTML = edit && edit.photoURL ? '<img src="' + H(edit.photoURL) + '">' : "🏪";
     var sv = $s("shx-save");
-    sv.disabled = false; sv.textContent = edit ? st("save_edit") : st("save_reg");
-    shErr(""); lErr("");
+    if (sv) { sv.disabled = false; sv.textContent = edit ? st("save_edit") : st("save_reg"); }
+    shErr("");
     buildRegGal();
-    setTab("reg");
-    window.go("shopreg");
+  }
+
+  /* من صفحة المحلات: زر «سجّل محلك» ← صفحة التسجيل الأصلية بنوع «صاحب محل» */
+  function openShopRegister() {
+    if (myShop) { openShopEdit(myShop); return; }
+    window.goReg();
+    setType("shop");
+  }
+
+  function openShopEdit(shop) {
+    shEditing = shop; shType = "shop";
+    fillShopForm(shop);
+    window.go("reg");
+    if (typeof window.swTab === "function") window.swTab("reg"); else syncTypeUI();
   }
 
   function saveShop() {
     var name = v("shx-name"), cat = parseInt(v("shx-fcat"), 10) || 0, country = v("shx-country"),
       phone = v("shx-phone"), city = v("shx-city");
     var u = window.AUTH.currentUser, creating = !shEditing, needAuth = creating && !u;
+    if (creating && myShop) { openShopEdit(myShop); return; }
     var email = "", pass = "";
     if (!name || !cat || !country || !phone || !city) { shErr(st("err_fields")); return; }
     if (needAuth) {
@@ -4109,7 +4215,7 @@ document.addEventListener("DOMContentLoaded",function(){
     }).then(function (snap) {
       var d = Object.assign({ id: snap.id }, snap.data());
       var wasEditing = !!shEditing;
-      shSeq++; myShop = d; shEditing = null;
+      shSeq++; myShop = d; shEditing = null; shType = "worker";
       window.showToast(st("saved"));
       window.goBack();
       refreshOwnerUI();
@@ -4130,26 +4236,6 @@ document.addEventListener("DOMContentLoaded",function(){
     });
   }
 
-  function loginShop() {
-    var em = v("shx-lemail"), pw = $s("shx-lpass").value;
-    if (!em || !pw) { lErr(st("err_fields")); return; }
-    var btn = $s("shx-login");
-    btn.disabled = true; lErr("");
-    window.AUTH.signInWithEmailAndPassword(em, pw).then(function (c) {
-      return window.DB.collection("shops").doc(c.user.uid).get();
-    }).then(function (s) {
-      if (!s.exists) { lErr(st("no_shop_acc")); setTab("reg"); return; }
-      shSeq++; myShop = Object.assign({ id: s.id }, s.data());
-      refreshOwnerUI();
-      window.showToast(st("saved"));
-      window.goBack();
-      loadShops();
-      openShop(myShop);
-    }).catch(function (e) {
-      lErr(e && e.code && e.code.indexOf("auth/") === 0 ? st("err_login") : ((e && e.message) || "Error"));
-    }).then(function () { btn.disabled = false; });
-  }
-
   /* ---------- حساب صاحب المحل ---------- */
   function loadMyShop(u) {
     var my = ++shSeq;
@@ -4166,15 +4252,18 @@ document.addEventListener("DOMContentLoaded",function(){
     ["shx-bk1", "shx-bk2", "shx-bk3"].forEach(function (id) {
       var b = $s(id); if (b) b.onclick = function () { window.goBack(); };
     });
-    $s("shx-cat").onchange = renderShops;
-    $s("shx-q").oninput = renderShops;
-    $s("shx-reg").onclick = regClick;
-    $s("shx-login-go").onclick = function () { openReg(null); setTab("log"); };
-    $s("shx-t-reg").onclick = function () { setTab("reg"); };
-    $s("shx-t-log").onclick = function () { setTab("log"); };
-    $s("shx-login").onclick = loginShop;
-    $s("shx-apr").onclick = function () { $s("shx-av").click(); };
-    $s("shx-av").onchange = function () {
+    $s("shx-q").oninput = renderCats;
+    $s("shx-lq").oninput = renderList;
+    $s("shx-reg").onclick = openShopRegister;
+    $s("shx-lreg").onclick = openShopRegister;
+    $s("shx-login-go").onclick = function () { if (typeof window.goLoginHome === "function") window.goLoginHome(); };
+    var bw = $s("shx-type-w"), bs = $s("shx-type-s");
+    if (bw) bw.onclick = function () { setType("worker"); };
+    if (bs) bs.onclick = function () { setType("shop"); };
+    var apr = $s("shx-apr");
+    if (apr) apr.onclick = function () { $s("shx-av").click(); };
+    var av = $s("shx-av");
+    if (av) av.onchange = function () {
       var f = this.files && this.files[0];
       if (!f) return;
       shAvFile = f;
@@ -4182,14 +4271,16 @@ document.addEventListener("DOMContentLoaded",function(){
       r.onload = function (ev) { $s("shx-apr").innerHTML = '<img src="' + ev.target.result + '">'; };
       r.readAsDataURL(f);
     };
-    $s("shx-galfile").onchange = function () {
+    var gf = $s("shx-galfile");
+    if (gf) gf.onchange = function () {
       Array.prototype.forEach.call(this.files || [], function (f) {
         if (shOldGal.length + shNewGal.length < MAX_GAL) shNewGal.push(f);
       });
       this.value = "";
       buildRegGal();
     };
-    $s("shx-save").onclick = saveShop;
+    var sv = $s("shx-save");
+    if (sv) sv.onclick = saveShop;
   }
 
   function init() {
@@ -4215,6 +4306,30 @@ document.addEventListener("DOMContentLoaded",function(){
       window.applyT = function () {
         origApplyT();
         try { applyShopsT(); } catch (e) {}
+      };
+    }
+    /* صفحة التسجيل الأصلية: تبديل التبويبات يجب أن يحترم اختيار النوع */
+    var origSwTab = window.swTab;
+    if (typeof origSwTab === "function") {
+      window.swTab = function (tab) {
+        origSwTab(tab);
+        try { syncTypeUI(); } catch (e) {}
+      };
+    }
+    var origGoReg = window.goReg;
+    if (typeof origGoReg === "function") {
+      window.goReg = function () {
+        origGoReg();
+        shType = "worker"; shEditing = null;
+        try { fillShopForm(null); syncTypeUI(); } catch (e) {}
+      };
+    }
+    var origGoLog = window.goLoginHome;
+    if (typeof origGoLog === "function") {
+      window.goLoginHome = function () {
+        shEditing = null;
+        origGoLog();
+        try { syncTypeUI(); } catch (e) {}
       };
     }
     if (window.AUTH && typeof window.AUTH.onAuthStateChanged === "function") {
