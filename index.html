@@ -1630,7 +1630,14 @@ var CRAFTS=[
 {id:87,fr:"Taxi",ar:"تاكسي",en:"Taxi",es:"Taxi",it:"Taxi",tr:"Taksi",nl:"Taxi",zh:"出租车",hi:"टैक्सी",de:"Taxi",pt:"Taxi",icon:"🚕",c:"#F9A825",bg:"#FFFDE7"},
 {id:88,fr:"Livreur",ar:"عامل توصيل",en:"Delivery Man",es:"Repartidor",it:"Fattorino",tr:"Kurye",nl:"Bezorger",zh:"快递员",hi:"डिलीवरी मैन",de:"Lieferant",pt:"Entregador",icon:"🛵",c:"#E65100",bg:"#FBE9E7"},
 {id:89,fr:"Medecin Generaliste",ar:"طبيب عام",en:"General Practitioner",es:"Medico General",it:"Medico di Base",tr:"Pratisyen Hekim",nl:"Huisarts",zh:"全科医生",hi:"सामान्य चिकित्सक",de:"Hausarzt",pt:"Medico Geral",icon:"🩺",c:"#1565C0",bg:"#E3F2FD"},
-{id:90,fr:"Livraison Express",ar:"توصيل سريع",en:"Express Delivery",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिलीवरी",de:"Expresslieferung",pt:"Entrega Expressa",icon:"📦",c:"#C62828",bg:"#FFEBEE"}
+{id:90,fr:"Livraison Express",ar:"توصيل سريع",en:"Express Delivery",es:"Entrega Express",it:"Consegna Express",tr:"Hizli Teslimat",nl:"Expresbezorging",zh:"快递",hi:"डिलीवरी",de:"Expresslieferung",pt:"Entrega Expressa",icon:"📦",c:"#C62828",bg:"#FFEBEE"},
+{id:101,fr:"Electricite Industrielle",ar:"كهرباء صناعية",en:"Industrial Electrician",es:"Electricidad Industrial",it:"Elettricita Industriale",tr:"Endustriyel Elektrik",nl:"Industriele Elektra",zh:"工业电工",hi:"औद्योगिक बिजली",de:"Industrie-Elektrik",pt:"Eletricidade Industrial",icon:"🏭",c:"#EF6C00",bg:"#FFF3E0"},
+{id:102,fr:"Lavage Vetements",ar:"غسل الملابس",en:"Laundry Service",es:"Lavanderia",it:"Lavaggio Vestiti",tr:"Camasir Yikama",nl:"Wasserij",zh:"洗衣",hi:"कपड़े धोना",de:"Waescherei",pt:"Lavanderia",icon:"👕",c:"#0277BD",bg:"#E1F5FE"},
+{id:103,fr:"Reparation Motos et Velos",ar:"تصليح الدراجات النارية والهوائية",en:"Motorcycle & Bicycle Repair",es:"Reparacion Motos y Bicicletas",it:"Riparazione Moto e Biciclette",tr:"Motosiklet ve Bisiklet Tamiri",nl:"Motor- en Fietsreparatie",zh:"摩托车与自行车维修",hi:"मोटरसाइकिल और साइकिल मरम्मत",de:"Motorrad- und Fahrradreparatur",pt:"Reparo de Motos e Bicicletas",icon:"🏍️",c:"#37474F",bg:"#ECEFF1"},
+{id:104,fr:"Courtier Automobile",ar:"سمسار سيارات",en:"Car Broker",es:"Corredor de Coches",it:"Mediatore Auto",tr:"Oto Komisyoncu",nl:"Automakelaar",zh:"汽车经纪人",hi:"कार ब्रोकर",de:"Automakler",pt:"Corretor de Carros",icon:"🔑",c:"#1565C0",bg:"#E3F2FD"},
+{id:105,fr:"Courtier Camions",ar:"سمسار شاحنات",en:"Truck Broker",es:"Corredor de Camiones",it:"Mediatore Camion",tr:"Kamyon Komisyoncu",nl:"Vrachtwagenmakelaar",zh:"卡车经纪人",hi:"ट्रक ब्रोकर",de:"LKW-Makler",pt:"Corretor de Caminhoes",icon:"🚚",c:"#455A64",bg:"#ECEFF1"},
+{id:106,fr:"Courtier Immobilier",ar:"سمسار عقارات",en:"Real Estate Broker",es:"Agente Inmobiliario",it:"Agente Immobiliare",tr:"Emlak Danismani",nl:"Makelaar",zh:"房地产经纪人",hi:"रियल एस्टेट ब्रोकर",de:"Immobilienmakler",pt:"Corretor de Imoveis",icon:"🏘️",c:"#2E7D32",bg:"#E8F5E9"},
+{id:107,fr:"Guide Touristique",ar:"مرشد سياحي",en:"Tour Guide",es:"Guia Turistico",it:"Guida Turistica",tr:"Turist Rehberi",nl:"Reisgids",zh:"导游",hi:"पर्यटक गाइड",de:"Reisefuehrer",pt:"Guia Turistico",icon:"🧭",c:"#00838F",bg:"#E0F7FA"}
 ];
 
 var LANGS=[{c:"fr",f:"🇫🇷",l:"FR"},{c:"ar",f:"🇩🇿",l:"ع"},{c:"en",f:"🇬🇧",l:"EN"},{c:"es",f:"🇪🇸",l:"ES"},{c:"it",f:"🇮🇹",l:"IT"},{c:"tr",f:"🇹🇷",l:"TR"},{c:"nl",f:"🇳🇱",l:"NL"},{c:"zh",f:"🇨🇳",l:"中"},{c:"hi",f:"🇮🇳",l:"हि"},{c:"de",f:"🇩🇪",l:"DE"},{c:"pt",f:"🇧🇷",l:"PT"}];
@@ -1837,12 +1844,13 @@ function applyT(){
   loadTotalStats();
 }
 
+var GUESTS_SINCE_MS = 1794259853193;
 function loadTotalStats(){
   DB.collection("workers").get().then(function(snap){
     set("sl-wnum", snap.size);
   }).catch(function(){});
 
-  DB.collection("guests").get().then(function(snap){
+  DB.collection("guests").where("createdAt", ">=", new Date(GUESTS_SINCE_MS)).get().then(function(snap){
     set("sl-cnum", snap.size);
   }).catch(function(){});
 }
@@ -2845,7 +2853,14 @@ var CRAFT_KW={
 97:"montage meuble|montage meubles|monteur meuble|تركيب اثاث|تركيب الاثاث|montage cuisine|ikea",
 98:"forage|puits|pompe|pompes|حفر الابار|حفر بئر|حفر آبار|مضخة|مضخات|forreur",
 99:"detailing|polissage|lustrage|nettoyage voiture|تلميع|تغليف السيارات|covering",
-100:"entretien piscine|nettoyage piscine|صيانة مسابح|تنظيف مسابح|piscine"
+100:"entretien piscine|nettoyage piscine|صيانة مسابح|تنظيف مسابح|piscine",
+101:"كهرباء صناعية|كهربائي صناعي|electricite industrielle|electricien industriel|automatisme|industrial electrician",
+102:"غسل الملابس|غسيل الملابس|laverie|lavomatic|lavage vetements|lavage linge|laundry",
+103:"تصليح الدراجات|اصلاح الدراجات|دراجات نارية|دراجة نارية|دراجات هوائية|دراجة هوائية|reparation moto|reparateur moto|mecanicien moto|reparation velo|moto|velo|scooter|motorcycle|bicycle",
+104:"سمسار سيارات|سمسار سيارة|courtier auto|courtier automobile|intermediaire auto|car broker",
+105:"سمسار شاحنات|سمسار شاحنة|courtier camion|courtier camions|truck broker",
+106:"سمسار عقارات|سمسار عقار|وكالة عقارية|courtier immobilier|agent immobilier|agence immobiliere|immobilier|real estate",
+107:"مرشد سياحي|دليل سياحي|guide touristique|tour guide|guide"
 };
 var CRAFT_KW_INDEX=null;
 
@@ -3379,7 +3394,7 @@ document.addEventListener("DOMContentLoaded",function(){
 <script>
 /* shops-module:begin */
 /* ==========================================================
-   shops.js (v3) — المحلات المتخصصة وربطها الذكي بالحرفيين
+   shops.js (v5) — المحلات المتخصصة وربطها الذكي بالحرفيين
    تُدمج هذه الوحدة تلقائياً داخل index.html بواسطة أداة الدمج.
    ========================================================== */
 (function () {
@@ -3391,7 +3406,7 @@ document.addEventListener("DOMContentLoaded",function(){
     { id: 2, i: "🔩", c: "#BF360C", bg: "#FBE9E7", ar: "قطع غيار السيارات", fr: "Pièces détachées auto", en: "Car spare parts", k: [19, 20, 22, 24, 25, 26, 93, 99] },
     { id: 3, i: "🚛", c: "#1565C0", bg: "#E3F2FD", ar: "قطع غيار الشاحنات", fr: "Pièces poids lourds", en: "Truck spare parts", k: [47, 94, 95, 96] },
     { id: 4, i: "🚰", c: "#0288D1", bg: "#E1F5FE", ar: "أدوات السباكة والحمامات", fr: "Plomberie & sanitaire", en: "Plumbing & sanitary", k: [1, 63, 64, 71, 80, 98, 100] },
-    { id: 5, i: "💡", c: "#F57C00", bg: "#FFF3E0", ar: "مواد كهربائية", fr: "Matériel électrique", en: "Electrical supplies", k: [2, 15, 16, 17, 18, 31, 70, 84] },
+    { id: 5, i: "💡", c: "#F57C00", bg: "#FFF3E0", ar: "مواد كهربائية", fr: "Matériel électrique", en: "Electrical supplies", k: [2, 15, 16, 17, 18, 31, 70, 84, 101] },
     { id: 6, i: "🎨", c: "#6A1B9A", bg: "#F3E5F5", ar: "دهانات وأصباغ", fr: "Peintures", en: "Paints", k: [3, 22, 65, 73] },
     { id: 7, i: "🛠️", c: "#37474F", bg: "#ECEFF1", ar: "أدوات وعتاد (كوينكاليري)", fr: "Quincaillerie & outillage", en: "Hardware & tools", k: [5, 6, 7, 11, 21, 27, 81, 82, 97] },
     { id: 8, i: "🪟", c: "#00838F", bg: "#E0F7FA", ar: "زجاج وألمنيوم", fr: "Vitrerie & aluminium", en: "Glass & aluminium", k: [6, 7, 23, 81] },
@@ -3400,6 +3415,11 @@ document.addEventListener("DOMContentLoaded",function(){
     { id: 11, i: "❄️", c: "#0277BD", bg: "#E1F5FE", ar: "تبريد وتكييف", fr: "Froid & climatisation", en: "Cooling & AC", k: [9, 10, 28] },
     { id: 12, i: "📱", c: "#283593", bg: "#E8EAF6", ar: "إلكترونيات وهواتف", fr: "Électronique & téléphonie", en: "Electronics & phones", k: [16, 17, 28, 29, 30, 31, 84] },
     { id: 13, i: "🌾", c: "#558B2F", bg: "#F1F8E9", ar: "عتاد فلاحي وسقي", fr: "Matériel agricole & irrigation", en: "Farm & irrigation supplies", k: [66, 68, 70, 80, 98] },
+    { id: 15, i: "🪛", c: "#5D4037", bg: "#EFEBE9", ar: "براغي ومسامير (بولونيري)", fr: "Boulonnerie & visserie", en: "Bolts & screws", k: [4, 5, 6, 7, 11, 13, 21, 27, 81, 82, 97, 101] },
+    { id: 16, i: "🩺", c: "#00796B", bg: "#E0F2F1", ar: "معدات ومستلزمات طبية", fr: "Matériel médical", en: "Medical supplies", k: [35, 36, 89] },
+    { id: 17, i: "🏍️", c: "#37474F", bg: "#ECEFF1", ar: "قطع غيار الدراجات النارية والهوائية", fr: "Pièces motos & vélos", en: "Motorcycle & bicycle parts", k: [88, 91, 103] },
+    { id: 18, i: "✈️", c: "#0277BD", bg: "#E1F5FE", ar: "وكالة سياحية", fr: "Agence de voyages", en: "Travel agency", k: [77, 87, 107] },
+    { id: 19, i: "🏘️", c: "#AD1457", bg: "#FCE4EC", ar: "وكالة عقارية", fr: "Agence immobilière", en: "Real estate agency", k: [59, 85, 106] },
     { id: 14, i: "🏪", c: "#2E7D32", bg: "#E8F5E9", ar: "أخرى", fr: "Autres", en: "Other", k: [] }
   ];
 
@@ -3417,7 +3437,7 @@ document.addEventListener("DOMContentLoaded",function(){
       shops_for_you: "🏪 محلات تناسب تخصصه في منطقته",
       no_shops: "لا توجد محلات مناسبة في هذه المنطقة بعد",
       craft_bar: "🏪 محلات تبيع أدوات هذا التخصص", craft_chip: "محلات التخصص:",
-      reg_btn: "➕ سجّل محلك مجاناً", reg_short: "📝 سجّل محلك", login_btn: "🔑 دخول",
+      reg_btn: "➕ سجّل محلك", reg_short: "📝 سجّل محلك", login_btn: "🔑 دخول",
       manage_btn: "⚙️ إدارة محلي", manage_short: "⚙️ محلي",
       type_q: "ما نوع حسابك؟", type_w: "حرفي", type_w_d: "أقدّم خدماتي للزبائن",
       type_s: "صاحب محل", type_s_d: "أبيع أدوات ومواد للحرفيين",
@@ -3430,6 +3450,12 @@ document.addEventListener("DOMContentLoaded",function(){
       save_reg: "تسجيل المحل", save_edit: "حفظ التعديلات", sending: "جارٍ الحفظ...",
       err_fields: "يرجى ملء الحقول الإجبارية", err_pass: "كلمتا المرور غير متطابقتين",
       err_email: "هذا البريد مسجل مسبقاً — استعمل تبويب «دخول»",
+      err_missing: "الحقول الناقصة", err_weak: "كلمة المرور قصيرة — 6 أحرف على الأقل",
+      err_mail_fmt: "صيغة البريد الإلكتروني غير صحيحة", err_wrong_pw: "هذا البريد مسجل مسبقاً وكلمة المرور غير مطابقة",
+      err_net: "تعذّر الاتصال بالإنترنت، حاول مجدداً", err_many: "محاولات كثيرة، انتظر قليلاً ثم أعد المحاولة",
+      err_perm: "رفضت قاعدة البيانات العملية (صلاحيات Firestore)", err_timeout: "انتهت المهلة، تحقق من الاتصال وأعد المحاولة",
+      err_big: "حجم الصور كبير جداً، قلّل عدد الصور أو استعمل صوراً أصغر",
+      err_hasshop: "هذا الحساب لديه محل مسجل بالفعل — يمكنك تعديله من صفحة المحلات",
       saved: "✅ تم الحفظ", toggle_open: "🔓 فتح المحل الآن", toggle_close: "🔒 غلق المحل الآن",
       del_admin: "🗑️ حذف المحل (Admin)", del_confirm: "حذف هذا المحل نهائياً؟"
     },
@@ -3446,7 +3472,7 @@ document.addEventListener("DOMContentLoaded",function(){
       shops_for_you: "🏪 Magasins adaptés à son métier dans sa zone",
       no_shops: "Aucun magasin adapté dans cette zone pour le moment",
       craft_bar: "🏪 Magasins qui vendent le matériel de ce métier", craft_chip: "Magasins du métier :",
-      reg_btn: "➕ Inscrire mon magasin (gratuit)", reg_short: "📝 Inscrire", login_btn: "🔑 Connexion",
+      reg_btn: "➕ Inscrire mon magasin", reg_short: "📝 Inscrire", login_btn: "🔑 Connexion",
       manage_btn: "⚙️ Gérer mon magasin", manage_short: "⚙️ Mon magasin",
       type_q: "Vous êtes ?", type_w: "Artisan", type_w_d: "Je propose mes services",
       type_s: "Propriétaire de magasin", type_s_d: "Je vends outils et matériaux",
@@ -3459,6 +3485,12 @@ document.addEventListener("DOMContentLoaded",function(){
       save_reg: "Inscrire le magasin", save_edit: "Enregistrer", sending: "Enregistrement...",
       err_fields: "Remplissez les champs obligatoires", err_pass: "Les mots de passe sont différents",
       err_email: "Cet email est déjà utilisé — utilisez l'onglet « Connexion »",
+      err_missing: "Champs manquants", err_weak: "Mot de passe trop court — 6 caractères minimum",
+      err_mail_fmt: "Format d'email invalide", err_wrong_pw: "Cet email est déjà inscrit et le mot de passe ne correspond pas",
+      err_net: "Connexion impossible, réessayez", err_many: "Trop de tentatives, patientez puis réessayez",
+      err_perm: "La base de données a refusé l'opération (règles Firestore)", err_timeout: "Délai dépassé, vérifiez la connexion et réessayez",
+      err_big: "Images trop lourdes : réduisez leur nombre ou leur taille",
+      err_hasshop: "Ce compte a déjà un magasin — modifiez-le depuis la page Magasins",
       saved: "✅ Enregistré", toggle_open: "🔓 Ouvrir le magasin", toggle_close: "🔒 Fermer le magasin",
       del_admin: "🗑️ Supprimer (Admin)", del_confirm: "Supprimer définitivement ce magasin ?"
     },
@@ -3475,7 +3507,7 @@ document.addEventListener("DOMContentLoaded",function(){
       shops_for_you: "🏪 Shops suited to his trade in his area",
       no_shops: "No suitable shops in this area yet",
       craft_bar: "🏪 Shops selling supplies for this trade", craft_chip: "Shops for trade:",
-      reg_btn: "➕ Register my shop (free)", reg_short: "📝 Register", login_btn: "🔑 Login",
+      reg_btn: "➕ Register my shop", reg_short: "📝 Register", login_btn: "🔑 Login",
       manage_btn: "⚙️ Manage my shop", manage_short: "⚙️ My shop",
       type_q: "Your account type?", type_w: "Craftsman", type_w_d: "I offer services",
       type_s: "Shop owner", type_s_d: "I sell tools & materials",
@@ -3488,6 +3520,12 @@ document.addEventListener("DOMContentLoaded",function(){
       save_reg: "Register the shop", save_edit: "Save changes", sending: "Saving...",
       err_fields: "Fill in the required fields", err_pass: "Passwords do not match",
       err_email: "This email is already used — use the Login tab",
+      err_missing: "Missing fields", err_weak: "Password too short — at least 6 characters",
+      err_mail_fmt: "Invalid email format", err_wrong_pw: "This email is already registered and the password does not match",
+      err_net: "Cannot connect, please try again", err_many: "Too many attempts, wait a moment and retry",
+      err_perm: "The database refused the operation (Firestore rules)", err_timeout: "Timed out, check your connection and retry",
+      err_big: "Images are too large: use fewer or smaller images",
+      err_hasshop: "This account already has a shop — edit it from the Shops page",
       saved: "✅ Saved", toggle_open: "🔓 Open the shop now", toggle_close: "🔒 Close the shop now",
       del_admin: "🗑️ Delete shop (Admin)", del_confirm: "Delete this shop permanently?"
     }
@@ -3559,8 +3597,11 @@ document.addEventListener("DOMContentLoaded",function(){
   function v(id) { var e = $s(id); return e ? String(e.value || "").trim() : ""; }
   function put(id, val) { var e = $s(id); if (e) e.value = val; }
   function shErr(m) {
-    var e = $s("shx-err");
-    if (e) e.innerHTML = m ? '<div class="errmsg">' + H(m) + "</div>" : "";
+    var html = m ? '<div class="errmsg">' + H(m) + "</div>" : "";
+    var a = $s("shx-err"), b = $s("shx-err2");
+    if (a) a.innerHTML = html;
+    if (b) b.innerHTML = html;
+    if (m && typeof window.showToast === "function") window.showToast(m);
   }
 
   /* ---------- الواجهة (تُحقن تلقائياً) ---------- */
@@ -3638,7 +3679,7 @@ document.addEventListener("DOMContentLoaded",function(){
     '<div class="fg"><label class="fl" id="shx-l-bio"></label><textarea class="fi" id="shx-bio" rows="3" style="resize:none"></textarea></div>' +
     '<div class="fg"><label class="fl" id="shx-l-gal"></label><div class="gg" id="shx-gal"></div>' +
     '<input type="file" id="shx-galfile" accept="image/*" multiple style="display:none"></div>' +
-    '<button class="sbtn" id="shx-save"></button></div>';
+    '<div id="shx-err2"></div><button class="sbtn" id="shx-save"></button></div>';
 
   function injectUI() {
     var sty = document.createElement("style");
@@ -3765,6 +3806,8 @@ document.addEventListener("DOMContentLoaded",function(){
 
   function applyShopsT() {
     LABELS.forEach(function (p) { var el = $s(p[0]); if (el) el.textContent = st(p[1]); });
+    var scr = $s("sl-crafts");
+    if (scr && scr.previousElementSibling && window.CRAFTS) scr.previousElementSibling.textContent = window.CRAFTS.length;
     if (homeStat) { var sl = $s("sl-country"); if (sl) sl.textContent = st("stat_lbl"); }
     var hb = $s("shx-home-btn"); if (hb) hb.textContent = st("title");
     var q = $s("shx-q"); if (q) q.placeholder = st("search_cat");
@@ -4173,16 +4216,42 @@ document.addEventListener("DOMContentLoaded",function(){
     if (typeof window.swTab === "function") window.swTab("reg"); else syncTypeUI();
   }
 
+  function friendlyError(e) {
+    var c = e && e.code ? String(e.code) : "";
+    var m = e && e.message ? String(e.message) : "";
+    if (m === "SH_TIMEOUT") return st("err_timeout");
+    if (m === "SH_TOOBIG") return st("err_big");
+    if (m === "SH_HASSHOP") return st("err_hasshop");
+    if (c === "auth/weak-password") return st("err_weak");
+    if (c === "auth/invalid-email") return st("err_mail_fmt");
+    if (c === "auth/email-already-in-use") return st("err_email");
+    if (c === "auth/wrong-password" || c === "auth/invalid-credential" || c === "auth/invalid-login-credentials") return st("err_wrong_pw");
+    if (c === "auth/network-request-failed" || c === "unavailable") return st("err_net");
+    if (c === "auth/too-many-requests") return st("err_many");
+    if (c === "permission-denied" || c === "firestore/permission-denied") return st("err_perm");
+    return m || "Error";
+  }
+
   function saveShop() {
-    var name = v("shx-name"), cat = parseInt(v("shx-fcat"), 10) || 0, country = v("shx-country"),
-      phone = v("shx-phone"), city = v("shx-city");
     var u = window.AUTH.currentUser, creating = !shEditing, needAuth = creating && !u;
     if (creating && myShop) { openShopEdit(myShop); return; }
-    var email = "", pass = "";
-    if (!name || !cat || !country || !phone || !city) { shErr(st("err_fields")); return; }
+    var name = v("shx-name"), cat = parseInt(v("shx-fcat"), 10) || 0, country = v("shx-country"),
+      phone = v("shx-phone"), city = v("shx-city");
+    var email = "", pass = "", missing = [];
+    function lab(k) { return String(st(k)).replace(/\*/g, "").trim(); }
+    if (!name) missing.push(lab("f_name"));
+    if (!cat) missing.push(lab("f_cat"));
     if (needAuth) {
       email = v("shx-email"); pass = $s("shx-pass").value;
-      if (!email || !pass) { shErr(st("err_fields")); return; }
+      if (!email) missing.push("Email");
+      if (!pass) missing.push(lab("f_pass"));
+    }
+    if (!country) missing.push(lab("f_country"));
+    if (!phone) missing.push(lab("f_phone"));
+    if (!city) missing.push(lab("f_city"));
+    if (missing.length) { shErr(st("err_missing") + ": " + missing.join(LG() === "ar" ? "، " : ", ")); return; }
+    if (needAuth) {
+      if (pass.length < 6) { shErr(st("err_weak")); return; }
       if (pass !== $s("shx-conf").value) { shErr(st("err_pass")); return; }
     }
     var btn = $s("shx-save");
@@ -4191,28 +4260,45 @@ document.addEventListener("DOMContentLoaded",function(){
     var photoP = shAvFile ? window.fileToBase64(shAvFile, 400, 0.5) : Promise.resolve(shEditing ? (shEditing.photoURL || "") : "");
     var galP = Promise.all(shNewGal.map(function (f) { return window.fileToBase64(f, 600, 0.5); }));
 
-    Promise.all([photoP, galP]).then(function (r) {
+    var work = Promise.all([photoP, galP]).then(function (r) {
       var data = {
         name: name, cat: cat, country: country, phone: phone, city: city,
         commune: v("shx-com"), hours: v("shx-hours"), bio: v("shx-bio"),
         delivery: $s("shx-delivery").checked, isOpen: $s("shx-open").checked,
         photoURL: r[0], gallery: shOldGal.concat(r[1])
       };
+      if (JSON.stringify(data).length > 900000) throw new Error("SH_TOOBIG");
       if (shEditing) {
         var id0 = shEditing.id;
         return window.DB.collection("shops").doc(id0).update(data).then(function () { return id0; });
       }
       var userP = needAuth
-        ? window.AUTH.createUserWithEmailAndPassword(email, pass).then(function (c) { return c.user; })
+        ? window.AUTH.createUserWithEmailAndPassword(email, pass).then(function (c) { return c.user; }).catch(function (err) {
+          /* البريد مسجل سابقاً (مثلاً حساب حرفي): نحاول الدخول بنفس كلمة المرور ونتابع تسجيل المحل */
+          if (err && err.code === "auth/email-already-in-use") {
+            return window.AUTH.signInWithEmailAndPassword(email, pass).then(function (c) { return c.user; });
+          }
+          throw err;
+        })
         : Promise.resolve(u);
       return userP.then(function (user) {
-        data.ownerId = user.uid;
-        data.createdAt = window.firebase.firestore.FieldValue.serverTimestamp();
-        return window.DB.collection("shops").doc(user.uid).set(data).then(function () { return user.uid; });
+        return window.DB.collection("shops").doc(user.uid).get().then(function (ex) {
+          if (ex.exists) throw new Error("SH_HASSHOP");
+          data.ownerId = user.uid;
+          data.createdAt = window.firebase.firestore.FieldValue.serverTimestamp();
+          return window.DB.collection("shops").doc(user.uid).set(data).then(function () { return user.uid; });
+        });
       });
     }).then(function (id) {
       return window.DB.collection("shops").doc(id).get();
-    }).then(function (snap) {
+    });
+    work.catch(function () {});
+
+    var timer, limit = window.SHX_SAVE_TIMEOUT_MS || 40000;
+    var timeout = new Promise(function (_, rej) { timer = setTimeout(function () { rej(new Error("SH_TIMEOUT")); }, limit); });
+
+    Promise.race([work, timeout]).then(function (snap) {
+      clearTimeout(timer);
       var d = Object.assign({ id: snap.id }, snap.data());
       var wasEditing = !!shEditing;
       shSeq++; myShop = d; shEditing = null; shType = "worker";
@@ -4229,7 +4315,10 @@ document.addEventListener("DOMContentLoaded",function(){
         openShop(d);
       }
     }).catch(function (e) {
-      shErr(e && e.code === "auth/email-already-in-use" ? st("err_email") : ((e && e.message) || "Error"));
+      clearTimeout(timer);
+      if (window.console) console.error("shops save:", e);
+      shErr(friendlyError(e));
+      if (e && e.message === "SH_HASSHOP") loadMyShop(window.AUTH.currentUser);
     }).then(function () {
       btn.disabled = false;
       btn.textContent = shEditing ? st("save_edit") : st("save_reg");
