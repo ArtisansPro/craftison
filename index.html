@@ -1641,6 +1641,24 @@ var CRAFTS=[
 ];
 
 var LANGS=[{c:"fr",f:"🇫🇷",l:"FR"},{c:"ar",f:"🇩🇿",l:"ع"},{c:"en",f:"🇬🇧",l:"EN"},{c:"es",f:"🇪🇸",l:"ES"},{c:"it",f:"🇮🇹",l:"IT"},{c:"tr",f:"🇹🇷",l:"TR"},{c:"nl",f:"🇳🇱",l:"NL"},{c:"zh",f:"🇨🇳",l:"中"},{c:"hi",f:"🇮🇳",l:"हि"},{c:"de",f:"🇩🇪",l:"DE"},{c:"pt",f:"🇧🇷",l:"PT"}];
+/* manual-extras:begin — أضف هنا تخصصاتك الجديدة بنفسك. تبقى هذه الكتلة كما هي بعد أي تحديث للأداة */
+var CRAFTS_EXTRA = [
+  // مثال لحرفة جديدة (احذف // لتفعيل السطر):
+  // { id: 108, ar: "تركيب مصاعد", fr: "Installation ascenseurs", en: "Elevator installation", icon: "🛗", c: "#1565C0", bg: "#E3F2FD" },
+];
+var CRAFT_KW_EXTRA = {
+  // كلمات يتعرف بها البحث الذكي على الحرفة داخل طلب الزبون (اختياري):
+  // 108: "مصعد|مصاعد|ascenseur|elevator",
+};
+var SHOPS_EXTRA_CATS = [
+  // مثال لصنف محلات جديد (k = أرقام الحرف المرتبطة به):
+  // { id: 20, ar: "عطور وتجميل", fr: "Parfumerie", en: "Perfumes", i: "🧴", c: "#6A1B9A", bg: "#F3E5F5", k: [34, 33] },
+];
+var SHOPS_LINKS = {
+  // ربط حرف جديدة بصنف محلات موجود  (رقم الصنف: [أرقام الحرف]):
+  // 5: [108],
+};
+/* manual-extras:end */
 var LANG_FLAG_SVG={
   fr:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#0055A4" d="M0 0h10v20H0z"/><path fill="#fff" d="M10 0h10v20H10z"/><path fill="#EF4135" d="M20 0h10v20H20z"/></svg>',
   ar:'<svg viewBox="0 0 30 20" aria-hidden="true"><path fill="#006233" d="M0 0h15v20H0z"/><path fill="#fff" d="M15 0h15v20H15z"/><circle cx="15.8" cy="10" r="5" fill="#D21034"/><circle cx="17.5" cy="8.8" r="4.2" fill="#fff"/><path fill="#D21034" d="m20.4 6.2.8 2.1 2.2.1-1.7 1.4.6 2.1-1.9-1.2-1.8 1.2.6-2.1-1.7-1.4 2.2-.1z"/></svg>',
@@ -1844,7 +1862,7 @@ function applyT(){
   loadTotalStats();
 }
 
-var GUESTS_SINCE_MS = 1794259853193;
+var GUESTS_SINCE_MS = 1794384906660;
 function loadTotalStats(){
   DB.collection("workers").get().then(function(snap){
     set("sl-wnum", snap.size);
@@ -3394,7 +3412,7 @@ document.addEventListener("DOMContentLoaded",function(){
 <script>
 /* shops-module:begin */
 /* ==========================================================
-   shops.js (v5) — المحلات المتخصصة وربطها الذكي بالحرفيين
+   shops.js (v6) — المحلات المتخصصة وربطها الذكي بالحرفيين
    تُدمج هذه الوحدة تلقائياً داخل index.html بواسطة أداة الدمج.
    ========================================================== */
 (function () {
@@ -3564,7 +3582,8 @@ document.addEventListener("DOMContentLoaded",function(){
     for (var i = 0; i < SH_CATS.length; i++) { if (SH_CATS[i].id === id) return SH_CATS[i]; }
     return null;
   }
-  function catName(id) { var c = catById(id); return c ? c.i + " " + (c[LG()] || c.en) : ""; }
+  function catLabel(c) { return c[LG()] || c.en || c.fr || c.ar || ""; }
+  function catName(id) { var c = catById(id); return c ? c.i + " " + catLabel(c) : ""; }
   function catsForCraft(craftId) {
     var out = [];
     SH_CATS.forEach(function (c) { if (c.k.indexOf(craftId) > -1) out.push(c.id); });
@@ -3785,7 +3804,7 @@ document.addEventListener("DOMContentLoaded",function(){
 
   function buildCatOptions() {
     var opts = SH_CATS.map(function (c) {
-      return '<option value="' + c.id + '">' + H(c.i + " " + (c[LG()] || c.en)) + "</option>";
+      return '<option value="' + c.id + '">' + H(c.i + " " + catLabel(c)) + "</option>";
     }).join("");
     var g = $s("shx-fcat"), c = $s("shx-country");
     if (g) { var b = g.value; g.innerHTML = '<option value="">' + H(st("choose_cat")) + "</option>" + opts; g.value = b || ""; }
@@ -3865,7 +3884,7 @@ document.addEventListener("DOMContentLoaded",function(){
       var d = document.createElement("div");
       d.className = "cc"; d.style.borderColor = c.bg;
       d.innerHTML = '<div class="cc-ic" style="background:' + c.bg + '">' + c.i + "</div>" +
-        '<div class="cc-n" style="color:' + c.c + '">' + H(c[LG()] || c.en) + "</div>" +
+        '<div class="cc-n" style="color:' + c.c + '">' + H(catLabel(c)) + "</div>" +
         '<div class="cc-b">' + (counts[c.id] || 0) + " " + H(st("count")) + "</div>";
       d.onclick = function () { openCat(c.id); };
       grid.appendChild(d);
@@ -3879,7 +3898,7 @@ document.addEventListener("DOMContentLoaded",function(){
     if (shCat) {
       var c = catById(shCat);
       h.style.background = "linear-gradient(135deg," + c.c + "DD," + c.c + ")";
-      t.textContent = c.i + " " + (c[LG()] || c.en);
+      t.textContent = c.i + " " + catLabel(c);
     } else {
       h.style.background = "linear-gradient(135deg,#2E7D32,#1B5E20)";
       t.textContent = st("craft_chip") + " " + craftName(shCraftFilter);
@@ -4372,7 +4391,47 @@ document.addEventListener("DOMContentLoaded",function(){
     if (sv) sv.onclick = saveShop;
   }
 
+  /* إضافات يدوية يكتبها صاحب التطبيق في كتلة manual-extras داخل index.html */
+  function applyExtras() {
+    var cr = window.CRAFTS, ex = window.CRAFTS_EXTRA;
+    if (Array.isArray(cr) && Array.isArray(ex)) {
+      ex.forEach(function (c) {
+        if (!c || typeof c.id !== "number" || craftById(c.id)) return;
+        var item = Object.assign({ icon: "🔧", c: "#1565C0", bg: "#E3F2FD" }, c);
+        item.fr = c.fr || c.en || c.ar || "";
+        item.en = c.en || c.fr || c.ar || "";
+        item.ar = c.ar || c.fr || c.en || "";
+        cr.push(item);
+      });
+    }
+    var kw = window.CRAFT_KW, kx = window.CRAFT_KW_EXTRA;
+    if (kw && kx && typeof kx === "object") {
+      Object.keys(kx).forEach(function (id) { if (!kw[id]) kw[id] = kx[id]; });
+      window.CRAFT_KW_INDEX = null;
+    }
+    var exc = window.SHOPS_EXTRA_CATS;
+    if (Array.isArray(exc)) {
+      exc.forEach(function (c) {
+        if (!c || typeof c.id !== "number" || catById(c.id)) return;
+        var item = Object.assign({ i: "🏪", c: "#2E7D32", bg: "#E8F5E9" }, c);
+        item.k = (c.k || []).slice();
+        var at = -1;
+        for (var j = 0; j < SH_CATS.length; j++) { if (SH_CATS[j].id === 14) at = j; }
+        if (at > -1) SH_CATS.splice(at, 0, item); else SH_CATS.push(item);
+      });
+    }
+    var links = window.SHOPS_LINKS;
+    if (links && typeof links === "object") {
+      Object.keys(links).forEach(function (cid) {
+        var cat = catById(parseInt(cid, 10));
+        if (!cat) return;
+        (links[cid] || []).forEach(function (kid) { if (cat.k.indexOf(kid) === -1) cat.k.push(kid); });
+      });
+    }
+  }
+
   function init() {
+    applyExtras();
     injectUI();
     wire();
 
