@@ -1862,7 +1862,7 @@ function applyT(){
   loadTotalStats();
 }
 
-var GUESTS_SINCE_MS = 1794384906660;
+var GUESTS_SINCE_MS = 1794493840998;
 function loadTotalStats(){
   DB.collection("workers").get().then(function(snap){
     set("sl-wnum", snap.size);
@@ -4037,6 +4037,12 @@ document.addEventListener("DOMContentLoaded",function(){
       mg.onclick = function () { openShopEdit(s); };
       dc.appendChild(mg);
     }
+    if (admin && !owner) {
+      var ae = document.createElement("button");
+      ae.className = "btn-b"; ae.textContent = "✏️ تعديل (Admin)";
+      ae.onclick = function () { openShopEdit(s); };
+      dc.appendChild(ae);
+    }
     if (admin) {
       var dl = document.createElement("button");
       dl.className = "btn-r"; dl.textContent = st("del_admin");
@@ -4320,7 +4326,9 @@ document.addEventListener("DOMContentLoaded",function(){
       clearTimeout(timer);
       var d = Object.assign({ id: snap.id }, snap.data());
       var wasEditing = !!shEditing;
-      shSeq++; myShop = d; shEditing = null; shType = "worker";
+      shSeq++;
+      if (window.AUTH.currentUser && d.id === window.AUTH.currentUser.uid) myShop = d;
+      shEditing = null; shType = "worker";
       window.showToast(st("saved"));
       window.goBack();
       refreshOwnerUI();
@@ -4485,9 +4493,438 @@ document.addEventListener("DOMContentLoaded",function(){
     }
     if (typeof window.buildLB === "function") window.buildLB();
     applyShopsT();
+    window.SHX_API = {
+      openShop: openShop, openShopEdit: openShopEdit,
+      catAr: function (id) { var c = catById(id); return c ? c.i + " " + (c.ar || c.fr || c.en) : ""; },
+      catAll: function (id) { var c = catById(id); return c ? [c.ar, c.fr, c.en].join(" ") : ""; }
+    };
   }
 
   try { init(); } catch (err) { if (window.console) console.error("shops.js:", err); }
+})();
+
+/* ====================================================================
+   لوحة المدير (Admin) — صفحة واحدة للمدير فقط + قناة «راسل الإدارة» للمستخدمين
+   - الواجهة لا تُبنى أصلاً إلا لحساب المدير (البريد ADMIN_EMAIL) وتُزال عند الخروج.
+   - الحماية الحقيقية للبيانات تأتي من قواعد Firestore (ملف firestore.rules).
+   ==================================================================== */
+(function () {
+  "use strict";
+
+  var ADMIN_ID = "admin_support";
+  var tab = "workers", view = "list", loaded = false, uiReady = false;
+  var D = { workers: [], shops: [], threads: [], msgErr: "", loadErr: "" };
+  var byW = {}, byS = {};
+  var filterId = "", curThread = null, threadUnsub = null, replyUnsub = null, lastAdminMs = 0;
+
+  function A(id) { return document.getElementById(id); }
+  function H(s) {
+    return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function isAdmin() { return typeof window.isAdminUser === "function" && !!window.isAdminUser(); }
+  function msOf(t) { return t ? (t.toMillis ? t.toMillis() : (t instanceof Date ? t.getTime() : (Number(t) || 0))) : 0; }
+  function fmt(v) { return v ? new Date(v).toLocaleString([], { day: "2-digit", month: "2-digit", year: "2-digit", hour: "2-digit", minute: "2-digit" }) : "—"; }
+  function norm(v) { return typeof window.normalizeSearchText === "function" ? window.normalizeSearchText(v) : String(v || "").toLowerCase(); }
+  function seenMap() { try { return JSON.parse(localStorage.getItem("craftison_adm_seen") || "{}"); } catch (e) { return {}; } }
+  function setSeen(chatId, v) { var m = seenMap(); m[chatId] = v; try { localStorage.setItem("craftison_adm_seen", JSON.stringify(m)); } catch (e) {} }
+  function linkify(esc) { return esc.replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener" style="color:#1565C0;word-break:break-all">$1</a>'); }
+  function craftOf(id) { var a = window.CRAFTS || []; for (var i = 0; i < a.length; i++) { if (a[i].id === id) return a[i]; } return null; }
+  function craftLbl(id) { var c = craftOf(id); return c ? c.icon + " " + (c.ar || c.fr || c.en) : "#" + id; }
+  function craftAll(id) { var c = craftOf(id); return c ? [c.ar, c.fr, c.en].join(" ") : ""; }
+  function suspended(w) { var u = w && w.suspUntil; return (u ? (u.toMillis ? u.toMillis() : Number(u)) : 0) > Date.now(); }
+  function trunc(t, n) { t = String(t || ""); return t.length > n ? t.slice(0, n) + "…" : t; }
+
+  /* ---------- الواجهة (تُبنى للمدير فقط) ---------- */
+  var CSS = [
+    ".adm-c{background:#fff;border-radius:13px;margin:0 9px 9px;padding:12px;box-shadow:0 2px 10px rgba(0,0,0,.07)}",
+    ".adm-h{display:flex;gap:10px;align-items:center}",
+    ".adm-av{width:46px;height:46px;border-radius:12px;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;overflow:hidden;flex-shrink:0}",
+    ".adm-av img{width:100%;height:100%;object-fit:cover}",
+    ".adm-n{font-weight:800;font-size:14px}",
+    ".adm-s{font-size:12px;color:#555;line-height:1.8;margin-top:6px;word-break:break-word}",
+    ".adm-t{display:inline-block;border-radius:8px;padding:2px 8px;font-size:10px;font-weight:800;margin-inline-end:4px}",
+    ".adm-acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}",
+    ".adm-acts button{flex:1;min-width:76px;border:none;border-radius:9px;padding:8px 6px;font-size:11px;font-weight:800;cursor:pointer}",
+    ".adm-b1{background:#E3F2FD;color:#1565C0}.adm-b2{background:#FFF3E0;color:#E65100}.adm-b3{background:#E8F5E9;color:#2E7D32}.adm-b4{background:#FFEBEE;color:#C62828}.adm-b5{background:#F3E5F5;color:#6A1B9A}",
+    ".adm-bub{max-width:82%;padding:8px 11px;border-radius:14px;font-size:13px;line-height:1.5;word-break:break-word;margin:6px 9px}",
+    ".adm-reply{position:sticky;bottom:0;background:#fff;padding:8px;display:flex;gap:8px;border-top:1px solid #eee}",
+    ".adm-reply input{flex:1;border:1.5px solid #E3E8F0;border-radius:20px;padding:9px 13px;font-size:13px;outline:none}",
+    ".adm-warn{background:#FFF3E0;border:1px solid #FFE082;border-radius:10px;padding:10px;margin:9px;font-size:12px;color:#E65100;line-height:1.7}"
+  ].join("\n");
+
+  var SCREEN =
+    '<div id="s-admdash" class="screen"><div class="lb-bar"></div>' +
+    '<div class="hdr" style="background:linear-gradient(135deg,#6A1B9A,#4A148C)"><button class="back" id="adm-bk">رجوع</button>' +
+    '<div class="hdr-t">👑 لوحة المدير</div><button class="back" id="adm-rq" title="طلبات الزبائن">📢</button><button class="back" id="adm-rf" title="تحديث">🔄</button></div>' +
+    '<div class="tabs" id="adm-tabs"><button class="tab on" id="adm-tab-workers"></button><button class="tab" id="adm-tab-shops"></button><button class="tab" id="adm-tab-messages"></button></div>' +
+    '<div class="sbar" id="adm-sbar"><span>🔍</span><input id="adm-q" placeholder="ابحث بالاسم أو المدينة أو الحرفة أو الهاتف..."></div>' +
+    '<div class="li" id="adm-cnt"></div><div class="scroll" id="adm-body"></div></div>';
+
+  function ensureUI() {
+    if (uiReady && A("s-admdash")) return true;
+    if (!isAdmin()) return false;
+    var app = document.querySelector(".app");
+    if (!app) return false;
+    if (!A("adm-css")) {
+      var sty = document.createElement("style");
+      sty.id = "adm-css"; sty.textContent = CSS;
+      document.head.appendChild(sty);
+    }
+    app.insertAdjacentHTML("beforeend", SCREEN);
+    wire();
+    uiReady = true;
+    return true;
+  }
+
+  function removeUI() {
+    stopThread();
+    var s = A("s-admdash"); if (s && s.parentNode) s.parentNode.removeChild(s);
+    var c = A("adm-css"); if (c && c.parentNode) c.parentNode.removeChild(c);
+    uiReady = false; loaded = false;
+    D = { workers: [], shops: [], threads: [], msgErr: "", loadErr: "" }; byW = {}; byS = {};
+  }
+
+  function wire() {
+    A("adm-bk").onclick = function () { if (view === "thread") backToList(); else window.goBack(); };
+    A("adm-rf").onclick = function () { loadAll(); };
+    A("adm-rq").onclick = function () { if (isAdmin() && typeof window.openInbox === "function") window.openInbox("all"); };
+    ["workers", "shops", "messages"].forEach(function (t) { A("adm-tab-" + t).onclick = function () { filterId = t === "messages" ? filterId : ""; setTab(t); }; });
+    A("adm-q").oninput = function () { if (view === "list") renderList(); };
+    A("adm-body").onclick = function (e) {
+      var el = e.target && e.target.closest ? e.target.closest("[data-a],[data-th]") : null;
+      if (!el || !isAdmin()) return;
+      if (el.getAttribute("data-th")) { openThread(el.getAttribute("data-th")); return; }
+      act(el.getAttribute("data-a"), el.getAttribute("data-id"), el.getAttribute("data-k"));
+    };
+  }
+
+  function setTab(t) {
+    tab = t; view = "list"; stopThread();
+    ["workers", "shops", "messages"].forEach(function (x) { var b = A("adm-tab-" + x); if (b) b.classList.toggle("on", x === t); });
+    var q = A("adm-q"); if (q) q.value = "";
+    render();
+  }
+
+  function openDash() {
+    if (!isAdmin() || !ensureUI()) return;
+    view = "list"; stopThread();
+    window.go("admdash");
+    render();
+    loadAll();
+  }
+
+  /* ---------- جلب البيانات ---------- */
+  function buildThreads(snap) {
+    var map = {};
+    snap.forEach(function (d) {
+      var path = d.ref && d.ref.path ? d.ref.path : "";
+      if (path.indexOf("chats/") !== 0) return;
+      var m = d.data(), chatId = d.ref.parent.parent.id;
+      var t = map[chatId] || (map[chatId] = { chatId: chatId, msgs: [] });
+      t.msgs.push({ text: m.text, senderId: m.senderId, senderName: m.senderName, ms: msOf(m.createdAt) || Date.now() });
+    });
+    return Object.keys(map).map(function (k) {
+      var t = map[k];
+      t.msgs.sort(function (a, b) { return a.ms - b.ms; });
+      t.last = t.msgs[t.msgs.length - 1];
+      t.support = k.indexOf(ADMIN_ID) > -1;
+      return t;
+    });
+  }
+
+  function loadAll() {
+    if (!isAdmin()) return Promise.resolve();
+    var body = A("adm-body");
+    if (body && !loaded) body.innerHTML = '<div class="spinner-wrap"><div class="spinner"></div></div>';
+    D.loadErr = "";
+    var p1 = window.DB.collection("workers").get().then(function (snap) {
+      D.workers = []; byW = {};
+      snap.forEach(function (d) { var w = Object.assign({ id: d.id }, d.data()); D.workers.push(w); byW[w.id] = w; });
+    }).catch(function (e) { D.loadErr = (e && e.message) || "error"; });
+    var p2 = window.DB.collection("shops").get().then(function (snap) {
+      D.shops = []; byS = {};
+      snap.forEach(function (d) { var s = Object.assign({ id: d.id }, d.data()); D.shops.push(s); byS[s.id] = s; });
+    }).catch(function (e) { D.loadErr = (e && e.message) || "error"; });
+    var p3 = window.DB.collectionGroup("messages").limit(2000).get().then(function (snap) {
+      D.threads = buildThreads(snap);
+      D.msgErr = snap.size >= 2000 ? "LIMIT" : "";
+    }).catch(function (e) { D.threads = []; D.msgErr = (e && e.message) || "error"; });
+    return Promise.all([p1, p2, p3]).then(function () {
+      loaded = true;
+      if (view === "list") render();
+    });
+  }
+
+  /* ---------- العرض ---------- */
+  function who(id, fallback) {
+    if (id === ADMIN_ID) return "👑 الإدارة";
+    if (byW[id]) return "👷 " + (byW[id].name || id);
+    if (byS[id]) return "🏪 " + (byS[id].name || id);
+    return "👤 " + (fallback || "زائر");
+  }
+
+  function parties(t) {
+    var ids = {};
+    t.msgs.forEach(function (m) { if (ids[m.senderId] === undefined) ids[m.senderId] = m.senderName; });
+    var keys = Object.keys(ids);
+    if (keys.length === 1) {
+      var other = t.chatId.replace(keys[0], "").replace(/^_+|_+$/g, "");
+      if (other) ids[other] = "";
+    }
+    return Object.keys(ids).map(function (id) { return { id: id, label: who(id, ids[id]) }; });
+  }
+
+  function unreadSupport() {
+    var seen = seenMap();
+    return D.threads.filter(function (t) { return t.support && t.last && t.last.senderId !== ADMIN_ID && t.last.ms > (seen[t.chatId] || 0); }).length;
+  }
+
+  function updateTabs() {
+    var u = unreadSupport();
+    var a = A("adm-tab-workers"), b = A("adm-tab-shops"), c = A("adm-tab-messages");
+    if (a) a.textContent = "👷 الحرفيون (" + D.workers.length + ")";
+    if (b) b.textContent = "🏪 المحلات (" + D.shops.length + ")";
+    if (c) c.textContent = "💬 الرسائل (" + D.threads.length + ")" + (u ? " 🔴" + u : "");
+  }
+
+  function render() {
+    updateTabs();
+    var sb = A("adm-sbar"), tb = A("adm-tabs");
+    if (sb) sb.style.display = view === "list" ? "flex" : "none";
+    if (tb) tb.style.display = view === "list" ? "flex" : "none";
+    if (view === "list") renderList();
+  }
+
+  function workerCard(w) {
+    var susp = suspended(w), bg = typeof window.ac === "function" ? window.ac(w.id) : "#1565C0";
+    var av = w.photoURL ? '<img src="' + H(w.photoURL) + '">' : H((w.name || "?").charAt(0).toUpperCase());
+    var tags = (susp ? '<span class="adm-t" style="background:#FFEBEE;color:#C62828">⛔ موقوف</span>' : "") +
+      ((w.reports || 0) > 0 ? '<span class="adm-t" style="background:#FFF3E0;color:#E65100">🚨 ' + H(w.reports) + "</span>" : "");
+    var id = H(w.id);
+    return '<div class="adm-c"><div class="adm-h"><div class="adm-av" style="background:' + H(bg) + '">' + av + "</div>" +
+      '<div style="flex:1;min-width:0"><div class="adm-n">' + H(w.name) + "</div><div class=\"adm-s\" style=\"margin-top:2px\">" + H(craftLbl(w.craftId)) + "</div></div><div>" + tags + "</div></div>" +
+      '<div class="adm-s">📍 ' + H([w.commune, w.city, w.country].filter(Boolean).join("، ")) + "<br>📞 " + H(w.phone) + "<br>✉️ " + H(w.email) +
+      "<br>⭐ " + (w.ratingAvg ? Number(w.ratingAvg).toFixed(1) : "—") + " (" + H(w.ratingCount || 0) + ") · ⬆️ " + H(w.supports || 0) + " · 🚨 " + H(w.reports || 0) +
+      " · 🖼️ " + ((w.gallery || []).length) + " · 📅 " + fmt(msOf(w.trialStart)) +
+      (w.bio ? "<br>📝 " + H(trunc(w.bio, 140)) : "") + (w.lastWarning ? "<br>⚠️ " + H(trunc(w.lastWarning, 100)) : "") + "</div>" +
+      '<div class="adm-acts">' +
+      '<button class="adm-b1" data-a="view" data-k="w" data-id="' + id + '">👁️ عرض</button>' +
+      '<button class="adm-b2" data-a="edit" data-k="w" data-id="' + id + '">✏️ تعديل</button>' +
+      '<button class="adm-b5" data-a="msg" data-k="w" data-id="' + id + '">📩 راسله</button>' +
+      '<button class="adm-b5" data-a="msgs" data-k="w" data-id="' + id + '">💬 رسائله</button>' +
+      (susp ? '<button class="adm-b3" data-a="unsusp" data-k="w" data-id="' + id + '">✅ رفع الإيقاف</button>' : '<button class="adm-b2" data-a="susp" data-k="w" data-id="' + id + '">⛔ إيقاف 5 أيام</button>') +
+      ((w.reports || 0) > 0 ? '<button class="adm-b1" data-a="reset" data-k="w" data-id="' + id + '">🧹 تصفير البلاغات</button>' : "") +
+      '<button class="adm-b4" data-a="del" data-k="w" data-id="' + id + '">🗑️ حذف</button></div></div>';
+  }
+
+  function shopCardA(s) {
+    var api = window.SHX_API, id = H(s.id);
+    var av = s.photoURL ? '<img src="' + H(s.photoURL) + '">' : "🏪";
+    return '<div class="adm-c"><div class="adm-h"><div class="adm-av" style="background:#2E7D32;font-size:22px">' + av + "</div>" +
+      '<div style="flex:1;min-width:0"><div class="adm-n">' + H(s.name) + '</div><div class="adm-s" style="margin-top:2px">' + H(api ? api.catAr(s.cat) : s.cat) + "</div></div>" +
+      '<div><span class="adm-t" style="background:' + (s.isOpen !== false ? "#E8F5E9;color:#2E7D32" : "#FFEBEE;color:#C62828") + '">' + (s.isOpen !== false ? "مفتوح" : "مغلق") + "</span></div></div>" +
+      '<div class="adm-s">📍 ' + H([s.commune, s.city, s.country].filter(Boolean).join("، ")) + "<br>📞 " + H(s.phone) +
+      "<br>🚚 " + (s.delivery ? "التوصيل متوفر" : "بلا توصيل") + (s.hours ? " · 🕘 " + H(s.hours) : "") + " · 🖼️ " + ((s.gallery || []).length) + " · 📅 " + fmt(msOf(s.createdAt)) +
+      (s.bio ? "<br>📝 " + H(trunc(s.bio, 140)) : "") + "</div>" +
+      '<div class="adm-acts">' +
+      '<button class="adm-b1" data-a="view" data-k="s" data-id="' + id + '">👁️ عرض</button>' +
+      '<button class="adm-b2" data-a="edit" data-k="s" data-id="' + id + '">✏️ تعديل</button>' +
+      '<button class="adm-b5" data-a="msg" data-k="s" data-id="' + id + '">📩 راسله</button>' +
+      '<button class="adm-b5" data-a="msgs" data-k="s" data-id="' + id + '">💬 رسائله</button>' +
+      '<button class="adm-b4" data-a="del" data-k="s" data-id="' + id + '">🗑️ حذف</button></div></div>';
+  }
+
+  function renderList() {
+    var body = A("adm-body"), cnt = A("adm-cnt");
+    if (!body) return;
+    var q = norm(A("adm-q") ? A("adm-q").value : "");
+    var html = "", n = 0, warn = "";
+    if (D.loadErr) warn = '<div class="adm-warn">⚠️ ' + linkify(H(D.loadErr)) + "</div>";
+    if (tab === "workers") {
+      var lw = D.workers.filter(function (w) {
+        return !q || norm([w.name, w.phone, w.email, w.country, w.city, w.commune, craftAll(w.craftId), w.bio].join(" ")).indexOf(q) > -1;
+      }).sort(function (a, b) { return ((b.reports || 0) - (a.reports || 0)) || String(a.name || "").localeCompare(String(b.name || "")); });
+      n = lw.length; html = lw.map(workerCard).join("");
+    } else if (tab === "shops") {
+      var api = window.SHX_API;
+      var ls = D.shops.filter(function (s) {
+        return !q || norm([s.name, s.phone, s.country, s.city, s.commune, api ? api.catAll(s.cat) : "", s.bio, s.hours].join(" ")).indexOf(q) > -1;
+      }).sort(function (a, b) { return String(a.name || "").localeCompare(String(b.name || "")); });
+      n = ls.length; html = ls.map(shopCardA).join("");
+    } else {
+      if (D.msgErr && D.msgErr !== "LIMIT") warn += '<div class="adm-warn">⚠️ تعذّر جلب الرسائل:<br>' + linkify(H(D.msgErr)) + "<br>إن ذكرت الرسالة رابط «إنشاء فهرس» فاضغطه ثم أعد المحاولة بعد دقيقة، وتأكد من نشر ملف firestore.rules.</div>";
+      if (D.msgErr === "LIMIT") warn += '<div class="adm-warn">ℹ️ تم عرض أحدث ما أمكن (حد 2000 رسالة).</div>';
+      var seen = seenMap();
+      var lt = D.threads.filter(function (t) {
+        if (filterId && t.chatId.indexOf(filterId) === -1) return false;
+        if (!q) return true;
+        var hay = parties(t).map(function (p) { return p.label; }).join(" ") + " " + t.msgs.map(function (m) { return m.text; }).join(" ");
+        return norm(hay).indexOf(q) > -1;
+      }).sort(function (a, b) {
+        var ua = a.support && a.last.senderId !== ADMIN_ID && a.last.ms > (seen[a.chatId] || 0) ? 1 : 0;
+        var ub = b.support && b.last.senderId !== ADMIN_ID && b.last.ms > (seen[b.chatId] || 0) ? 1 : 0;
+        return (ub - ua) || (b.last.ms - a.last.ms);
+      });
+      n = lt.length;
+      if (filterId) warn += '<div class="adm-warn" style="background:#F3E5F5;border-color:#CE93D8;color:#6A1B9A">رسائل: ' + H(who(filterId)) + ' — <a href="#" data-clear="1" style="color:#6A1B9A;font-weight:800">إلغاء الفلتر ✕</a></div>';
+      html = lt.map(function (t) {
+        var unread = t.support && t.last.senderId !== ADMIN_ID && t.last.ms > (seen[t.chatId] || 0);
+        return '<div class="adm-c" data-th="' + H(t.chatId) + '" style="cursor:pointer;' + (t.support ? "border:2px solid #CE93D8;" : "") + '">' +
+          '<div class="adm-h"><div style="flex:1;min-width:0"><div class="adm-n">' + H(parties(t).map(function (p) { return p.label; }).join(" ↔ ")) + "</div>" +
+          '<div class="adm-s" style="margin-top:2px">' + H(trunc(t.last.text, 90)) + "</div></div>" +
+          "<div>" + (t.support ? '<span class="adm-t" style="background:#F3E5F5;color:#6A1B9A">📩 للإدارة</span>' : "") + (unread ? '<span class="adm-t" style="background:#FFEBEE;color:#C62828">جديد</span>' : "") + "</div></div>" +
+          '<div class="adm-s">💬 ' + t.msgs.length + " · " + fmt(t.last.ms) + "</div></div>";
+      }).join("");
+    }
+    if (cnt) cnt.textContent = n + " نتيجة";
+    body.innerHTML = warn + (html || (loaded ? '<div class="empty"><div class="ei">📭</div><div class="et">لا توجد نتائج</div></div>' : ""));
+    var clr = body.querySelector ? body.querySelector("[data-clear]") : null;
+    if (clr) clr.onclick = function (ev) { ev.preventDefault(); filterId = ""; renderList(); };
+  }
+
+  /* ---------- الإجراءات ---------- */
+  function findShop(id) { return byS[id]; }
+
+  function act(a, id, k) {
+    if (!isAdmin()) return;
+    var shop = k === "s";
+    var col = shop ? "shops" : "workers";
+    var ref = window.DB.collection(col).doc(id);
+    var done = function () { return loadAll(); };
+    var fail = function (e) { window.showToast("خطأ: " + (e && e.message ? e.message : "")); };
+    if (a === "view") { if (shop) { if (window.SHX_API && findShop(id)) window.SHX_API.openShop(findShop(id)); } else window.openW(id); }
+    else if (a === "edit") { if (shop) { if (window.SHX_API && findShop(id)) window.SHX_API.openShopEdit(findShop(id)); } else window.openEditProfileFromAdmin(id); }
+    else if (a === "msg") { openThread([id, ADMIN_ID].sort().join("_")); }
+    else if (a === "msgs") { filterId = id; setTab("messages"); }
+    else if (a === "susp") { if (!window.confirm("إيقاف هذا الحرفي 5 أيام؟")) return; var d = new Date(); d.setDate(d.getDate() + 5); ref.update({ suspUntil: d }).then(done).catch(fail); }
+    else if (a === "unsusp") { ref.update({ suspUntil: window.firebase.firestore.FieldValue.delete(), reports: 0 }).then(done).catch(fail); }
+    else if (a === "reset") { ref.update({ reports: 0 }).then(done).catch(fail); }
+    else if (a === "del") { if (!window.confirm("حذف نهائي؟ (حساب الدخول يبقى في Authentication)")) return; ref.delete().then(done).catch(fail); }
+  }
+
+  /* ---------- المحادثات ---------- */
+  function stopThread() { if (threadUnsub) { threadUnsub(); threadUnsub = null; } }
+
+  function backToList() { view = "list"; stopThread(); curThread = null; render(); loadAll(); }
+
+  function openThread(chatId) {
+    if (!isAdmin()) return;
+    stopThread();
+    var found = null;
+    D.threads.forEach(function (t) { if (t.chatId === chatId) found = t; });
+    curThread = found || { chatId: chatId, msgs: [], last: null, support: chatId.indexOf(ADMIN_ID) > -1 };
+    view = "thread";
+    render();
+    var body = A("adm-body"), cnt = A("adm-cnt");
+    if (cnt) cnt.textContent = "";
+    var title = parties(curThread).map(function (p) { return p.label; }).join(" ↔ ") || chatId;
+    body.innerHTML = '<div class="adm-s" style="margin:6px 12px;font-weight:800">' + H(title) + "</div>" +
+      (curThread.support ? "" : '<div class="adm-warn">🔒 محادثة خاصة بين طرفين — للقراءة فقط.</div>') +
+      '<div id="adm-msgs" style="padding-bottom:6px"></div>' +
+      (curThread.support ? '<div class="adm-reply"><input id="adm-reply" placeholder="اكتب ردّك..."><button class="adm-b3" id="adm-send" style="border:none;border-radius:20px;padding:0 16px;font-weight:800;cursor:pointer">إرسال</button></div>' : "");
+    var snd = A("adm-send"), inp = A("adm-reply");
+    if (snd) snd.onclick = sendReply;
+    if (inp) inp.onkeydown = function (e) { if (e.key === "Enter") sendReply(); };
+    drawMsgs();
+    threadUnsub = window.DB.collection("chats").doc(chatId).collection("messages").orderBy("createdAt").onSnapshot(function (snap) {
+      var msgs = [];
+      snap.forEach(function (d) { var m = d.data(); msgs.push({ text: m.text, senderId: m.senderId, senderName: m.senderName, ms: msOf(m.createdAt) || Date.now() }); });
+      curThread.msgs = msgs; curThread.last = msgs[msgs.length - 1] || null;
+      if (curThread.last) setSeen(chatId, curThread.last.ms);
+      drawMsgs();
+    }, function (e) { var box = A("adm-msgs"); if (box) box.innerHTML = '<div class="adm-warn">⚠️ ' + linkify(H(e && e.message)) + "</div>"; });
+  }
+
+  function drawMsgs() {
+    var box = A("adm-msgs");
+    if (!box || !curThread) return;
+    if (!curThread.msgs.length) { box.innerHTML = '<div class="empty"><div class="ei">💬</div><div class="et">لا توجد رسائل بعد</div></div>'; return; }
+    box.innerHTML = curThread.msgs.map(function (m) {
+      var mine = m.senderId === ADMIN_ID;
+      return '<div class="adm-bub" style="' + (mine ? "background:#6A1B9A;color:#fff;margin-inline-start:auto;border-bottom-right-radius:4px" : "background:#fff;color:#1A1A2E;box-shadow:0 2px 8px rgba(0,0,0,.07);border-bottom-left-radius:4px") + '">' +
+        '<div style="font-size:10px;font-weight:700;opacity:.75;margin-bottom:2px">' + H(who(m.senderId, m.senderName)) + "</div>" + H(m.text) +
+        '<div style="font-size:10px;opacity:.6;margin-top:3px">' + fmt(m.ms) + "</div></div>";
+    }).join("");
+    var body = A("adm-body"); if (body) body.scrollTop = body.scrollHeight;
+  }
+
+  function sendReply() {
+    if (!isAdmin() || !curThread || !curThread.support) return;
+    var inp = A("adm-reply");
+    var text = inp ? String(inp.value || "").trim() : "";
+    if (!text) return;
+    inp.value = "";
+    window.DB.collection("chats").doc(curThread.chatId).collection("messages").add({
+      text: text, senderId: ADMIN_ID, senderName: "الإدارة", isGuest: false,
+      createdAt: window.firebase.firestore.FieldValue.serverTimestamp()
+    }).catch(function (e) { window.showToast("خطأ: " + (e && e.message ? e.message : "")); });
+  }
+
+  /* ---------- قناة «راسل الإدارة» للمستخدمين (حرفيون، أصحاب محلات، زبائن) ---------- */
+  function myChatId() {
+    var u = window.currentUser, me = u ? u.uid : window.GUEST_ID;
+    return [me, ADMIN_ID].sort().join("_");
+  }
+
+  function contactAdmin() {
+    var u = window.currentUser, me = u ? u.uid : window.GUEST_ID;
+    var nm = window.lang === "ar" ? "الإدارة" : (window.lang === "fr" ? "Administration" : "Admin");
+    window.chatWorkerId = null;
+    try { localStorage.setItem("craftison_adm_ack_" + myChatId(), String(lastAdminMs)); } catch (e) {}
+    var dot = A("adm-contact-dot"); if (dot) dot.style.display = "none";
+    window.startChat(ADMIN_ID, nm, me, !u);
+  }
+
+  function watchReplies() {
+    try {
+      if (replyUnsub) { replyUnsub(); replyUnsub = null; }
+      if (isAdmin()) return;
+      var cid = myChatId();
+      replyUnsub = window.DB.collection("chats").doc(cid).collection("messages").orderBy("createdAt", "desc").limit(1).onSnapshot(function (snap) {
+        var last = null; snap.forEach(function (d) { last = d.data(); });
+        var dot = A("adm-contact-dot"); if (!dot) return;
+        var ms = last ? msOf(last.createdAt) : 0;
+        if (last && last.senderId === ADMIN_ID) lastAdminMs = ms;
+        var ack = parseInt(localStorage.getItem("craftison_adm_ack_" + cid) || "0", 10) || 0;
+        dot.style.display = (last && last.senderId === ADMIN_ID && ms > ack) ? "inline-block" : "none";
+      }, function () {});
+    } catch (e) {}
+  }
+
+  function injectContactBtn() {
+    var box = document.querySelector("#s-home .home-actions");
+    if (!box || A("adm-contact-btn")) return;
+    var b = document.createElement("button");
+    b.className = "home-action"; b.id = "adm-contact-btn"; b.title = "Contact";
+    b.innerHTML = '📩<span id="adm-contact-dot" style="display:none;background:#FF1744;border-radius:50%;width:9px;height:9px;margin-inline-start:3px"></span>';
+    b.onclick = contactAdmin;
+    box.insertBefore(b, box.firstChild);
+  }
+
+  function syncVisibility() {
+    var b = A("adm-contact-btn");
+    if (b) b.style.display = isAdmin() ? "none" : "inline-block";
+  }
+
+  function init() {
+    var origOpen = window.openAdminPanel;
+    if (typeof origOpen === "function") {
+      window.openAdminPanel = function () { if (!isAdmin()) return; openDash(); };
+    }
+    injectContactBtn();
+    syncVisibility();
+    if (window.AUTH && typeof window.AUTH.onAuthStateChanged === "function") {
+      window.AUTH.onAuthStateChanged(function () {
+        syncVisibility();
+        if (!isAdmin()) removeUI();
+        watchReplies();
+      });
+    }
+    watchReplies();
+  }
+
+  try { init(); } catch (err) { if (window.console) console.error("admin module:", err); }
 })();
 
 /* shops-module:end */
