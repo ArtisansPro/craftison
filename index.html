@@ -1862,7 +1862,7 @@ function applyT(){
   loadTotalStats();
 }
 
-var GUESTS_SINCE_MS = 1794493840998;
+var GUESTS_SINCE_MS = 1795756848517;
 function loadTotalStats(){
   DB.collection("workers").get().then(function(snap){
     set("sl-wnum", snap.size);
@@ -3412,7 +3412,7 @@ document.addEventListener("DOMContentLoaded",function(){
 <script>
 /* shops-module:begin */
 /* ==========================================================
-   shops.js (v6) — المحلات المتخصصة وربطها الذكي بالحرفيين
+   shops.js (v7) — المحلات المتخصصة وربطها الذكي بالحرفيين
    تُدمج هذه الوحدة تلقائياً داخل index.html بواسطة أداة الدمج.
    ========================================================== */
 (function () {
@@ -3474,6 +3474,11 @@ document.addEventListener("DOMContentLoaded",function(){
       err_perm: "رفضت قاعدة البيانات العملية (صلاحيات Firestore)", err_timeout: "انتهت المهلة، تحقق من الاتصال وأعد المحاولة",
       err_big: "حجم الصور كبير جداً، قلّل عدد الصور أو استعمل صوراً أصغر",
       err_hasshop: "هذا الحساب لديه محل مسجل بالفعل — يمكنك تعديله من صفحة المحلات",
+      promo_title: "📣 إشعار ترويجي للحرفيين", promo_hint: "سلعة جديدة أو متوفرة — يصل لحرفيي نفس الولاية والحرفة (3 إشعارات كحد أقصى كل 7 أيام)",
+      promo_pick: "📷 التقاط أو اختيار صور (1 إلى 3)", promo_text_ph: "وصف السلعة في سطر واحد...", promo_send: "📤 إرسال الإشعار",
+      promo_quota: "المتبقي لك هذا الأسبوع: {n} من 3", promo_err_photo: "أضف صورة واحدة على الأقل", promo_err_text: "اكتب وصفاً في سطر واحد",
+      promo_err_cat: "صنف محلك غير مرتبط بحرف محددة؛ عدّل صنف المحل ثم أعد المحاولة", promo_err_limit: "بلغت الحد الأقصى: 3 إشعارات خلال 7 أيام",
+      promo_ok: "✅ تم إرسال الإشعار إلى الحرفيين المعنيين", promo_max: "الحد الأقصى 3 صور",
       saved: "✅ تم الحفظ", toggle_open: "🔓 فتح المحل الآن", toggle_close: "🔒 غلق المحل الآن",
       del_admin: "🗑️ حذف المحل (Admin)", del_confirm: "حذف هذا المحل نهائياً؟"
     },
@@ -3509,6 +3514,11 @@ document.addEventListener("DOMContentLoaded",function(){
       err_perm: "La base de données a refusé l'opération (règles Firestore)", err_timeout: "Délai dépassé, vérifiez la connexion et réessayez",
       err_big: "Images trop lourdes : réduisez leur nombre ou leur taille",
       err_hasshop: "Ce compte a déjà un magasin — modifiez-le depuis la page Magasins",
+      promo_title: "📣 Promotion pour les artisans", promo_hint: "Nouveau produit ou en stock — envoyé aux artisans de la même wilaya et du même métier (3 max par 7 jours)",
+      promo_pick: "📷 Prendre ou choisir des photos (1 à 3)", promo_text_ph: "Description du produit en une ligne...", promo_send: "📤 Envoyer la promotion",
+      promo_quota: "Il vous reste cette semaine : {n} sur 3", promo_err_photo: "Ajoutez au moins une photo", promo_err_text: "Écrivez une description en une ligne",
+      promo_err_cat: "La catégorie de votre magasin n'est liée à aucun métier ; modifiez-la puis réessayez", promo_err_limit: "Limite atteinte : 3 promotions sur 7 jours",
+      promo_ok: "✅ Promotion envoyée aux artisans concernés", promo_max: "3 photos maximum",
       saved: "✅ Enregistré", toggle_open: "🔓 Ouvrir le magasin", toggle_close: "🔒 Fermer le magasin",
       del_admin: "🗑️ Supprimer (Admin)", del_confirm: "Supprimer définitivement ce magasin ?"
     },
@@ -3544,6 +3554,11 @@ document.addEventListener("DOMContentLoaded",function(){
       err_perm: "The database refused the operation (Firestore rules)", err_timeout: "Timed out, check your connection and retry",
       err_big: "Images are too large: use fewer or smaller images",
       err_hasshop: "This account already has a shop — edit it from the Shops page",
+      promo_title: "📣 Promotion for craftsmen", promo_hint: "New or available product — sent to craftsmen of the same wilaya and trade (max 3 per 7 days)",
+      promo_pick: "📷 Take or choose photos (1 to 3)", promo_text_ph: "Describe the product in one line...", promo_send: "📤 Send promotion",
+      promo_quota: "Left this week: {n} of 3", promo_err_photo: "Add at least one photo", promo_err_text: "Write a one-line description",
+      promo_err_cat: "Your shop category is not linked to any trade; edit it and retry", promo_err_limit: "Limit reached: 3 promotions per 7 days",
+      promo_ok: "✅ Promotion sent to the relevant craftsmen", promo_max: "Maximum 3 photos",
       saved: "✅ Saved", toggle_open: "🔓 Open the shop now", toggle_close: "🔒 Close the shop now",
       del_admin: "🗑️ Delete shop (Admin)", del_confirm: "Delete this shop permanently?"
     }
@@ -4055,6 +4070,7 @@ document.addEventListener("DOMContentLoaded",function(){
       dc.appendChild(dl);
     }
     el.appendChild(dc);
+    if (owner) el.appendChild(promoComposer(s));
 
     /* الربط الذكي: حرفيون من نفس تخصص هذا الصنف في منطقة المحل */
     var wb = document.createElement("div");
@@ -4081,6 +4097,111 @@ document.addEventListener("DOMContentLoaded",function(){
     rb.textContent = myShop ? st("manage_btn") : st("reg_btn");
     rb.onclick = openShopRegister;
     el.appendChild(rb);
+  }
+
+  /* ---------- الإشعارات الترويجية للحرفيين (من صاحب المحل) ---------- */
+  var promoFiles = [];
+
+  function promoRemaining(s) {
+    var now = Date.now();
+    var log = (s.promoLog || []).filter(function (t) { return t > now - 7 * 86400000; });
+    return Math.max(0, 3 - log.length);
+  }
+  /* معرّف مقلوب الزمن: الترتيب الافتراضي بالمعرّف يعطي الأحدث أولاً بلا فهارس إضافية */
+  function promoReverseId(shopId) {
+    var n = String(9999999999999 - Date.now());
+    while (n.length < 13) n = "0" + n;
+    return n + "_" + shopId;
+  }
+  function wilOf(s) {
+    try {
+      if (typeof window.findWilayas === "function") {
+        var a = window.findWilayas(s.city || "").concat(window.findWilayas(s.commune || ""));
+        if (a.length) return a[0];
+      }
+    } catch (e) {}
+    return 0;
+  }
+  function wilLabel(id) { return window.WIL_BY_ID && window.WIL_BY_ID[id] ? window.WIL_BY_ID[id].disp : ""; }
+
+  function promoComposer(s) {
+    promoFiles = [];
+    var box = document.createElement("div");
+    box.className = "gc";
+    box.style.cssText = "border:2px dashed #2E7D32;background:#F1F8E9";
+    box.innerHTML =
+      '<div class="gt">' + H(st("promo_title")) + "</div>" +
+      '<div class="shx-s" style="margin:-4px 0 8px">' + H(st("promo_hint")) + "</div>" +
+      '<div class="gg" id="shx-pthumbs"></div>' +
+      '<input type="file" id="shx-pfile" accept="image/*" multiple style="display:none">' +
+      '<button type="button" class="btn-b" id="shx-ppick" style="margin-top:8px"></button>' +
+      '<input class="fi" id="shx-ptext" maxlength="100" style="margin-top:8px">' +
+      '<div class="shx-s" id="shx-pquota" style="margin-top:6px;font-weight:700"></div>' +
+      '<div id="shx-perr"></div>' +
+      '<button type="button" class="btn-g" id="shx-psend"></button>';
+    var thumbs = box.querySelector("#shx-pthumbs"), file = box.querySelector("#shx-pfile"), pick = box.querySelector("#shx-ppick"),
+      inp = box.querySelector("#shx-ptext"), quota = box.querySelector("#shx-pquota"), err = box.querySelector("#shx-perr"), send = box.querySelector("#shx-psend");
+    pick.textContent = st("promo_pick"); inp.placeholder = st("promo_text_ph"); send.textContent = st("promo_send");
+
+    function perr(m) {
+      err.innerHTML = m ? '<div class="errmsg">' + H(m) + "</div>" : "";
+      if (m && typeof window.showToast === "function") window.showToast(m);
+    }
+    function drawQuota() { quota.textContent = st("promo_quota").replace("{n}", promoRemaining(s)); }
+    function drawThumbs() {
+      thumbs.innerHTML = "";
+      promoFiles.forEach(function (f, i) {
+        thumbs.appendChild(galCell(null, f, function () { promoFiles.splice(i, 1); drawThumbs(); }));
+      });
+    }
+    pick.onclick = function () { file.click(); };
+    file.onchange = function () {
+      var over = false;
+      Array.prototype.forEach.call(this.files || [], function (f) { if (promoFiles.length < 3) promoFiles.push(f); else over = true; });
+      this.value = "";
+      drawThumbs();
+      perr(over ? st("promo_max") : "");
+    };
+    send.onclick = function () {
+      var text = String(inp.value || "").replace(/[\r\n]+/g, " ").trim();
+      if (!promoFiles.length) { perr(st("promo_err_photo")); return; }
+      if (!text) { perr(st("promo_err_text")); return; }
+      var cat = catById(s.cat), crafts = cat ? cat.k.slice() : [];
+      if (!crafts.length) { perr(st("promo_err_cat")); return; }
+      send.disabled = true; send.textContent = st("sending"); perr("");
+      window.DB.collection("shops").doc(s.id).get().then(function (snap) {
+        var fresh = Object.assign({ id: snap.id }, snap.data());
+        var now = Date.now();
+        var log = (fresh.promoLog || []).filter(function (t) { return t > now - 7 * 86400000; });
+        if (log.length >= 3) throw new Error("PROMO_LIMIT");
+        return Promise.all(promoFiles.map(function (f) { return window.fileToBase64(f, 420, 0.45); })).then(function (photos) {
+          var wil = wilOf(fresh);
+          var data = {
+            shopId: s.id, shopName: fresh.name || "", phone: fresh.phone || "", cat: fresh.cat, craftIds: crafts,
+            country: fresh.country || "", city: fresh.city || "", commune: fresh.commune || "",
+            wil: wil, wilName: wilLabel(wil), text: text, photos: photos,
+            createdAt: window.firebase.firestore.FieldValue.serverTimestamp(), createdMs: now
+          };
+          log.push(now);
+          var batch = window.DB.batch();
+          batch.set(window.DB.collection("promos").doc(promoReverseId(s.id)), data);
+          batch.update(window.DB.collection("shops").doc(s.id), { promoLog: log });
+          return batch.commit().then(function () {
+            s.promoLog = log;
+            if (myShop && myShop.id === s.id) myShop.promoLog = log;
+          });
+        });
+      }).then(function () {
+        promoFiles = []; drawThumbs(); inp.value = ""; drawQuota();
+        window.showToast(st("promo_ok"));
+      }).catch(function (e) {
+        if (window.console) console.error("promo send:", e);
+        perr(e && e.message === "PROMO_LIMIT" ? st("promo_err_limit") : friendlyError(e));
+        drawQuota();
+      }).then(function () { send.disabled = false; send.textContent = st("promo_send"); });
+    };
+    drawQuota();
+    return box;
   }
 
   function workerRow(w) {
@@ -4925,6 +5046,200 @@ document.addEventListener("DOMContentLoaded",function(){
   }
 
   try { init(); } catch (err) { if (window.console) console.error("admin module:", err); }
+})();
+
+/* ====================================================================
+   عروض المحلات للحرفي: تظهر في صندوق الإشعارات بتبويب مستقل وتمييز بصري مختلف عن طلبات الزبائن
+   - تُجلب العروض المطابقة لحرفة الحرفي وولايته (بالمطابقة نفسها المستعملة في الطلبات)، من الأحدث إلى الأقدم
+   ==================================================================== */
+(function () {
+  "use strict";
+
+  var PT = {
+    ar: { tab_req: "📢 طلبات الزبائن", tab_promo: "🏪 عروض المحلات", sub: "عروض المحلات المناسبة لحرفتك وولايتك",
+      empty: "لا توجد عروض من المحلات في ولايتك وحرفتك حالياً", empty_s: "ستظهر هنا الإشعارات الترويجية الجديدة", tag: "🏪 عرض من محل", call: "📞 اتصال", wa: "💬 واتساب" },
+    fr: { tab_req: "📢 Demandes clients", tab_promo: "🏪 Offres magasins", sub: "Offres des magasins pour votre métier et votre wilaya",
+      empty: "Aucune offre de magasin pour votre métier et votre wilaya", empty_s: "Les nouvelles promotions apparaîtront ici", tag: "🏪 Offre d'un magasin", call: "📞 Appeler", wa: "💬 WhatsApp" },
+    en: { tab_req: "📢 Client requests", tab_promo: "🏪 Shop offers", sub: "Shop offers for your trade and your area",
+      empty: "No shop offers for your trade and area yet", empty_s: "New promotions will appear here", tag: "🏪 Shop offer", call: "📞 Call", wa: "💬 WhatsApp" }
+  };
+  var promoList = [], activeTab = "req";
+
+  function A(id) { return document.getElementById(id); }
+  function H(s) {
+    return (s == null ? "" : String(s)).replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+  }
+  function T(k) { var d = PT[window.lang] || PT.en; return d[k] != null ? d[k] : PT.en[k]; }
+  function pms(p) {
+    if (p.createdMs) return Number(p.createdMs) || 0;
+    var c = p.createdAt;
+    return c ? (c.toMillis ? c.toMillis() : (Number(c) || 0)) : 0;
+  }
+  function fmtTime(v) { return v ? new Date(v).toLocaleString([], { day: "2-digit", month: "2-digit", hour: "2-digit", minute: "2-digit" }) : ""; }
+  function seenIds() { try { return JSON.parse(localStorage.getItem("craftison_seen_promos") || "[]"); } catch (e) { return []; } }
+  function markSeen() {
+    var seen = seenIds();
+    promoList.forEach(function (p) { if (seen.indexOf(p.id) === -1) seen.push(p.id); });
+    if (seen.length > 300) seen = seen.slice(seen.length - 300);
+    try { localStorage.setItem("craftison_seen_promos", JSON.stringify(seen)); } catch (e) {}
+  }
+  function newCount() { var seen = seenIds(); return promoList.filter(function (p) { return seen.indexOf(p.id) === -1; }).length; }
+  function own() { return typeof window.isOwnTarget === "function" && !!window.isOwnTarget(); }
+
+  /* رابط واتساب بصيغة دولية (يحوّل 0555... إلى 213555... حسب بلد المحل) */
+  function waLink(p) {
+    var d = String(p.phone || "").replace(/\D/g, "");
+    var pre = window.PHONE_PREFIXES && window.PHONE_PREFIXES[p.country] ? String(window.PHONE_PREFIXES[p.country]).replace(/\D/g, "") : "";
+    if (d.indexOf("00") === 0) d = d.slice(2);
+    else if (pre && d.indexOf(pre) === 0 && d.length > pre.length + 6) { /* دولي أصلاً */ }
+    else { d = d.replace(/^0+/, ""); if (pre) d = pre + d; }
+    return "https://wa.me/" + d;
+  }
+
+  var CSS = [
+    ".promo-card{background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border:2px dashed #2E7D32;border-radius:13px;margin:0 9px 9px;padding:12px}",
+    ".promo-top{display:flex;justify-content:space-between;align-items:center;gap:8px}",
+    ".promo-tag{background:#2E7D32;color:#fff;border-radius:8px;padding:2px 9px;font-size:10px;font-weight:800}",
+    ".promo-shop{font-size:15px;font-weight:900;color:#1B5E20;margin:8px 0 2px}",
+    ".promo-ph{display:flex;gap:6px;margin:8px 0}",
+    ".promo-ph img{flex:1;min-width:0;aspect-ratio:1;object-fit:cover;border-radius:9px;cursor:pointer}",
+    ".promo-txt{font-size:13px;font-weight:700;color:#1B5E20;line-height:1.6;word-break:break-word}",
+    ".promo-wa{background:#25D366}"
+  ].join("\n");
+
+  function loadPromos() {
+    var w = window.myWorker;
+    if (!w || !w.craftId || !window.DB) return Promise.resolve();
+    return window.DB.collection("promos").where("craftIds", "array-contains", w.craftId).limit(60).get().then(function (snap) {
+      var list = [], minMs = Date.now() - 30 * 86400000;
+      snap.forEach(function (d) { list.push(Object.assign({ id: d.id }, d.data())); });
+      list = list.filter(function (p) {
+        if (pms(p) < minMs) return false;
+        return typeof window.areaMatch === "function"
+          ? !!window.areaMatch({ country: p.country, city: p.city, commune: p.commune, text: "" }, w) : true;
+      });
+      list.sort(function (a, b) { return pms(b) - pms(a); });
+      promoList = list.slice(0, 30);
+    }).catch(function (e) { if (window.console) console.error("promos load:", e); });
+  }
+
+  function promoView(p) {
+    var d = document.createElement("div");
+    d.className = "promo-card";
+    var photos = (p.photos || []).slice(0, 3);
+    d.innerHTML =
+      '<div class="promo-top"><span class="promo-tag">' + H(T("tag")) + '</span><span class="req-time">' + H(fmtTime(pms(p))) + "</span></div>" +
+      '<div class="promo-shop">🏪 ' + H(p.shopName) + "</div>" +
+      '<div class="promo-ph">' + photos.map(function (u) { return '<img src="' + H(u) + '">'; }).join("") + "</div>" +
+      '<div class="promo-txt">' + H(p.text) + "</div>" +
+      '<div class="req-loc">📍 ' + H([p.city, p.wilName].filter(Boolean).join("، ")) + "</div>";
+    var imgs = d.querySelectorAll(".promo-ph img");
+    if (typeof window.bindZoomImage === "function") imgs.forEach(function (img, i) { window.bindZoomImage(img, photos, i); });
+    var acts = document.createElement("div");
+    acts.className = "req-acts";
+    var c = document.createElement("button");
+    c.className = "req-call"; c.textContent = T("call");
+    c.onclick = function () { window.open("tel:" + (p.phone || "")); };
+    var w = document.createElement("button");
+    w.className = "promo-wa"; w.textContent = T("wa");
+    w.onclick = function () { window.open(waLink(p), "_blank"); };
+    acts.appendChild(c); acts.appendChild(w);
+    d.appendChild(acts);
+    return d;
+  }
+
+  function renderPromos() {
+    var el = A("inbox-list");
+    if (!el) return;
+    var sub = A("inbox-sub"); if (sub) sub.textContent = T("sub");
+    el.innerHTML = "";
+    if (!promoList.length) {
+      el.innerHTML = '<div class="empty"><div class="ei">🏪</div><div class="et">' + H(T("empty")) + '</div><div class="es">' + H(T("empty_s")) + "</div></div>";
+    } else {
+      promoList.forEach(function (p) { el.appendChild(promoView(p)); });
+    }
+    markSeen();
+    updateBadges();
+  }
+
+  function syncTabs() {
+    var tabs = A("pt-tabs");
+    if (!tabs) return;
+    tabs.style.display = own() ? "flex" : "none";
+    var r = A("pt-req"), p = A("pt-promo");
+    if (r) { r.textContent = T("tab_req"); r.classList.toggle("on", activeTab === "req"); }
+    if (p) {
+      var n = newCount();
+      p.textContent = T("tab_promo") + " (" + promoList.length + ")" + (n ? " 🔴" + n : "");
+      p.classList.toggle("on", activeTab === "promo");
+    }
+  }
+
+  function updateBadges() {
+    syncTabs();
+    if (typeof window.updateInboxBadge === "function") window.updateInboxBadge();
+  }
+
+  function injectTabs() {
+    var sub = A("inbox-sub");
+    if (!sub || !sub.parentNode || A("pt-tabs")) return;
+    var d = document.createElement("div");
+    d.className = "tabs"; d.id = "pt-tabs"; d.style.cssText = "display:none;margin-top:8px";
+    d.innerHTML = '<button class="tab on" id="pt-req"></button><button class="tab" id="pt-promo"></button>';
+    sub.parentNode.insertBefore(d, sub);
+    A("pt-req").onclick = function () { activeTab = "req"; if (typeof window.renderInbox === "function") window.renderInbox(); syncTabs(); };
+    A("pt-promo").onclick = function () { activeTab = "promo"; renderPromos(); };
+  }
+
+  function init() {
+    if (!A("promo-css")) {
+      var sty = document.createElement("style");
+      sty.id = "promo-css"; sty.textContent = CSS;
+      document.head.appendChild(sty);
+    }
+    injectTabs();
+
+    var oOpen = window.openInbox;
+    if (typeof oOpen === "function") {
+      window.openInbox = function (target) {
+        activeTab = "req";
+        oOpen(target);
+        syncTabs();
+        loadPromos().then(syncTabs);
+      };
+    }
+    var oRender = window.renderInbox;
+    if (typeof oRender === "function") {
+      window.renderInbox = function () {
+        if (activeTab === "promo" && own()) { renderPromos(); return; }
+        oRender();
+        syncTabs();
+      };
+    }
+    var oShow = window.showInboxButton;
+    if (typeof oShow === "function") {
+      window.showInboxButton = function (show) {
+        oShow(show);
+        if (show && window.myWorker) loadPromos().then(updateBadges);
+        else if (!show) promoList = [];
+      };
+    }
+    /* شارة الصندوق = طلبات جديدة + عروض جديدة */
+    var oBadge = window.updateInboxBadge;
+    if (typeof oBadge === "function") {
+      window.updateInboxBadge = function (list) {
+        oBadge(list);
+        var bd = A("inbox-badge");
+        if (!bd || !window.myWorker) return;
+        var base = bd.style.display !== "none" ? (parseInt(bd.textContent, 10) || 0) : 0;
+        var total = base + newCount();
+        if (total > 0) { bd.textContent = total > 99 ? "99+" : total; bd.style.display = "inline-block"; }
+      };
+    }
+  }
+
+  try { init(); } catch (err) { if (window.console) console.error("promo feed module:", err); }
 })();
 
 /* shops-module:end */
